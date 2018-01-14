@@ -272,16 +272,21 @@
 </li>
 <li><p>iptables设置</p>
 <ul>
-<li>查看当前iptables设置：</li>
-</ul>
+<li><p>查看当前iptables设置：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ iptables -nL</div></pre></td></tr></table></figure>
+</li>
+</ul>
 </li>
 </ol>
 <pre><code>-  以防万一大家可以先清洗一遍iptables，有配置的同学记得提前**备份**：
-</code></pre> <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ iptables -F</div></pre></td></tr></table></figure>
-<pre><code>-  清洗后：
-</code></pre> <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">Chain INPUT (policy ACCEPT)</div><div class="line">target     prot opt source               destination</div><div class="line">Chain FORWARD (policy DROP)</div><div class="line">target     prot opt source               destination</div><div class="line">Chain OUTPUT (policy ACCEPT)</div><div class="line">target     prot opt source               destination</div><div class="line">Chain DOCKER (0 references)</div><div class="line">target     prot opt source               destination</div><div class="line">Chain DOCKER-ISOLATION (0 references)</div><div class="line">target     prot opt source               destination</div></pre></td></tr></table></figure>
-<ol>
+
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ iptables -F</div></pre></td></tr></table></figure>
+
+
+-  清洗后：
+
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">Chain INPUT (policy ACCEPT)</div><div class="line">target     prot opt source               destination</div><div class="line">Chain FORWARD (policy DROP)</div><div class="line">target     prot opt source               destination</div><div class="line">Chain OUTPUT (policy ACCEPT)</div><div class="line">target     prot opt source               destination</div><div class="line">Chain DOCKER (0 references)</div><div class="line">target     prot opt source               destination</div><div class="line">Chain DOCKER-ISOLATION (0 references)</div><div class="line">target     prot opt source               destination</div></pre></td></tr></table></figure>
+</code></pre><ol>
 <li><p>icc、iptables选项与/etc/default/docker</p>
 <ul>
 <li>icc是跨容器通信开关，iptables则是Docker是否应用防火墙规则的开关，于是修改/etc/default/docker文件，禁止跨容器通信，要求Docker使用iptables规则：</li>
