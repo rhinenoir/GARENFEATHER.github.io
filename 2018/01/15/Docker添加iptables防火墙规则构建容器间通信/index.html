@@ -13,7 +13,7 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="一、坑从何来最近正好看到解析Docker单主机网络的部分，提到通过link链接容器，于是深入思考了下link的机制，首先如果为容器添加一条链接会发生以下几件事：  描述目标容器的环境变量会被创建 链接的别名和对应目标容器的ip地址会被添加到DNS覆盖列表中 如果跨容器通信被禁止，Docker会添加特定的防火墙规则来允许被链接的容器间的通信。  重点在于第三点，这里Docker添加的防火墙规则是允许">
 <meta property="og:image" content="https://s1.ax2x.com/2018/01/15/MBIxe.jpg">
-<meta property="og:updated_time" content="2018-01-14T22:11:01.752Z">
+<meta property="og:updated_time" content="2018-01-14T22:23:05.707Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Docker添加iptables防火墙规则构建容器间通信">
 <meta name="twitter:description" content="一、坑从何来最近正好看到解析Docker单主机网络的部分，提到通过link链接容器，于是深入思考了下link的机制，首先如果为容器添加一条链接会发生以下几件事：  描述目标容器的环境变量会被创建 链接的别名和对应目标容器的ip地址会被添加到DNS覆盖列表中 如果跨容器通信被禁止，Docker会添加特定的防火墙规则来允许被链接的容器间的通信。  重点在于第三点，这里Docker添加的防火墙规则是允许">
@@ -242,6 +242,11 @@
 
 
                         
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/coding/">coding</a>
+    </div>
+
                         
     <div class="article-tag">
         <i class="fa fa-tag"></i>
@@ -270,80 +275,52 @@
 </ol>
 <p>最初的猜想是3，因为如果是2的话，容器被非法入侵岂不是可以新开个进程随意连上数据库往外倒数据？（<em>后来仔细想想，容器都被入侵了，跟权限被提到root了有啥区别……当然是为所欲为啊，不过当时没想清楚就是了</em>）这明显不安全。</p>
 <p>这里验证最直观可靠的方式还是看iptables的路由规则，开始实验。</p>
-<h3 id="二、在踩坑的边缘试探"><a href="#二、在踩坑的边缘试探" class="headerlink" title="二、在踩坑的边缘试探"></a>二、在踩坑的边缘试探</h3><ol>
-<li>实验环境<ul>
-<li>Ubuntu 16.04.2 LTS (GNU/Linux 4.4.0-63-generic x86_64)</li>
-<li>Docker version 17.05.0-ce, build 89658be</li>
-</ul>
-</li>
-<li><p>iptables设置</p>
-<ul>
-<li><p>查看当前iptables设置：</p>
+<h3 id="二、在踩坑的边缘试探"><a href="#二、在踩坑的边缘试探" class="headerlink" title="二、在踩坑的边缘试探"></a>二、在踩坑的边缘试探</h3><h4 id="1-实验环境"><a href="#1-实验环境" class="headerlink" title="1.实验环境"></a>1.实验环境</h4><pre><code>-  Ubuntu 16.04.2 LTS (GNU/Linux 4.4.0-63-generic x86_64)
+-  Docker version 17.05.0-ce, build 89658be
+</code></pre><h4 id="2-iptables设置"><a href="#2-iptables设置" class="headerlink" title="2.iptables设置"></a>2.iptables设置</h4><p>查看当前iptables设置：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ iptables -nL</div></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-</ol>
-<pre><code>- 以防万一大家可以先清洗一遍iptables，有配置的同学记得提前**备份**：
-
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ iptables -F</div></pre></td></tr></table></figure>
-
-
--  清洗后：
-
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">Chain INPUT (policy ACCEPT)</div><div class="line">target     prot opt source               destination</div><div class="line">Chain FORWARD (policy DROP)</div><div class="line">target     prot opt source               destination</div><div class="line">Chain OUTPUT (policy ACCEPT)</div><div class="line">target     prot opt source               destination</div><div class="line">Chain DOCKER (0 references)</div><div class="line">target     prot opt source               destination</div><div class="line">Chain DOCKER-ISOLATION (0 references)</div><div class="line">target     prot opt source               destination</div></pre></td></tr></table></figure>
-</code></pre><ol>
-<li><p>icc、iptables选项与/etc/default/docker</p>
-<ul>
-<li>icc是跨容器通信开关，iptables则是Docker是否应用防火墙规则的开关，于是修改/etc/default/docker文件，禁止跨容器通信，要求Docker使用iptables规则：</li>
-</ul>
+<p>以防万一大家可以先清洗一遍iptables，有配置的同学记得提前<strong>备份</strong>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ iptables -F</div></pre></td></tr></table></figure>
+<p>清洗后：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">Chain INPUT (policy ACCEPT)</div><div class="line">target     prot opt source               destination</div><div class="line">Chain FORWARD (policy DROP)</div><div class="line">target     prot opt source               destination</div><div class="line">Chain OUTPUT (policy ACCEPT)</div><div class="line">target     prot opt source               destination</div><div class="line">Chain DOCKER (0 references)</div><div class="line">target     prot opt source               destination</div><div class="line">Chain DOCKER-ISOLATION (0 references)</div><div class="line">target     prot opt source               destination</div></pre></td></tr></table></figure>
+<h4 id="3-icc、iptables选项与-etc-default-docker"><a href="#3-icc、iptables选项与-etc-default-docker" class="headerlink" title="3.icc、iptables选项与/etc/default/docker"></a>3.icc、iptables选项与/etc/default/docker</h4><p>icc是跨容器通信开关，iptables则是Docker是否应用防火墙规则的开关，于是修改/etc/default/docker文件，禁止跨容器通信，要求Docker使用iptables规则：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">DOCKER_OPTS=&quot;--icc=false --iptables=true&quot;</div></pre></td></tr></table></figure>
-</li>
-</ol>
-<pre><code>-  同时去掉注释，并重启docker服务：
-</code></pre> <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ service docker restart</div></pre></td></tr></table></figure>
-<pre><code>-  再次查看当前iptables配置，可以看到docker和docker-isolation都被加入到了chain-forward项中：
-</code></pre> <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">Chain FORWARD (policy DROP)</div><div class="line">target     prot opt source               destination </div><div class="line">DOCKER-ISOLATION  all  --  0.0.0.0/0            0.0.0.0/0 </div><div class="line">ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0            ctstate RELATED,ESTABLISHED</div><div class="line">DOCKER     all  --  0.0.0.0/0            0.0.0.0/0 </div><div class="line">ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0 </div><div class="line">DROP       all  --  0.0.0.0/0            0.0.0.0/0 </div><div class="line">Chain DOCKER (1 references)</div><div class="line">target     prot opt source               destination         </div><div class="line">ACCEPT     tcp  --  172.17.0.3           172.17.0.2           tcp dpt:3306</div><div class="line">ACCEPT     tcp  --  172.17.0.2           172.17.0.3           tcp spt:3306</div><div class="line">Chain DOCKER-ISOLATION (1 references)</div><div class="line">target     prot opt source               destination </div><div class="line">RETURN     all  --  0.0.0.0/0            0.0.0.0/0</div></pre></td></tr></table></figure>
-<pre><code>-  此处用本机现有的mysql和redis做实验，redis依赖mysql（mysql密码请自行根据自己的配置修改）：
-</code></pre> <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ docker run --rm --name  mysql -e 3306 -e MYSQL_ROOT_PASSWORD=123456 -d mysql</div></pre></td></tr></table></figure>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ docker run --rm --name redis --link mysql:mysql -d redis</div></pre></td></tr></table></figure>
-<pre><code>-  操作完docker ps可以看到两个容器正常运行，但并没有看到iptables有新添加规则。
-</code></pre><ol>
-<li>docker network</li>
-</ol>
-<ul>
-<li><p>之前的项目没有涉及到多网络配置，因此对network一无所知，加上无脑瞎找资料没思考清楚，误以为是两个容器不在一个网络内，于是查看默认bridge网络配置：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ docker network inspect bridge</div></pre></td></tr></table></figure>
-</li>
-</ul>
-<pre><code>-  部分相关配置如下：
-</code></pre> <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">       &quot;Name&quot;: &quot;bridge&quot;,</div><div class="line">       &quot;Id&quot;: &quot;d14d164b2dbc43b33eb298d79e5928fda258129a02f6c2a7c310633a718d356c&quot;,</div><div class="line">       &quot;Created&quot;: &quot;2018-01-15T03:53:42.133885625+08:00&quot;,</div><div class="line">       &quot;Scope&quot;: &quot;local&quot;,</div><div class="line">       &quot;Driver&quot;: &quot;bridge&quot;,</div><div class="line">       &quot;EnableIPv6&quot;: false,</div><div class="line">       &quot;IPAM&quot;: &#123;</div><div class="line">           &quot;Driver&quot;: &quot;default&quot;,</div><div class="line">           &quot;Options&quot;: null,</div><div class="line">           &quot;Config&quot;: [</div><div class="line">               &#123;</div><div class="line">                   &quot;Subnet&quot;: &quot;172.17.0.0/16&quot;,</div><div class="line">                   &quot;Gateway&quot;: &quot;172.17.0.1&quot;</div><div class="line">               &#125;</div><div class="line">           ]</div><div class="line">       &#125;,</div><div class="line">       &quot;Internal&quot;: false,</div><div class="line">       &quot;Attachable&quot;: false,</div><div class="line">       &quot;Ingress&quot;: false,</div><div class="line">       &quot;Containers&quot;: &#123;</div><div class="line">           &quot;5b81e33ddd5e7e79e6c315bd3889812362d19732e0ce9a0486edc98a26c59e77&quot;: &#123;</div><div class="line">               &quot;Name&quot;: &quot;redis&quot;,</div><div class="line">               &quot;EndpointID&quot;: &quot;df2e9dda0de35c4934a50d33bd23cb9d27301cac3882880ba58acf82713956f4&quot;,</div><div class="line">               &quot;MacAddress&quot;: &quot;02:42:ac:11:00:03&quot;,</div><div class="line">               &quot;IPv4Address&quot;: &quot;172.17.0.3/16&quot;,</div><div class="line">               &quot;IPv6Address&quot;: &quot;&quot;</div><div class="line">           &#125;,</div><div class="line">           &quot;fada6a036ecba16bc1c08ec5b8fced59b51144a949d7c1051b78e88d7a4bb35f&quot;: &#123;</div><div class="line">               &quot;Name&quot;: &quot;mysql&quot;,</div><div class="line">               &quot;EndpointID&quot;: &quot;38a5036088b19daa08e212d947b44f3a94e823d9a2cd060d0fbfc19680591abf&quot;,</div><div class="line">               &quot;MacAddress&quot;: &quot;02:42:ac:11:00:02&quot;,</div><div class="line">               &quot;IPv4Address&quot;: &quot;172.17.0.2/16&quot;,</div><div class="line">               &quot;IPv6Address&quot;: &quot;&quot;</div><div class="line">           &#125;</div><div class="line">       &#125;,</div><div class="line">       &quot;Options&quot;: &#123;</div><div class="line">           &quot;com.docker.network.bridge.default_bridge&quot;: &quot;true&quot;,</div><div class="line">           &quot;com.docker.network.bridge.enable_icc&quot;: &quot;true&quot;,</div><div class="line">           &quot;com.docker.network.bridge.enable_ip_masquerade&quot;: &quot;true&quot;,</div><div class="line">           &quot;com.docker.network.bridge.host_binding_ipv4&quot;: &quot;0.0.0.0&quot;,</div><div class="line">           &quot;com.docker.network.bridge.name&quot;: &quot;docker0&quot;,</div><div class="line">           &quot;com.docker.network.driver.mtu&quot;: &quot;1500&quot;</div><div class="line">       &#125;,</div><div class="line">       &quot;Labels&quot;: &#123;&#125;</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
-<pre><code>-  发现两个容器都在默认网络里。顺便这里有个很迷的地方就是Options里的true和false都是字符串类型，但外面的却不是，后面会提到。观察配置发现icc选项还是true，说明刚才修改的/etc/default/docker文件很可能没起作用。此处有两个选择：
- - 新建一个bridge网络，icc设为false
- - 继续设法修改docker daemon启动选项
-
--  其实并没有选择，因为就参数来看只能设置icc，而iptables使用与否必须是docker daemon启动时设置好的。直接百度到的资料杂乱无章，对错参半，于是还是根据官网操作：
-</code></pre><p>  <img src="https://s1.ax2x.com/2018/01/15/MBIxe.jpg" alt="https://s1.ax2x.com/2018/01/15/MBIxe.jpg"></p>
-<pre><code>-  新建daemon.json：
-</code></pre> <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ vim /etc/docker/daemon.json</div></pre></td></tr></table></figure>
-<pre><code>-  输入以下内容
-</code></pre> <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">       &quot;iptables&quot;: &quot;true&quot;,</div><div class="line">       &quot;icc&quot;: &quot;false&quot;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<pre><code>-  并重启dockerd服务，发现会重启失败，显示：
-</code></pre> <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">unable to configure the Docker daemon with file /etc/docker/daemon.json: json: cannot unmarshal string into Go value of type bool</div></pre></td></tr></table></figure>
-<pre><code>-  这就是刚才提到的很迷的地方，欺负我们不懂go语言系列，参数改为以下内容：
-</code></pre> <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">       &quot;iptables&quot;: true,</div><div class="line">       &quot;icc&quot;: false</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<pre><code>-  保存后再重启docker daemon，再次查看bridge网络，options选项中的com.docker.network.bridge.enable_icc应该为false了，说明配置生效了，此时再按上面步骤启动容器link，可以看到iptables多了两条规则：
-</code></pre> <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Chain DOCKER (1 references)</div><div class="line">target     prot opt source               destination         </div><div class="line">ACCEPT     tcp  --  172.17.0.3           172.17.0.2           tcp dpt:mysql</div><div class="line">ACCEPT     tcp  --  172.17.0.2           172.17.0.3           tcp spt:mysql</div></pre></td></tr></table></figure>
-<pre><code>-      -  操作成功，可以发现两个容器之间互联的是通过forward链的转发规则，具体规则可阅读iptables forward详解。
--  外面替换一下两个容器的位置，也可以看到同样结果：
-</code></pre> <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ docker run --rm --name redis -e 6379 -d redis</div><div class="line">$ docker run --rm --name  mysql --link redis:redis -e MYSQL_ROOT_PASSWORD=123456 -d mysql</div></pre></td></tr></table></figure>
-<pre><code>-  端口变成了redis的6379：
-</code></pre> <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Chain DOCKER (1 references)</div><div class="line">target     prot opt source               destination         </div><div class="line">ACCEPT     tcp  --  172.17.0.3           172.17.0.2           tcp dpt:6379</div><div class="line">ACCEPT     tcp  --  172.17.0.2           172.17.0.3           tcp spt:6379</div></pre></td></tr></table></figure>
+<p>同时去掉注释，并重启docker服务：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ service docker restart</div></pre></td></tr></table></figure>
+<p>再次查看当前iptables配置，可以看到docker和docker-isolation都被加入到了chain-forward项中：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">Chain FORWARD (policy DROP)</div><div class="line">target     prot opt source               destination </div><div class="line">DOCKER-ISOLATION  all  --  0.0.0.0/0            0.0.0.0/0 </div><div class="line">ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0            ctstate RELATED,ESTABLISHED</div><div class="line">DOCKER     all  --  0.0.0.0/0            0.0.0.0/0 </div><div class="line">ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0 </div><div class="line">DROP       all  --  0.0.0.0/0            0.0.0.0/0 </div><div class="line">Chain DOCKER (1 references)</div><div class="line">target     prot opt source               destination         </div><div class="line">ACCEPT     tcp  --  172.17.0.3           172.17.0.2           tcp dpt:3306</div><div class="line">ACCEPT     tcp  --  172.17.0.2           172.17.0.3           tcp spt:3306</div><div class="line">Chain DOCKER-ISOLATION (1 references)</div><div class="line">target     prot opt source               destination </div><div class="line">RETURN     all  --  0.0.0.0/0            0.0.0.0/0</div></pre></td></tr></table></figure>
+<p>此处用本机现有的mysql和redis做实验，redis依赖mysql（mysql密码请自行根据自己的配置修改）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ docker run --rm --name  mysql -e 3306 -e MYSQL_ROOT_PASSWORD=123456 -d mysql</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ docker run --rm --name redis --link mysql:mysql -d redis</div></pre></td></tr></table></figure>
+<p>操作完docker ps可以看到两个容器正常运行，但并没有看到iptables有新添加规则。</p>
 <ol>
-<li>结束<ul>
-<li>验证过程中很多地方没想清楚胡乱操作一通，把原本简单的问题都搞复杂了，动手前深思熟虑还是很重要的啊（俗话说得好，真正写代码的时间能有20%不错了）。</li>
+<li>docker network<br>之前的项目没有涉及到多网络配置，因此对network一无所知，加上无脑瞎找资料没思考清楚，误以为是两个容器不在一个网络内，于是查看默认bridge网络配置：</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ docker network inspect bridge</div></pre></td></tr></table></figure>
+<p>部分相关配置如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">       &quot;Name&quot;: &quot;bridge&quot;,</div><div class="line">       &quot;Id&quot;: &quot;d14d164b2dbc43b33eb298d79e5928fda258129a02f6c2a7c310633a718d356c&quot;,</div><div class="line">       &quot;Created&quot;: &quot;2018-01-15T03:53:42.133885625+08:00&quot;,</div><div class="line">       &quot;Scope&quot;: &quot;local&quot;,</div><div class="line">       &quot;Driver&quot;: &quot;bridge&quot;,</div><div class="line">       &quot;EnableIPv6&quot;: false,</div><div class="line">       &quot;IPAM&quot;: &#123;</div><div class="line">           &quot;Driver&quot;: &quot;default&quot;,</div><div class="line">           &quot;Options&quot;: null,</div><div class="line">           &quot;Config&quot;: [</div><div class="line">               &#123;</div><div class="line">                   &quot;Subnet&quot;: &quot;172.17.0.0/16&quot;,</div><div class="line">                   &quot;Gateway&quot;: &quot;172.17.0.1&quot;</div><div class="line">               &#125;</div><div class="line">           ]</div><div class="line">       &#125;,</div><div class="line">       &quot;Internal&quot;: false,</div><div class="line">       &quot;Attachable&quot;: false,</div><div class="line">       &quot;Ingress&quot;: false,</div><div class="line">       &quot;Containers&quot;: &#123;</div><div class="line">           &quot;5b81e33ddd5e7e79e6c315bd3889812362d19732e0ce9a0486edc98a26c59e77&quot;: &#123;</div><div class="line">               &quot;Name&quot;: &quot;redis&quot;,</div><div class="line">               &quot;EndpointID&quot;: &quot;df2e9dda0de35c4934a50d33bd23cb9d27301cac3882880ba58acf82713956f4&quot;,</div><div class="line">               &quot;MacAddress&quot;: &quot;02:42:ac:11:00:03&quot;,</div><div class="line">               &quot;IPv4Address&quot;: &quot;172.17.0.3/16&quot;,</div><div class="line">               &quot;IPv6Address&quot;: &quot;&quot;</div><div class="line">           &#125;,</div><div class="line">           &quot;fada6a036ecba16bc1c08ec5b8fced59b51144a949d7c1051b78e88d7a4bb35f&quot;: &#123;</div><div class="line">               &quot;Name&quot;: &quot;mysql&quot;,</div><div class="line">               &quot;EndpointID&quot;: &quot;38a5036088b19daa08e212d947b44f3a94e823d9a2cd060d0fbfc19680591abf&quot;,</div><div class="line">               &quot;MacAddress&quot;: &quot;02:42:ac:11:00:02&quot;,</div><div class="line">               &quot;IPv4Address&quot;: &quot;172.17.0.2/16&quot;,</div><div class="line">               &quot;IPv6Address&quot;: &quot;&quot;</div><div class="line">           &#125;</div><div class="line">       &#125;,</div><div class="line">       &quot;Options&quot;: &#123;</div><div class="line">           &quot;com.docker.network.bridge.default_bridge&quot;: &quot;true&quot;,</div><div class="line">           &quot;com.docker.network.bridge.enable_icc&quot;: &quot;true&quot;,</div><div class="line">           &quot;com.docker.network.bridge.enable_ip_masquerade&quot;: &quot;true&quot;,</div><div class="line">           &quot;com.docker.network.bridge.host_binding_ipv4&quot;: &quot;0.0.0.0&quot;,</div><div class="line">           &quot;com.docker.network.bridge.name&quot;: &quot;docker0&quot;,</div><div class="line">           &quot;com.docker.network.driver.mtu&quot;: &quot;1500&quot;</div><div class="line">       &#125;,</div><div class="line">       &quot;Labels&quot;: &#123;&#125;</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<p>发现两个容器都在默认网络里。顺便这里有个很迷的地方就是Options里的true和false都是字符串类型，但外面的却不是，后面会提到。观察配置发现icc选项还是true，说明刚才修改的/etc/default/docker文件很可能没起作用。此处有两个选择：</p>
+<pre><code>- 新建一个bridge网络，icc设为false
+- 继续设法修改docker daemon启动选项
+</code></pre><p>其实并没有选择，因为就参数来看只能设置icc，而iptables使用与否必须是docker daemon启动时设置好的。直接百度到的资料杂乱无章，对错参半，于是还是根据官网操作：<br>  <img src="https://s1.ax2x.com/2018/01/15/MBIxe.jpg" alt="https://s1.ax2x.com/2018/01/15/MBIxe.jpg"></p>
+<ul>
+<li>新建daemon.json：</li>
 </ul>
-</li>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ vim /etc/docker/daemon.json</div></pre></td></tr></table></figure>
+<p>输入以下内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">       &quot;iptables&quot;: &quot;true&quot;,</div><div class="line">       &quot;icc&quot;: &quot;false&quot;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>并重启dockerd服务，发现会重启失败，显示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">unable to configure the Docker daemon with file /etc/docker/daemon.json: json: cannot unmarshal string into Go value of type bool</div></pre></td></tr></table></figure>
+<p>这就是刚才提到的很迷的地方，欺负我们不懂go语言系列，参数改为以下内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">       &quot;iptables&quot;: true,</div><div class="line">       &quot;icc&quot;: false</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>保存后再重启docker daemon，再次查看bridge网络，options选项中的com.docker.network.bridge.enable_icc应该为false了，说明配置生效了，此时再按上面步骤启动容器link，可以看到iptables多了两条规则：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Chain DOCKER (1 references)</div><div class="line">target     prot opt source               destination         </div><div class="line">ACCEPT     tcp  --  172.17.0.3           172.17.0.2           tcp dpt:mysql</div><div class="line">ACCEPT     tcp  --  172.17.0.2           172.17.0.3           tcp spt:mysql</div></pre></td></tr></table></figure>
+<p>操作成功，可以发现两个容器之间互联的是通过forward链的转发规则，具体规则可阅读iptables forward详解。<br>外面替换一下两个容器的位置，也可以看到同样结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ docker run --rm --name redis -e 6379 -d redis</div><div class="line">$ docker run --rm --name  mysql --link redis:redis -e MYSQL_ROOT_PASSWORD=123456 -d mysql</div></pre></td></tr></table></figure>
+<p>端口变成了redis的6379：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Chain DOCKER (1 references)</div><div class="line">target     prot opt source               destination         </div><div class="line">ACCEPT     tcp  --  172.17.0.3           172.17.0.2           tcp dpt:6379</div><div class="line">ACCEPT     tcp  --  172.17.0.2           172.17.0.3           tcp spt:6379</div></pre></td></tr></table></figure>
+<ol>
+<li>结束<br>验证过程中很多地方没想清楚胡乱操作一通，把原本简单的问题都搞复杂了，动手前深思熟虑还是很重要的啊（俗话说得好，真正写代码的时间能有20%不错了）。</li>
 </ol>
 <hr>
 <h3 id="二、后来"><a href="#二、后来" class="headerlink" title="二、后来"></a>二、后来</h3><h4 id="1-仔细想想"><a href="#1-仔细想想" class="headerlink" title="1.仔细想想"></a>1.仔细想想</h4><ul>
@@ -493,7 +470,7 @@
                         </div>
                         
                         <div class="item-inner">
-                            <p class="item-category"></p>
+                            <p class="item-category"><a class="article-category-link" href="/categories/coding/">coding</a></p>
                             <p class="item-title"><a href="/2018/01/15/Docker添加iptables防火墙规则构建容器间通信/" class="title">Docker添加iptables防火墙规则构建容器间通信</a></p>
                             <p class="item-date"><time datetime="2018-01-14T21:43:04.000Z" itemprop="datePublished">2018-01-15</time></p>
                         </div>
@@ -584,7 +561,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">categories</h3>
         <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/test/">test</a><span class="category-list-count">2</span></li></ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/coding/">coding</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/test/">test</a><span class="category-list-count">2</span></li></ul>
         </div>
     </div>
 
