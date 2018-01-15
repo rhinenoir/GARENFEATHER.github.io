@@ -260,12 +260,7 @@
 <li>链接的别名和对应目标容器的ip地址会被添加到DNS覆盖列表中</li>
 <li>如果跨容器通信被禁止，Docker会添加特定的防火墙规则来允许被链接的容器间的通信。</li>
 </ul>
-<p>重点在于第三点，这里Docker添加的防火墙规则是允许两个容器通信到什么地步呢，大概有以下三种猜想：</p>
-<ol>
-<li>两个容器间任意端口自由通信，应该不太可能，达到这种地步接近Joined容器共用同一个网络栈的级别了</li>
-<li>容器任意端口都能连上目标容器EXPOSE的端口</li>
-<li>容器只有指定的的进程（如pid唯一）、指定的端口号能够连上目标容器EXPOSE的端口，至于这个指定的进程和端口号猜测是在构建的时候指定好并添加到配置中去的？</li>
-</ol></p>
+<p>重点在于第三点，这里Docker添加的防火墙规则是允许两个容器通信到什么地步呢，大概有以下三种猜想：</p></p>
             <p class="article-more-link">
                 <a href="/2018/01/15/Docker添加iptables防火墙规则构建容器间通信/#more">Read More</a>
             </p>
@@ -278,7 +273,7 @@
 
 </div>
 
-    <a data-url="http://blog.garenfeather.cn/2018/01/15/Docker添加iptables防火墙规则构建容器间通信/" data-id="cjcfgr8ex0000d01ym6i7w9lr" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="http://blog.garenfeather.cn/2018/01/15/Docker添加iptables防火墙规则构建容器间通信/" data-id="cjcfgycdg0000kn1yowurmazm" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -408,7 +403,7 @@
 
 </div>
 
-    <a data-url="http://blog.garenfeather.cn/2017/06/16/hello-world/" data-id="cjcfgr8f80002d01yk8t7397a" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="http://blog.garenfeather.cn/2017/06/16/hello-world/" data-id="cjcfgycdt0002kn1y51245c7l" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
