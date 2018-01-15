@@ -13,7 +13,7 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="一、坑从何来最近正好看到解析Docker单主机网络的部分，提到通过link链接容器，于是深入思考了下link的机制，首先如果为容器添加一条链接会发生以下几件事：  描述目标容器的环境变量会被创建 链接的别名和对应目标容器的ip地址会被添加到DNS覆盖列表中 如果跨容器通信被禁止，Docker会添加特定的防火墙规则来允许被链接的容器间的通信。  重点在于第三点，这里Docker添加的防火墙规则是允许">
 <meta property="og:image" content="https://s1.ax2x.com/2018/01/15/MBIxe.jpg">
-<meta property="og:updated_time" content="2018-01-14T22:48:02.261Z">
+<meta property="og:updated_time" content="2018-01-15T00:20:20.825Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Docker添加iptables防火墙规则构建容器间通信">
 <meta name="twitter:description" content="一、坑从何来最近正好看到解析Docker单主机网络的部分，提到通过link链接容器，于是深入思考了下link的机制，首先如果为容器添加一条链接会发生以下几件事：  描述目标容器的环境变量会被创建 链接的别名和对应目标容器的ip地址会被添加到DNS覆盖列表中 如果跨容器通信被禁止，Docker会添加特定的防火墙规则来允许被链接的容器间的通信。  重点在于第三点，这里Docker添加的防火墙规则是允许">
@@ -273,6 +273,7 @@
 <li>容器任意端口都能连上目标容器EXPOSE的端口</li>
 <li>容器只有指定的的进程（如pid唯一）、指定的端口号能够连上目标容器EXPOSE的端口，至于这个指定的进程和端口号猜测是在构建的时候指定好并添加到配置中去的？</li>
 </ol>
+<a id="more"></a>
 <p>最初的猜想是3，因为如果是2的话，容器被非法入侵岂不是可以新开个进程随意连上数据库往外倒数据？（<em>后来仔细想想，容器都被入侵了，跟权限被提到root了有啥区别……当然是为所欲为啊，不过当时没想清楚就是了</em>）这明显不安全。</p>
 <p>这里验证最直观可靠的方式还是看iptables的路由规则，开始实验。</p>
 <h2 id="二、在踩坑的边缘试探"><a href="#二、在踩坑的边缘试探" class="headerlink" title="二、在踩坑的边缘试探"></a>二、在踩坑的边缘试探</h2><h4 id="1-实验环境"><a href="#1-实验环境" class="headerlink" title="1.实验环境"></a>1.实验环境</h4><ul>
@@ -344,7 +345,7 @@
 
 </div>
 
-    <a data-url="http://blog.garenfeather.cn/2018/01/15/Docker添加iptables防火墙规则构建容器间通信/" data-id="cjcfgm6ma00006g1ymun2elb6" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="http://blog.garenfeather.cn/2018/01/15/Docker添加iptables防火墙规则构建容器间通信/" data-id="cjcfgr8ex0000d01ym6i7w9lr" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
