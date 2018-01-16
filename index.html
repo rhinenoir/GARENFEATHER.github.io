@@ -153,7 +153,7 @@
         </div>
         <div class="article-info profile-block">
             <div class="article-info-block">
-                3
+                2
                 <span>posts</span>
             </div>
             <div class="article-info-block">
@@ -273,7 +273,7 @@
 
 </div>
 
-    <a data-url="http://blog.garenfeather.cn/2018/01/15/Docker添加iptables防火墙规则构建容器间通信/" data-id="cjchgvyhk0000ob1ye2jsr78f" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="http://blog.garenfeather.cn/2018/01/15/Docker添加iptables防火墙规则构建容器间通信/" data-id="cjchh1wm80000vo1yi8pa9qip" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -393,8 +393,7 @@
         
         <div class="article-entry" itemprop="articleBody">
         
-            
-            <p>那会用各种语言都写过正则匹配，随便乱比较了一下，比较语言包括python、C#和java，没什么逻辑，想到啥看到啥就写的啥，仅供参考</p>
+            <p><p>那会用各种语言都写过正则匹配，随便乱比较了一下，比较语言包括python、C#和java，没什么逻辑，想到啥看到啥就写的啥，仅供参考</p>
 <h2 id="一、版本"><a href="#一、版本" class="headerlink" title="一、版本"></a>一、版本</h2><ul>
 <li>java8</li>
 <li>C# 版本差异不大吧，不记得了</li>
@@ -403,24 +402,10 @@
 <h2 id="二、比较"><a href="#二、比较" class="headerlink" title="二、比较"></a>二、比较</h2><h3 id="对应函数"><a href="#对应函数" class="headerlink" title="对应函数"></a>对应函数</h3><ul>
 <li>python 的re模块中，search和match对应其他两种语言的match函数，确切的来说是search函数对应</li>
 <li>python的match函数必须从字符串的第0位开始匹配一次，不存在则返回none（不明白这个函数究竟有什么用，正则表达式有自己的^符号来表示从头开始的匹配啊……）</li>
-<li>findall函数则对应所谓matches的功能，java中并没有什么matches，只能通过Matcher对象的match()方法不断搜索下去达到相对的效果，C#的matches函数会返回一个MatchCollection匹配结果集合对象（java这个正则支持差评）</li>
-<li>C#的Match对象通过match方法匹配、success属性返回成功与否的结果，匹配位置不会自行移动，要手动设定下一次匹配的offset（辅助参数有index和length来确定匹配位置），java的Matcher对象所用的find方法进行了匹配的同时返回匹配成功与否的结果（一顶C#俩），有start和end方法返回匹配位置，并且会自行随着匹配而移动下一次匹配开始的位置</li>
-</ul>
-<h3 id="操作方式（包括compile、match、find等）"><a href="#操作方式（包括compile、match、find等）" class="headerlink" title="操作方式（包括compile、match、find等）"></a>操作方式（包括compile、match、find等）</h3><ul>
-<li>python中用到的几种都是函数（type()结果为function），java有Pattern对象而C#有Regex对象，java有Matcher对象而C#有Match对象，java一般是用Pattern类的静态方法编译获得该对象，C#则通过以字符串为参数传统新建对象方式获得（new Pattern(str)）。两者的match（Matcher）对象都通过Pattern对象获得，而python则是将Pattern对象作为参数一起放入search（或者findall、match等等）方法中</li>
-</ul>
-<h3 id="功能完善"><a href="#功能完善" class="headerlink" title="功能完善"></a>功能完善</h3><ul>
-<li>python对正则替换支持的最好，sub函数允许自行构建一个函数来对正则匹配的结果进行复杂的操作（这种操作方式的占了python本身“函数也可以是对象”的构建方式的优势），其他两种目测只能强行命名分组替换，需要更多的自行检测匹配结果</li>
-</ul>
-<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><ul>
-<li>默认情况下python、java和C#的.符号都不支持匹配\n换行符，java和C#还不支持\r，C#似乎在一堆字符串里匹配到\r会出现迷之bug……（应该不是bug，还得多看doc）</li>
-<li>java里面\r和\n都视为line terminator，遇到会终止匹配，而C#和python不视\r为line terminator，但是C#输出时作为回到行首符覆盖输出，通过输出我们看到的结果会不一样，而实际上其匹配结果跟python是一样的</li>
-</ul>
-<h2 id="后言"><a href="#后言" class="headerlink" title="后言"></a>后言</h2><ul>
-<li>……写的乱七八糟，将来怕是自己都看不懂</li>
-<li>没准为了看得懂回头复习会有新的收获呢</li>
-</ul>
-
+</ul></p>
+            <p class="article-more-link">
+                <a href="/2015/01/16/简单随意的几种编程语言正则支持比较/#more">Read More</a>
+            </p>
         
         </div>
         <footer class="article-footer">
@@ -430,7 +415,7 @@
 
 </div>
 
-    <a data-url="http://blog.garenfeather.cn/2015/01/16/简单随意的几种编程语言正则支持比较/" data-id="cjchgvyi90006ob1yvlxqc7fz" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="http://blog.garenfeather.cn/2015/01/16/简单随意的几种编程语言正则支持比较/" data-id="cjchh1wmj0002vo1y61l641ye" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -507,136 +492,6 @@
 </article>
 
 
-
-    <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2015/01/15/hello-world/">Hello World</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2015/01/15/hello-world/">
-            <time datetime="2015-01-15T06:22:27.000Z" itemprop="datePublished">2015-01-15</time>
-        </a>
-    </div>
-
-
-                        
-                        
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
-
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="http://blog.garenfeather.cn/2015/01/15/hello-world/" data-id="cjchgvyhx0002ob1yzaqe10ae" class="article-share-link"><i class="fa fa-share"></i>Share</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="http://blog.garenfeather.cn/2015/01/15/hello-world/#comments" class="article-comment-link">Comments</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
 </section>
             
                 
@@ -686,25 +541,6 @@
                         </div>
                     </li>
                 
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/2015/01/15/hello-world/" class="thumbnail">
-    
-    
-        <span class="thumbnail-image thumbnail-none"></span>
-    
-</a>
-
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"></p>
-                            <p class="item-title"><a href="/2015/01/15/hello-world/" class="title">Hello World</a></p>
-                            <p class="item-date"><time datetime="2015-01-15T06:22:27.000Z" itemprop="datePublished">2015-01-15</time></p>
-                        </div>
-                    </li>
-                
             </ul>
         </div>
     </div>
@@ -723,7 +559,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">archives</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">January 2015</a><span class="archive-list-count">2</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">January 2015</a><span class="archive-list-count">1</span></li></ul>
         </div>
     </div>
 
