@@ -5,17 +5,17 @@
     
     <title>简单随意的几种编程语言正则支持比较 | ダイスキでダイキライ</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="那会用各种语言都写过正则匹配，随便乱比较了一下，比较语言包括python、C#和java，没什么逻辑，想到啥看到啥就写的啥，仅供参考 一、版本 java8 C# 版本差异不大吧，不记得了 python 2.7  二、比较对应函数 python 的re模块中，search和match对应其他两种语言的match函数，确切的来说是search函数对应 python的match函数必须从字符串的第0位开">
+    <meta name="description" content="那会用各种语言都写过正则匹配，随便乱比较了一下，比较语言包括python、C#和java，没什么逻辑，想到啥看到啥就写的啥，仅供参考 一、版本 java8 C# 版本差异不大吧，不记得了 python 2.7   二、比较对应函数 python 的re模块中，search和match对应其他两种语言的match函数，确切的来说是search函数对应 python的match函数必须从字符串的第0位">
 <meta name="keywords" content="python,c#,java">
 <meta property="og:type" content="article">
 <meta property="og:title" content="简单随意的几种编程语言正则支持比较">
 <meta property="og:url" content="http://blog.garenfeather.cn/2015/01/16/简单随意的几种编程语言正则支持比较/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="那会用各种语言都写过正则匹配，随便乱比较了一下，比较语言包括python、C#和java，没什么逻辑，想到啥看到啥就写的啥，仅供参考 一、版本 java8 C# 版本差异不大吧，不记得了 python 2.7  二、比较对应函数 python 的re模块中，search和match对应其他两种语言的match函数，确切的来说是search函数对应 python的match函数必须从字符串的第0位开">
-<meta property="og:updated_time" content="2018-01-16T10:04:26.859Z">
+<meta property="og:description" content="那会用各种语言都写过正则匹配，随便乱比较了一下，比较语言包括python、C#和java，没什么逻辑，想到啥看到啥就写的啥，仅供参考 一、版本 java8 C# 版本差异不大吧，不记得了 python 2.7   二、比较对应函数 python 的re模块中，search和match对应其他两种语言的match函数，确切的来说是search函数对应 python的match函数必须从字符串的第0位">
+<meta property="og:updated_time" content="2018-01-16T14:32:22.648Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="简单随意的几种编程语言正则支持比较">
-<meta name="twitter:description" content="那会用各种语言都写过正则匹配，随便乱比较了一下，比较语言包括python、C#和java，没什么逻辑，想到啥看到啥就写的啥，仅供参考 一、版本 java8 C# 版本差异不大吧，不记得了 python 2.7  二、比较对应函数 python 的re模块中，search和match对应其他两种语言的match函数，确切的来说是search函数对应 python的match函数必须从字符串的第0位开">
+<meta name="twitter:description" content="那会用各种语言都写过正则匹配，随便乱比较了一下，比较语言包括python、C#和java，没什么逻辑，想到啥看到啥就写的啥，仅供参考 一、版本 java8 C# 版本差异不大吧，不记得了 python 2.7   二、比较对应函数 python 的re模块中，search和match对应其他两种语言的match函数，确切的来说是search函数对应 python的match函数必须从字符串的第0位">
     
 
     
@@ -265,6 +265,7 @@
 <li>C# 版本差异不大吧，不记得了</li>
 <li>python 2.7</li>
 </ul>
+<hr>
 <h2 id="二、比较"><a href="#二、比较" class="headerlink" title="二、比较"></a>二、比较</h2><h3 id="对应函数"><a href="#对应函数" class="headerlink" title="对应函数"></a>对应函数</h3><ul>
 <li>python 的re模块中，search和match对应其他两种语言的match函数，确切的来说是search函数对应</li>
 <li>python的match函数必须从字符串的第0位开始匹配一次，不存在则返回none（不明白这个函数究竟有什么用，正则表达式有自己的^符号来表示从头开始的匹配啊……）</li>
@@ -284,7 +285,8 @@
 <li>默认情况下python、java和C#的.符号都不支持匹配\n换行符，java和C#还不支持\r，C#似乎在一堆字符串里匹配到\r会出现迷之bug……（应该不是bug，还得多看doc）</li>
 <li>java里面\r和\n都视为line terminator，遇到会终止匹配，而C#和python不视\r为line terminator，但是C#输出时作为回到行首符覆盖输出，通过输出我们看到的结果会不一样，而实际上其匹配结果跟python是一样的</li>
 </ul>
-<h2 id="后言"><a href="#后言" class="headerlink" title="后言"></a>后言</h2><ul>
+<hr>
+<h2 id="三、后言"><a href="#三、后言" class="headerlink" title="三、后言"></a>三、后言</h2><ul>
 <li>……写的乱七八糟，将来怕是自己都看不懂</li>
 <li>没准为了看得懂回头复习会有新的收获呢</li>
 </ul>
@@ -298,7 +300,7 @@
 
 </div>
 
-    <a data-url="http://blog.garenfeather.cn/2015/01/16/简单随意的几种编程语言正则支持比较/" data-id="cjchh1wmj0002vo1y61l641ye" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="http://blog.garenfeather.cn/2015/01/16/简单随意的几种编程语言正则支持比较/" data-id="cjchqmgga0002tl1yhxu8330o" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
