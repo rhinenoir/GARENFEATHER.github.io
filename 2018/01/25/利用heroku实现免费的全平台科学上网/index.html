@@ -13,7 +13,7 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="一、前言思路来源准备 一台连得上Google的服务器（测试用，可选） 这里用的是腾讯云买的CentOS 7.2，新加坡节点   一个heroku账号 heroku平台注册需要翻墙，但登录和部署均不需要 账号还有免费app余额   一台便宜且容易搞到手的国内服务器（可选） 仅作为中转服务器，不需要多平台共用可以不备   需要梯子服务的平台对应的客户端（Android、Win、Mac、Linux）">
 <meta property="og:image" content="http://i2.bvimg.com/500967/03c3876ae44ed6ces.png">
-<meta property="og:updated_time" content="2018-01-25T14:28:08.109Z">
+<meta property="og:updated_time" content="2018-01-25T14:32:17.780Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="利用heroku实现免费的全平台科学上网">
 <meta name="twitter:description" content="一、前言思路来源准备 一台连得上Google的服务器（测试用，可选） 这里用的是腾讯云买的CentOS 7.2，新加坡节点   一个heroku账号 heroku平台注册需要翻墙，但登录和部署均不需要 账号还有免费app余额   一台便宜且容易搞到手的国内服务器（可选） 仅作为中转服务器，不需要多平台共用可以不备   需要梯子服务的平台对应的客户端（Android、Win、Mac、Linux）">
@@ -279,28 +279,24 @@
 </ul>
 <hr>
 <h2 id="二、搭建梯子"><a href="#二、搭建梯子" class="headerlink" title="二、搭建梯子"></a>二、搭建梯子</h2><h3 id="国外服务器手动部署测试"><a href="#国外服务器手动部署测试" class="headerlink" title="国外服务器手动部署测试"></a>国外服务器手动部署测试</h3><ul>
-<li><p>首先测试下git上的项目能否正常部署运行服务器程序，这里用的是<a href="https://github.com/shadowsocksr-backup/shadowsocks-rss" target="_blank" rel="external">shadowsocksr</a>，首先登陆服务器</p>
+<li><p>首先测试下git上的项目能否正常部署运行服务器程序，这里用的是<a href="https://github.com/shadowsocksr-backup/shadowsocks-rss" target="_blank" rel="external">shadowsocksr</a>，首先登陆能ping通Google的国外服务器</p>
   <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git clone -b manyuser https://github.com/shadowsocksr-backup/shadowsocksr.git</div></pre></td></tr></table></figure>
 <p>  进入到目录，并初始化配置</p>
   <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cd shadowsocksr/</div><div class="line">./initcfg.sh</div></pre></td></tr></table></figure>
 <p>  根据wiki说明如果是多用户的话接下来修改config.json，单用户的话修改user-config.json，我们这里是单用户，修改user-config.json，其他参数默认，只修改密码。同时这里要记住下面几个参数，与后面客户端<strong>保持一致</strong>，参数的具体含义见<a href="https://github.com/shadowsocksr-backup/shadowsocks-rss/wiki/config.json" target="_blank" rel="external">wiki</a></p>
   <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    &quot;server_port&quot;: 8388,</div><div class="line">    &quot;password&quot;: &quot;12333333&quot;,//你修改的密码</div><div class="line">    &quot;method&quot;: &quot;aes-128-ctr&quot;,</div><div class="line">    &quot;protocol&quot;: &quot;auth_aes128_md5&quot;,</div><div class="line">    &quot;protocol_param&quot;: &quot;&quot;,</div><div class="line">    &quot;obfs&quot;: &quot;tls1.2_ticket_auth_compatible&quot;,</div><div class="line">    &quot;obfs_param&quot;: &quot;&quot;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>  修改完毕保存后进入子目录，启动后台进程</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cd shadowsocks/</div><div class="line">python server.py -d start</div></pre></td></tr></table></figure>
+<p>  查看日志</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">tail -f /var/log/shadowsocksr.log</div></pre></td></tr></table></figure>
+<p>  正常输出说明启动成功↓</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">2018-01-24 16:46:42 INFO     server.py:46 current process RLIMIT_NOFILE resource: soft 100001 hard 100002</div><div class="line">2018-01-24 16:46:42 INFO     asyncdns.py:324 dns server: [(&apos;100.78.90.8&apos;, 53), (&apos;100.78.90.19&apos;, 53)]</div><div class="line">2018-01-24 16:46:42 INFO     server.py:106 server start with protocol[auth_aes128_md5] password [12333333] method [aes-128-ctr] obfs [tls1.2_ticket_auth_compatible] obfs_param []</div><div class="line">2018-01-24 16:46:42 INFO     server.py:122 starting server at [::]:8388</div><div class="line">2018-01-24 16:46:42 INFO     server.py:142 starting server at 0.0.0.0:8388</div></pre></td></tr></table></figure>
+<p>  查看日志</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">tail -f /var/log/shadowsocksr.log</div></pre></td></tr></table></figure>
+<p>  保持日志窗口观察连接情况</p>
 </li>
 </ul>
-<pre><code>修改完毕保存后进入子目录，启动后台进程
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cd shadowsocks/</div><div class="line">python server.py -d start</div></pre></td></tr></table></figure>
-
-
-查看日志
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">tail -f /var/log/shadowsocksr.log</div></pre></td></tr></table></figure>
-
-
-正常输出说明启动成功↓
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">2018-01-24 16:46:42 INFO     server.py:46 current process RLIMIT_NOFILE resource: soft 100001 hard 100002</div><div class="line">2018-01-24 16:46:42 INFO     asyncdns.py:324 dns server: [(&apos;100.78.90.8&apos;, 53), (&apos;100.78.90.19&apos;, 53)]</div><div class="line">2018-01-24 16:46:42 INFO     server.py:106 server start with protocol[auth_aes128_md5] password [12333333] method [aes-128-ctr] obfs [tls1.2_ticket_auth_compatible] obfs_param []</div><div class="line">2018-01-24 16:46:42 INFO     server.py:122 starting server at [::]:8388</div><div class="line">2018-01-24 16:46:42 INFO     server.py:142 starting server at 0.0.0.0:8388</div></pre></td></tr></table></figure>
-
-
-保持日志窗口观察连接情况
-</code></pre><ul>
+<ul>
 <li><p>接下来使用客户端，注意要使用shadowsocksR的客户端，原生的shadowsocks客户端不支持协议混淆，无法直接使用shadowsocksR服务端，几个平台的下载也顺便给出来一下，Assets下有最新版稳定版等</p>
 <ul>
 <li><a href="https://github.com/shadowsocksr-backup/shadowsocksr-csharp/releases" target="_blank" rel="external">Windows</a></li>
@@ -407,7 +403,7 @@ $ nohup ./glider -config config/glider.conf &amp;
 
 </div>
 
-    <a data-url="http://blog.garenfeather.cn/2018/01/25/利用heroku实现免费的全平台科学上网/" data-id="cjculfnm70006ak1yxrk194bu" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="http://blog.garenfeather.cn/2018/01/25/利用heroku实现免费的全平台科学上网/" data-id="cjcull2x70004jd1yj5s5rqir" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
