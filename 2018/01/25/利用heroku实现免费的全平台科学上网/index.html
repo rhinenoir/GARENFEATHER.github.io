@@ -334,50 +334,34 @@
 </ul>
 <ul>
 <li><p>按照原本作者说明的操作整体架构如下，A为本机：</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">A 其他client/代理-&gt;A ssHerokuRe: connect local 1080</div><div class="line">A ssHerokuRe-&gt;B heroku: connect remote 80</div><div class="line">Note over B heroku: websocket</div><div class="line">Note over A ssHerokuRe: socks5://:1080</div><div class="line">B heroku-&gt;A ssHerokuRe: return data</div><div class="line">A ssHerokuRe-&gt;A 其他client/代理: return data</div></pre></td></tr></table></figure>
+  <div id="sequence-0"></div>
+
+<p>  我们修改以适应ShadowsocksR客户端的架构如下，A为本机，B为中间服务器：</p>
+<p>  <div id="sequence-1"></div><br>  $ npm install</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">没有npm与node请自行安装，操作完后修改config.json:</div></pre></td></tr></table></figure>
+<p>  {</p>
+<pre><code>&quot;server&quot;: &quot;xxxx.herokuapp.com&quot;,//你的app
+&quot;local_address&quot;: &quot;127.0.0.1&quot;,
+&quot;scheme&quot;: &quot;ws&quot;,
+&quot;local_port&quot;: 1080,
+&quot;remote_port&quot;: 80,
+&quot;password&quot;: &quot;pwd&quot;,//你的密码
+&quot;timeout&quot;: 600,
+&quot;method&quot;: &quot;aes-256-cfb&quot;
+</code></pre><p>  } </p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">修改完保存后，运行命令，以后台进程形式运行：</div></pre></td></tr></table></figure>
+<p>  $ nohup node local.js -c config.json &amp;</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">退出目录，下载glider的Linux版，解压后进入主目录下的config目录，参照example：</div></pre></td></tr></table></figure>
+<p>  $ vim glider.conf</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"> </div></pre></td></tr></table></figure>
+<p>  listen=:8443<br>  listen=ss://AES-128-CFB:password@:8449<br>  forward=socks5://127.0.0.1:1080</p>
+<p>  verbose=True<br>  strategy=rr<br>  checkwebsite=www.microsoft.com<br>  checkduration=30</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">8443为http/socks5代理端口，8449为ss混淆代理端口，也就是我们等会客户端需要使用的远程端口。保存后退出config目录，运行命令启动后台进程：</div></pre></td></tr></table></figure>
+<p>  $ nohup ./glider -config config/glider.conf &amp;<br>  ```</p>
+<p>  启动后可分别查看两个目录的nohup.out查看日志，此时为客户端新添加一个服务器，参数规则照之前一一对应，，<strong>协议改为origin，混淆改为plain</strong>，保存后使用该服务器代理应该可以正常访问了，日志流水上也可看得到</p>
 </li>
-</ul>
-<pre><code>我们修改以适应ShadowsocksR客户端的架构如下，A为本机，B为中间服务器：
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">    A client-&gt;B glider: connect remote 8449</div><div class="line">    Note over B glider: ss://:8449</div><div class="line">    B ssHerokuRe-&gt;C heroku: connect remote 80</div><div class="line">    Note over C heroku: websocket</div><div class="line">    Note over B glider,B ssHerokuRe: forward 1080 to 8449</div><div class="line">    Note over B ssHerokuRe: socks5://:1080</div><div class="line">    C heroku-&gt;B ssHerokuRe: return data</div><div class="line">    B glider-&gt;A client: ssr protocol</div><div class="line">    ``` </div><div class="line">    </div><div class="line">    架构稍微复杂了点，但实际操作起来难度并不大</div><div class="line"></div><div class="line">- 首先登入我们的中间服务器，没有服务器的同学直接A机器与B机器用一台也可以，那样就只有局域网内的设备能用了。这里B机器是Linux，因此不能直接用ss-heroku的win客户端，我们在之前项目的issue里找到了作者提供的Linux客户端下载[re.zip][9]，下载后解压，进入主目录：</div></pre></td></tr></table></figure>
-
-$ npm install
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">没有npm与node请自行安装，操作完后修改config.json:</div></pre></td></tr></table></figure>
-
-{
-    &quot;server&quot;: &quot;xxxx.herokuapp.com&quot;,//你的app
-    &quot;local_address&quot;: &quot;127.0.0.1&quot;,
-    &quot;scheme&quot;: &quot;ws&quot;,
-    &quot;local_port&quot;: 1080,
-    &quot;remote_port&quot;: 80,
-    &quot;password&quot;: &quot;pwd&quot;,//你的密码
-    &quot;timeout&quot;: 600,
-    &quot;method&quot;: &quot;aes-256-cfb&quot;
-} 
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">修改完保存后，运行命令，以后台进程形式运行：</div></pre></td></tr></table></figure>
-
-$ nohup node local.js -c config.json &amp;
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">退出目录，下载glider的Linux版，解压后进入主目录下的config目录，参照example：</div></pre></td></tr></table></figure>
-
-$ vim glider.conf
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"> </div></pre></td></tr></table></figure>
-
-listen=:8443
-listen=ss://AES-128-CFB:password@:8449
-forward=socks5://127.0.0.1:1080
-
-verbose=True
-strategy=rr
-checkwebsite=www.microsoft.com
-checkduration=30
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">8443为http/socks5代理端口，8449为ss混淆代理端口，也就是我们等会客户端需要使用的远程端口。保存后退出config目录，运行命令启动后台进程：</div></pre></td></tr></table></figure>
-
-$ nohup ./glider -config config/glider.conf &amp;
-```
-
-启动后可分别查看两个目录的nohup.out查看日志，此时为客户端新添加一个服务器，参数规则照之前一一对应，，**协议改为origin，混淆改为plain**，保存后使用该服务器代理应该可以正常访问了，日志流水上也可看得到
-</code></pre><ul>
-<li>因为多走了一轮代理的原因，访问的延时会比较大（自测在1500~6000ms不定），因此不适合游戏等对时延要求比较严格情况，简单的试了下youtube视频基本流畅，720p左右体验还行，最大的优势在于<strong>免费，不限量，基本不计时</strong></li>
+<li><p>因为多走了一轮代理的原因，访问的延时会比较大（自测在1500~6000ms不定），因此不适合游戏等对时延要求比较严格情况，简单的试了下youtube视频基本流畅，720p左右体验还行，最大的优势在于<strong>免费，不限量，基本不计时</strong></p>
+</li>
 </ul>
 <hr>
 <h2 id="三、扩展思路"><a href="#三、扩展思路" class="headerlink" title="三、扩展思路"></a>三、扩展思路</h2><h3 id="相关思考"><a href="#相关思考" class="headerlink" title="相关思考"></a>相关思考</h3><ul>
@@ -396,6 +380,24 @@ $ nohup ./glider -config config/glider.conf &amp;
 <ul>
 <li><a href="https://rookiefly.cn/detail/128" target="_blank" rel="external">使用heroku+shadowsocks-heroku进行科学上网</a></li>
 </ul>
+<p><script src="https://cdnjs.cloudflare.com/ajax/libs/webfont/1.6.27/webfontloader.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/snap.svg/0.4.1/snap.svg-min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/js-sequence-diagrams/1.0.6/sequence-diagram-min.js"></script><textarea id="sequence-0-code" style="display: none">    A 其他client/代理->A ssHerokuRe: connect local 1080
+    A ssHerokuRe->B heroku: connect remote 80
+    Note over B heroku: websocket
+    Note over A ssHerokuRe: socks5://:1080
+    B heroku->A ssHerokuRe: return data
+    A ssHerokuRe->A 其他client/代理: return data</textarea><textarea id="sequence-0-options" style="display: none">{"theme":"simple","scale":1,"line-width":2,"line-length":50,"text-margin":10,"font-size":12}</textarea><script>  var code = document.getElementById("sequence-0-code").value;  var options = JSON.parse(decodeURIComponent(document.getElementById("sequence-0-options").value));  var diagram = Diagram.parse(code);  diagram.drawSVG("sequence-0", options);</script><textarea id="sequence-1-code" style="display: none">    A client->B glider: connect remote 8449
+    Note over B glider: ss://:8449
+    B ssHerokuRe->C heroku: connect remote 80
+    Note over C heroku: websocket
+    Note over B glider,B ssHerokuRe: forward 1080 to 8449
+    Note over B ssHerokuRe: socks5://:1080
+    C heroku->B ssHerokuRe: return data
+    B glider->A client: ssr protocol
+    ``` 
+    
+    架构稍微复杂了点，但实际操作起来难度并不大
+
+- 首先登入我们的中间服务器，没有服务器的同学直接A机器与B机器用一台也可以，那样就只有局域网内的设备能用了。这里B机器是Linux，因此不能直接用ss-heroku的win客户端，我们在之前项目的issue里找到了作者提供的Linux客户端下载[re.zip][9]，下载后解压，进入主目录：</textarea><textarea id="sequence-1-options" style="display: none">{"theme":"simple","scale":1,"line-width":2,"line-length":50,"text-margin":10,"font-size":12}</textarea><script>  var code = document.getElementById("sequence-1-code").value;  var options = JSON.parse(decodeURIComponent(document.getElementById("sequence-1-options").value));  var diagram = Diagram.parse(code);  diagram.drawSVG("sequence-1", options);</script></p>
 
         
         </div>
@@ -406,7 +408,7 @@ $ nohup ./glider -config config/glider.conf &amp;
 
 </div>
 
-    <a data-url="http://blog.garenfeather.cn/2018/01/25/利用heroku实现免费的全平台科学上网/" data-id="cjcultbuf0006vz1yzw5misnk" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="http://blog.garenfeather.cn/2018/01/25/利用heroku实现免费的全平台科学上网/" data-id="cjcum1k3v00069h1y1gxz8ggl" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
