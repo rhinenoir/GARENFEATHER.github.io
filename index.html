@@ -254,8 +254,7 @@
         
         <div class="article-entry" itemprop="articleBody">
         
-            
-            <h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><h3 id="思路来源"><a href="#思路来源" class="headerlink" title="思路来源"></a>思路来源</h3><h3 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h3><ul>
+            <p><h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><h3 id="思路来源"><a href="#思路来源" class="headerlink" title="思路来源"></a>思路来源</h3><h3 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h3><ul>
 <li>一台连得上Google的服务器（测试用，可选）<ul>
 <li>这里用的是腾讯云买的CentOS 7.2，新加坡节点</li>
 </ul>
@@ -270,134 +269,10 @@
 </ul>
 </li>
 <li>需要梯子服务的平台对应的客户端（Android、Win、Mac、Linux）</li>
-</ul>
-<hr>
-<h2 id="二、搭建梯子"><a href="#二、搭建梯子" class="headerlink" title="二、搭建梯子"></a>二、搭建梯子</h2><h3 id="国外服务器手动部署测试"><a href="#国外服务器手动部署测试" class="headerlink" title="国外服务器手动部署测试"></a>国外服务器手动部署测试</h3><ul>
-<li><p>首先测试下git上的项目能否正常部署运行服务器程序，这里用的是<a href="https://github.com/shadowsocksr-backup/shadowsocks-rss" target="_blank" rel="external">shadowsocksr</a>，首先登陆能ping通Google的国外服务器</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git clone -b manyuser https://github.com/shadowsocksr-backup/shadowsocksr.git</div></pre></td></tr></table></figure>
-<p>  进入到目录，并初始化配置</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cd shadowsocksr/</div><div class="line">./initcfg.sh</div></pre></td></tr></table></figure>
-<p>  根据wiki说明如果是多用户的话接下来修改config.json，单用户的话修改user-config.json，我们这里是单用户，修改user-config.json，其他参数默认，只修改密码。同时这里要记住下面几个参数，与后面客户端<strong>保持一致</strong>，参数的具体含义见<a href="https://github.com/shadowsocksr-backup/shadowsocks-rss/wiki/config.json" target="_blank" rel="external">wiki</a></p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    &quot;server_port&quot;: 8388,</div><div class="line">    &quot;password&quot;: &quot;12333333&quot;,//你修改的密码</div><div class="line">    &quot;method&quot;: &quot;aes-128-ctr&quot;,</div><div class="line">    &quot;protocol&quot;: &quot;auth_aes128_md5&quot;,</div><div class="line">    &quot;protocol_param&quot;: &quot;&quot;,</div><div class="line">    &quot;obfs&quot;: &quot;tls1.2_ticket_auth_compatible&quot;,</div><div class="line">    &quot;obfs_param&quot;: &quot;&quot;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>  修改完毕保存后进入子目录，启动后台进程</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cd shadowsocks/</div><div class="line">python server.py -d start</div></pre></td></tr></table></figure>
-<p>  查看日志</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">tail -f /var/log/shadowsocksr.log</div></pre></td></tr></table></figure>
-<p>  正常输出说明启动成功↓</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">2018-01-24 16:46:42 INFO     server.py:46 current process RLIMIT_NOFILE resource: soft 100001 hard 100002</div><div class="line">2018-01-24 16:46:42 INFO     asyncdns.py:324 dns server: [(&apos;100.78.90.8&apos;, 53), (&apos;100.78.90.19&apos;, 53)]</div><div class="line">2018-01-24 16:46:42 INFO     server.py:106 server start with protocol[auth_aes128_md5] password [12333333] method [aes-128-ctr] obfs [tls1.2_ticket_auth_compatible] obfs_param []</div><div class="line">2018-01-24 16:46:42 INFO     server.py:122 starting server at [::]:8388</div><div class="line">2018-01-24 16:46:42 INFO     server.py:142 starting server at 0.0.0.0:8388</div></pre></td></tr></table></figure>
-<p>  查看日志</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">tail -f /var/log/shadowsocksr.log</div></pre></td></tr></table></figure>
-<p>  保持日志窗口观察连接情况</p>
-</li>
-</ul>
-<ul>
-<li><p>接下来使用客户端，注意要使用shadowsocksR的客户端，原生的shadowsocks客户端不支持协议混淆，无法直接使用shadowsocksR服务端，几个平台的下载也顺便给出来一下，Assets下有最新版稳定版等</p>
-<ul>
-<li><a href="https://github.com/shadowsocksr-backup/shadowsocksr-csharp/releases" target="_blank" rel="external">Windows</a></li>
-<li><a href="https://github.com/shadowsocksr-backup/shadowsocksr-android/releases" target="_blank" rel="external">Android</a></li>
-<li><p>苹果选手请自行解决</p>
-<p>这里以Windows客户端为例，下载解压后进入目录，启动ShadowsocksR-dotnet.exe，这里用的是4.0版<br><img src="http://i2.bvimg.com/500967/03c3876ae44ed6ces.png" alt="此处输入图片的描述"><br>输入服务器ip，上面修改过的密码，以及协议和混淆等参数与上面保持一致，上面没有修改这里也照默认<br>保存启动后可以试着登录Google了，访问正常情况下日志会持续输出，如果没有任何输出说明很可能没连上，可以检查一下服务器端口是否开放了（<em>腾讯云、阿里云等服务器默认的安全组都只打开22、443等几个标准端口，需要自行开放设置</em>）</p>
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="一键部署上heroku（重点）"><a href="#一键部署上heroku（重点）" class="headerlink" title="一键部署上heroku（重点）"></a>一键部署上heroku（重点）</h3><ul>
-<li><p>经过上面的测试我们确认服务程序能正常运行，现在可以着手布置上云平台了，本来还在思考ssr怎么转换成web服务的形式部署上云平台，然后就发现了<a href="https://github.com/onplus/shadowsocks-heroku" target="_blank" rel="external">这个</a>，一键部署，异常简单，跟着下面作者贴图说明服务端很快就能部署好</p>
-<ul>
-<li>这里注意一点，这个是shadowsocks-heroku，<strong>不是shadowsocksR</strong>，协议不同，是不能直接用刚才的ShadowsocksR客户端来连接的，这点作者在issue里面也提到了</li>
-<li><p>接原作者的“启动本地 Client”说明，启动后相当于将本地当成一个代理服务器，要走代理则流量都从本地1080端口走：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">server listening at &#123; address: &apos;127.0.0.1&apos;, family: &apos;IPv4&apos;, port: 1080 &#125;</div></pre></td></tr></table></figure>
-<p>简而言之，若要浏览器翻墙还得手动给浏览器做配置，如果有多个浏览器要一一配置，需要修改代理服务器时也要一一修改，比较麻烦，而且只能在PC端应用，要应用到移动端需要另装客户端<a href="https://github.com/onplus/v2hero" target="_blank" rel="external">v2ray</a></p>
-</li>
-<li><p>因此我们对这个梯子的需求大概是：</p>
-<ul>
-<li>一个梯子，多平台通用</li>
-<li>集成到唯一的ShadowsocksR客户端里</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="全平台通用化（重点）"><a href="#全平台通用化（重点）" class="headerlink" title="全平台通用化（重点）"></a>全平台通用化（重点）</h3><ul>
-<li><p>为了解决上面两个需求我们需要对协议进行转换，这里涉及到一个转换工具<a href="https://github.com/nadoo/glider" target="_blank" rel="external">glider</a>，可以转换包括socks5、http、ss/ssr内的多种协议，这里我们将socks5转为ssr就可以为客户端所用，glider规则示例说明如下，详细见wiki：</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">listen=ss://AES-128-CFB:password@:8449</div></pre></td></tr></table></figure>
-<p>  ↑ 表示监听8449端口，协议为ss混淆，即ssr</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">forward=socks5://127.0.0.1:1080</div></pre></td></tr></table></figure>
-<p>  ↑ 表示<strong>转发</strong>协议为socks5的本地1080端口的流量到监听的端口上</p>
-</li>
-</ul>
-<ul>
-<li><p>按照原本作者说明的操作整体架构如下，A为本机：</p>
-  <div id="sequence-0"></div>
-
-<p>  我们修改以适应ShadowsocksR客户端的架构如下，A为本机，B为中间服务器：</p>
-  <div id="sequence-1"></div>
-
-
-</li>
-</ul>
-<pre><code>架构稍微复杂了点，但实际操作起来难度并不大
-</code></pre><ul>
-<li>首先登入我们的中间服务器，没有服务器的同学直接A机器与B机器用一台也可以，那样就只有局域网内的设备能用了。这里B机器是Linux，因此不能直接用ss-heroku的win客户端，我们在之前项目的issue里找到了作者提供的Linux客户端下载<a href="https://github.com/onplus/shadowsocks-heroku/archive/re.zip" target="_blank" rel="external">re.zip</a>，下载后解压，进入主目录：  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ npm install</div></pre></td></tr></table></figure>
-</li>
-</ul>
-<pre><code>没有npm与node请自行安装，操作完后修改config.json:
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    &quot;server&quot;: &quot;xxxx.herokuapp.com&quot;,//你的app</div><div class="line">    &quot;local_address&quot;: &quot;127.0.0.1&quot;,</div><div class="line">    &quot;scheme&quot;: &quot;ws&quot;,</div><div class="line">    &quot;local_port&quot;: 1080,</div><div class="line">    &quot;remote_port&quot;: 80,</div><div class="line">    &quot;password&quot;: &quot;pwd&quot;,//你的密码</div><div class="line">    &quot;timeout&quot;: 600,</div><div class="line">    &quot;method&quot;: &quot;aes-256-cfb&quot;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-
-
-修改完保存后，运行命令，以后台进程形式运行：
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ nohup node local.js -c config.json &amp;</div></pre></td></tr></table></figure>
-
-
-退出目录，下载glider的Linux版，解压后进入主目录下的config目录，参照example：
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ vim glider.conf</div></pre></td></tr></table></figure>
-
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">listen=:8443</div><div class="line">listen=ss://AES-128-CFB:password@:8449</div><div class="line">forward=socks5://127.0.0.1:1080</div><div class="line"></div><div class="line">verbose=True</div><div class="line">strategy=rr</div><div class="line">checkwebsite=www.microsoft.com</div><div class="line">checkduration=30</div></pre></td></tr></table></figure>
-
-8443为http/socks5代理端口，8449为ss混淆代理端口，也就是我们等会客户端需要使用的远程端口。保存后退出config目录，运行命令启动后台进程：
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ nohup ./glider -config config/glider.conf &amp;</div></pre></td></tr></table></figure>
-
-
-启动后可分别查看两个目录的nohup.out查看日志，此时为客户端新添加一个服务器，参数规则照之前一一对应，，**协议改为origin，混淆改为plain**，保存后使用该服务器代理应该可以正常访问了，日志流水上也可看得到
-</code></pre><ul>
-<li>因为多走了一轮代理的原因，访问的延时会比较大（自测在1500~6000ms不定），因此不适合游戏等对时延要求比较严格情况，简单的试了下youtube视频基本流畅，720p左右体验还行，最大的优势在于<strong>免费，不限量，基本不计时</strong></li>
-</ul>
-<hr>
-<h2 id="三、扩展思路"><a href="#三、扩展思路" class="headerlink" title="三、扩展思路"></a>三、扩展思路</h2><h3 id="相关思考"><a href="#相关思考" class="headerlink" title="相关思考"></a>相关思考</h3><ul>
-<li>Shadowsocks-heroku是用websocket代替了原本的socket发起的连接，除了项目的nodejs版之外还有python语言版的链接在项目中可自取<h3 id="相关用途及扩展"><a href="#相关用途及扩展" class="headerlink" title="相关用途及扩展"></a>相关用途及扩展</h3></li>
-<li>说道代理就自然能想到爬虫，爬虫总怕不小心就被封了ip，而这里heroku平台提供创建50个免费的app，据测试每个app的ip都不同，代理ip什么的自然可以自由的切换。</li>
-<li>后端云平台是个很好的思路，除了heroku，应该也还存在其他免费的云平台，我们可以将自己的app部署上去，只要国内能正常访问就说明可以作为代理来使用，大致上找的时候符合以下条件都有可用性：<ul>
-<li>账户提供一定量免费限额</li>
-<li>服务试用不限制时长（免费试用一个月什么的没太大意义）</li>
-<li>服务试用不限制流量，限制流量基本难以操作了</li>
-</ul>
-</li>
-<li>paas支持的语言零散不全，他们常支持的Ruby On Rails对国内开发者来说较陌生，因此若要搞出其他Shadowsocks-XX平台 服务端部署项目可能需要自行用ruby等语言重写，较麻烦</li>
-</ul>
-<hr>
-<p><strong><em>有很多地方认识不完整，知识水平有限，仅供抛砖引玉，望大佬们指正。</em></strong><br>参考：</p>
-<ul>
-<li><a href="https://rookiefly.cn/detail/128" target="_blank" rel="external">使用heroku+shadowsocks-heroku进行科学上网</a></li>
-</ul>
-<p><script src="https://cdnjs.cloudflare.com/ajax/libs/webfont/1.6.27/webfontloader.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/snap.svg/0.4.1/snap.svg-min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/js-sequence-diagrams/1.0.6/sequence-diagram-min.js"></script><textarea id="sequence-0-code" style="display: none">    A 其他client/代理->A ssHerokuRe: connect local 1080
-    A ssHerokuRe->B heroku: connect remote 80
-    Note over B heroku: websocket
-    Note over A ssHerokuRe: socks5://:1080
-    B heroku->A ssHerokuRe: return data
-    A ssHerokuRe->A 其他client/代理: return data</textarea><textarea id="sequence-0-options" style="display: none">{"theme":"simple","scale":1,"line-width":2,"line-length":50,"text-margin":10,"font-size":12}</textarea><script>  var code = document.getElementById("sequence-0-code").value;  var options = JSON.parse(decodeURIComponent(document.getElementById("sequence-0-options").value));  var diagram = Diagram.parse(code);  diagram.drawSVG("sequence-0", options);</script><textarea id="sequence-1-code" style="display: none">    A client->B glider: connect remote 8449
-    Note over B glider: ss://:8449
-    B ssHerokuRe->C heroku: connect remote 80
-    Note over C heroku: websocket
-    Note over B glider,B ssHerokuRe: forward 1080 to 8449
-    Note over B ssHerokuRe: socks5://:1080
-    C heroku->B ssHerokuRe: return data
-    B glider->A client: ssr protocol</textarea><textarea id="sequence-1-options" style="display: none">{"theme":"simple","scale":1,"line-width":2,"line-length":50,"text-margin":10,"font-size":12}</textarea><script>  var code = document.getElementById("sequence-1-code").value;  var options = JSON.parse(decodeURIComponent(document.getElementById("sequence-1-options").value));  var diagram = Diagram.parse(code);  diagram.drawSVG("sequence-1", options);</script></p>
-
+</ul></p>
+            <p class="article-more-link">
+                <a href="/2018/01/25/利用heroku实现免费的全平台科学上网/#more">Read More</a>
+            </p>
         
         </div>
         <footer class="article-footer">
@@ -407,7 +282,7 @@
 
 </div>
 
-    <a data-url="http://blog.garenfeather.cn/2018/01/25/利用heroku实现免费的全平台科学上网/" data-id="cjcum6ijl0006hq1y3w6jzqee" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="http://blog.garenfeather.cn/2018/01/25/利用heroku实现免费的全平台科学上网/" data-id="cjcumg9nf0006x21yo16vofy5" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -546,7 +421,7 @@
 
 </div>
 
-    <a data-url="http://blog.garenfeather.cn/2018/01/15/Docker添加iptables防火墙规则构建容器间通信/" data-id="cjcum6iiq0000hq1yemfwy7j3" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="http://blog.garenfeather.cn/2018/01/15/Docker添加iptables防火墙规则构建容器间通信/" data-id="cjcumg9mb0000x21ysphfau1d" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -681,7 +556,7 @@
 
 </div>
 
-    <a data-url="http://blog.garenfeather.cn/2017/10/24/【Philosophical-Dilemmas】上帝、永生与信仰/" data-id="cjcum6ij30002hq1yt1b7txlu" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="http://blog.garenfeather.cn/2017/10/24/【Philosophical-Dilemmas】上帝、永生与信仰/" data-id="cjcumg9mt0002x21yc5kko9uq" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -824,7 +699,7 @@
 
 </div>
 
-    <a data-url="http://blog.garenfeather.cn/2015/01/16/简单随意的几种编程语言正则支持比较/" data-id="cjcum6ijw0008hq1ycs6r4o9x" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="http://blog.garenfeather.cn/2015/01/16/简单随意的几种编程语言正则支持比较/" data-id="cjcumg9np0008x21yvifkbmo5" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
