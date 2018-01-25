@@ -13,7 +13,7 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="一、前言思路来源准备 一台连得上Google的服务器（测试用，可选） 这里用的是腾讯云买的CentOS 7.2，新加坡节点   一个heroku账号 heroku平台注册需要翻墙，但登录和部署均不需要 账号还有免费app余额   一台便宜且容易搞到手的国内服务器（可选） 仅作为中转服务器，不需要多平台共用可以不备   需要梯子服务的平台对应的客户端（Android、Win、Mac、Linux）">
 <meta property="og:image" content="http://i2.bvimg.com/500967/03c3876ae44ed6ces.png">
-<meta property="og:updated_time" content="2018-01-25T14:21:57.764Z">
+<meta property="og:updated_time" content="2018-01-25T14:28:08.109Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="利用heroku实现免费的全平台科学上网">
 <meta name="twitter:description" content="一、前言思路来源准备 一台连得上Google的服务器（测试用，可选） 这里用的是腾讯云买的CentOS 7.2，新加坡节点   一个heroku账号 heroku平台注册需要翻墙，但登录和部署均不需要 账号还有免费app余额   一台便宜且容易搞到手的国内服务器（可选） 仅作为中转服务器，不需要多平台共用可以不备   需要梯子服务的平台对应的客户端（Android、Win、Mac、Linux）">
@@ -283,14 +283,11 @@
   <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git clone -b manyuser https://github.com/shadowsocksr-backup/shadowsocksr.git</div></pre></td></tr></table></figure>
 <p>  进入到目录，并初始化配置</p>
   <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cd shadowsocksr/</div><div class="line">./initcfg.sh</div></pre></td></tr></table></figure>
-<p>  进入到目录，并初始化配置</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cd shadowsocksr/</div><div class="line">./initcfg.sh</div></pre></td></tr></table></figure>
+<p>  根据wiki说明如果是多用户的话接下来修改config.json，单用户的话修改user-config.json，我们这里是单用户，修改user-config.json，其他参数默认，只修改密码。同时这里要记住下面几个参数，与后面客户端<strong>保持一致</strong>，参数的具体含义见<a href="https://github.com/shadowsocksr-backup/shadowsocks-rss/wiki/config.json" target="_blank" rel="external">wiki</a></p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    &quot;server_port&quot;: 8388,</div><div class="line">    &quot;password&quot;: &quot;12333333&quot;,//你修改的密码</div><div class="line">    &quot;method&quot;: &quot;aes-128-ctr&quot;,</div><div class="line">    &quot;protocol&quot;: &quot;auth_aes128_md5&quot;,</div><div class="line">    &quot;protocol_param&quot;: &quot;&quot;,</div><div class="line">    &quot;obfs&quot;: &quot;tls1.2_ticket_auth_compatible&quot;,</div><div class="line">    &quot;obfs_param&quot;: &quot;&quot;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 </li>
 </ul>
-<pre><code>根据wiki说明如果是多用户的话接下来修改config.json，单用户的话修改user-config.json，我们这里是单用户，修改user-config.json，其他参数默认，只修改密码。同时这里要记住下面几个参数，与后面客户端**保持一致**，参数的具体含义见[wiki][2]
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    &quot;server_port&quot;: 8388,</div><div class="line">    &quot;password&quot;: &quot;12333333&quot;,//你修改的密码</div><div class="line">    &quot;method&quot;: &quot;aes-128-ctr&quot;,</div><div class="line">    &quot;protocol&quot;: &quot;auth_aes128_md5&quot;,</div><div class="line">    &quot;protocol_param&quot;: &quot;&quot;,</div><div class="line">    &quot;obfs&quot;: &quot;tls1.2_ticket_auth_compatible&quot;,</div><div class="line">    &quot;obfs_param&quot;: &quot;&quot;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-
-修改完毕保存后进入子目录，启动后台进程
+<pre><code>修改完毕保存后进入子目录，启动后台进程
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cd shadowsocks/</div><div class="line">python server.py -d start</div></pre></td></tr></table></figure>
 
 
@@ -410,7 +407,7 @@ $ nohup ./glider -config config/glider.conf &amp;
 
 </div>
 
-    <a data-url="http://blog.garenfeather.cn/2018/01/25/利用heroku实现免费的全平台科学上网/" data-id="cjculcht90006581yy5wnvozc" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="http://blog.garenfeather.cn/2018/01/25/利用heroku实现免费的全平台科学上网/" data-id="cjculfnm70006ak1yxrk194bu" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
