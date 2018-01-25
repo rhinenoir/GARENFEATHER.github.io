@@ -307,23 +307,26 @@
 <li>这里注意一点，这个是shadowsocks-heroku，<strong>不是shadowsocksR</strong>，协议不同，是不能直接用刚才的ShadowsocksR客户端来连接的，这点作者在issue里面也提到了</li>
 <li><p>接原作者的“启动本地 Client”说明，启动后相当于将本地当成一个代理服务器，要走代理则流量都从本地1080端口走：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">server listening at &#123; address: &apos;127.0.0.1&apos;, family: &apos;IPv4&apos;, port: 1080 &#125;</div></pre></td></tr></table></figure>
+<p>简而言之，若要浏览器翻墙还得手动给浏览器做配置，如果有多个浏览器要一一配置，需要修改代理服务器时也要一一修改，比较麻烦，而且只能在PC端应用，要应用到移动端需要另装客户端<a href="https://github.com/onplus/v2hero" target="_blank" rel="external">v2ray</a></p>
 </li>
+<li><p>因此我们对这个梯子的需求大概是：</p>
+<ul>
+<li>一个梯子，多平台通用</li>
+<li>集成到唯一的ShadowsocksR客户端里</li>
 </ul>
 </li>
 </ul>
-<pre><code>简而言之，若要浏览器翻墙还得手动给浏览器做配置，如果有多个浏览器要一一配置，需要修改代理服务器时也要一一修改，比较麻烦，而且只能在PC端应用，要应用到移动端需要另装客户端[v2ray][7]
-* 总结下我们对这个梯子的需求大概是：
-    - 一个梯子，多平台通用
-    - 集成到唯一的ShadowsocksR客户端里
-</code></pre><h3 id="全平台通用化（重点）"><a href="#全平台通用化（重点）" class="headerlink" title="全平台通用化（重点）"></a>全平台通用化（重点）</h3><ul>
+</li>
+</ul>
+<h3 id="全平台通用化（重点）"><a href="#全平台通用化（重点）" class="headerlink" title="全平台通用化（重点）"></a>全平台通用化（重点）</h3><ul>
 <li><p>为了解决上面两个需求我们需要对协议进行转换，这里涉及到一个转换工具<a href="https://github.com/nadoo/glider" target="_blank" rel="external">glider</a>，可以转换包括socks5、http、ss/ssr内的多种协议，这里我们将socks5转为ssr就可以为客户端所用，glider规则示例说明如下，详细见wiki：</p>
   <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">listen=ss://AES-128-CFB:password@:8449</div></pre></td></tr></table></figure>
 <p>  ↑ 表示监听8449端口，协议为ss混淆，即ssr</p>
   <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">forward=socks5://127.0.0.1:1080</div></pre></td></tr></table></figure>
+<p>  ↑ 表示<strong>转发</strong>协议为socks5的本地1080端口的流量到监听的端口上</p>
 </li>
 </ul>
-<pre><code>↑ 表示**转发**协议为socks5的本地1080端口的流量到监听的端口上
-</code></pre><ul>
+<ul>
 <li><p>按照原本作者说明的操作整体架构如下，A为本机：</p>
   <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">A 其他client/代理-&gt;A ssHerokuRe: connect local 1080</div><div class="line">A ssHerokuRe-&gt;B heroku: connect remote 80</div><div class="line">Note over B heroku: websocket</div><div class="line">Note over A ssHerokuRe: socks5://:1080</div><div class="line">B heroku-&gt;A ssHerokuRe: return data</div><div class="line">A ssHerokuRe-&gt;A 其他client/代理: return data</div></pre></td></tr></table></figure>
 </li>
@@ -397,7 +400,7 @@ $ nohup ./glider -config config/glider.conf &amp;
 
 </div>
 
-    <a data-url="http://blog.garenfeather.cn/2018/01/25/利用heroku实现免费的全平台科学上网/" data-id="cjcull2x70004jd1yj5s5rqir" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="http://blog.garenfeather.cn/2018/01/25/利用heroku实现免费的全平台科学上网/" data-id="cjcultbuf0006vz1yzw5misnk" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -536,7 +539,7 @@ $ nohup ./glider -config config/glider.conf &amp;
 
 </div>
 
-    <a data-url="http://blog.garenfeather.cn/2018/01/15/Docker添加iptables防火墙规则构建容器间通信/" data-id="cjcull2wo0000jd1yp2lh3svi" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="http://blog.garenfeather.cn/2018/01/15/Docker添加iptables防火墙规则构建容器间通信/" data-id="cjcultbt20000vz1yf82uetk6" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -671,7 +674,7 @@ $ nohup ./glider -config config/glider.conf &amp;
 
 </div>
 
-    <a data-url="http://blog.garenfeather.cn/2017/10/24/【Philosophical-Dilemmas】上帝、永生与信仰/" data-id="cjcull2wy0001jd1ytglbx3dr" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="http://blog.garenfeather.cn/2017/10/24/【Philosophical-Dilemmas】上帝、永生与信仰/" data-id="cjcultbtn0002vz1ygg5qm0zc" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -814,7 +817,7 @@ $ nohup ./glider -config config/glider.conf &amp;
 
 </div>
 
-    <a data-url="http://blog.garenfeather.cn/2015/01/16/简单随意的几种编程语言正则支持比较/" data-id="cjcull31j000pjd1yvmgneg3e" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="http://blog.garenfeather.cn/2015/01/16/简单随意的几种编程语言正则支持比较/" data-id="cjcultbuv0008vz1yoyn96mz0" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
