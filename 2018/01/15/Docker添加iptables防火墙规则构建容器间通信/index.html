@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     
     <title>Docker添加iptables防火墙规则构建容器间通信 | ダイスキでダイキライ</title>
+	<script type="text/javascript">window.$crisp=[];window.CRISP_WEBSITE_ID="994248d7-f1a8-4f5b-8b61-f37eb77c458a";(function(){d=document;s=d.createElement("script");s.src="https://client.crisp.chat/l.js";s.async=1;d.getElementsByTagName("head")[0].appendChild(s);})();</script>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
     <meta name="description" content="一、坑从何来最近正好看到解析Docker单主机网络的部分，提到通过link链接容器，于是深入思考了下link的机制，首先如果为容器添加一条链接会发生以下几件事：  描述目标容器的环境变量会被创建 链接的别名和对应目标容器的ip地址会被添加到DNS覆盖列表中 如果跨容器通信被禁止，Docker会添加特定的防火墙规则来允许被链接的容器间的通信。  重点在于第三点，这里Docker添加的防火墙规则是允许">
 <meta name="keywords" content="Docker,network,iptables">
@@ -350,7 +351,7 @@
 
 </div>
 
-    <a data-url="http://blog.garenfeather.cn/2018/01/15/Docker添加iptables防火墙规则构建容器间通信/" data-id="cjcxmms4d0000ef1yb7b6kjdh" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="http://blog.garenfeather.cn/2018/01/15/Docker添加iptables防火墙规则构建容器间通信/" data-id="cjcxmrqdt0000ue1ybo1q4j23" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
