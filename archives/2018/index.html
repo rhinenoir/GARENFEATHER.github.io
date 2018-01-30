@@ -116,7 +116,6 @@
 
   <link rel="canonical" href="http://blog.garenfeather.cn/archives/2018/"/>
 
-<link href="https://cdn.rawgit.com/knsv/mermaid/7.0.0/dist/mermaid.css" rel="stylesheet" type="text/css" />
 
 
 
@@ -621,6 +620,19 @@
     <footer id="footer" class="footer">
       <div class="footer-inner">
         <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+<script type="text/javascript">
+$(document).ready(function() {
+ // 不要用highlight渲染uml图
+ $('pre code').not(".mermaid").each(function(i, block) {
+   hljs.highlightBlock(block);
+   hljs.initLineNumbersOnLoad();
+ });
+ // 底色防坑.
+ $(".mermaid").parent().css("background","#ffffff");
+ // 只渲染mermaid样式的对象.
+ mermaid.init({startOnLoad:true},$(".mermaid"));
+})
+</script>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
