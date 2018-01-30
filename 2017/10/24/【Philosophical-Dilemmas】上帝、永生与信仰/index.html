@@ -1108,10 +1108,10 @@
   <script type="text/javascript">
 $(document).ready(function() {
  // 不要用highlight渲染uml图
- $('pre code').not(".mermaid").each(function(i, block) {
-   hljs.highlightBlock(block);
-   hljs.initLineNumbersOnLoad();
- });
+ //$('pre code').not(".mermaid").each(function(i, block) {
+   //hljs.highlightBlock(block);
+   //hljs.initLineNumbersOnLoad();
+ //});
  // 底色防坑.
  $(".mermaid").parent().css("background","#ffffff");
  // 只渲染mermaid样式的对象.
