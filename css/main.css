@@ -6,6 +6,7 @@ html {
 }
 body {
   margin: 0;
+  text-shadow: 0.01em 0.01em 0.01em #999 !important;
 }
 article,
 aside,
@@ -1824,7 +1825,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #a8824e;
+  background: #b09ee5;
 }
 .links-of-blogroll {
   font-size: 13px;
