@@ -6,7 +6,6 @@ html {
 }
 body {
   margin: 0;
-  text-shadow: 0.01em 0.01em 0.01em #999 !important;
 }
 article,
 aside,
@@ -187,6 +186,7 @@ th {
 body {
   position: relative;
   font-family: 'Lato', "PingFang SC", "Microsoft YaHei", sans-serif;
+  text-shadow: 0.01em 0.01em 0.01em #999 !important;
   font-size: 14px;
   line-height: 2;
   color: #555;
@@ -1825,7 +1825,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #b09ee5;
+  background: #61ed46;
 }
 .links-of-blogroll {
   font-size: 13px;
