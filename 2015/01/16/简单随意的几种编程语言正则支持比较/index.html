@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+
+
+
+
+
+
+
+<head>
+	<meta charset="UTF-8"/>
+	<meta name="HandheldFriendly" content="True" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+	<meta name="theme-color" content="">
+	<title>简单随意的几种编程语言正则支持比较 | </title>
+	<meta name="description" content="" />
+	<meta name="generator" content="ダイスキでダイキライ">
+	
+	
+	<link rel="shortcut icon" href="https://i.loli.net/2017/11/26/5a19c0b50432e.png">
+	
+	<link rel="stylesheet" href="/css/screen.min.css">
+	<link rel="stylesheet" href="/css/style.css"> 
+	
+	<script src="/js/jquery.js"></script>
+	<script src="/js/highlight.min.js"></script>
+	
+</head>
+<body class="post-template">
+    <div class="site-wrapper">
+        
+
+
+
+
+<header class="site-header outer" style="z-index: 999">
+    <div class="inner">
+        
+
+<nav class="site-nav"> 
+    <div class="site-nav-left">
+        <ul class="nav">
+            <li>
+                
+                <a href="/" title="Home">Home</a>
+                
+            </li>
+            
+            
+            <li>
+                <a href="/about" title="About">About</a>
+            </li>
+            
+            <li>
+                <a href="/archives" title="Archives">Archives</a>
+            </li>
+            
+            
+        </ul> 
+    </div>
+    <div class="site-nav-right">
+        
+<div class="social-links">
+    
+    
+    <a class="social-link" href="https://github.com/xzhih" target="_blank" rel="noopener">
+        <svg class="icon" width="32px" height="31.54px" viewBox="0 0 1039 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M969.784652 261.533214c-47.108467-81.221495-108.836803-144.574261-188.433869-191.682728C701.753718 22.742019 614.034503 0 519.817569 0c-94.216934 0-181.936149 22.742019-261.533214 69.850486C178.687289 116.958953 116.958953 180.311719 69.850486 261.533214 22.742019 341.13028 0 428.849494 0 524.690859c0 113.710093 32.488598 217.673607 99.090224 308.641681s151.071981 154.320841 256.659925 190.058299c11.371009 1.62443 21.117589 0 27.615308-4.87329 6.49772-4.87329 8.12215-12.995439 8.12215-21.117589v-97.465794l-16.244299 3.24886c-9.746579 1.62443-22.742019 3.24886-37.361888 1.62443-14.619869 0-30.864168-1.62443-47.108467-4.87329-16.244299-3.24886-30.864168-9.746579-45.484038-21.117589-14.619869-11.371009-24.366449-24.366449-29.239738-42.235177l-6.49772-16.244299c-4.87329-9.746579-11.371009-22.742019-21.117588-34.113028-9.746579-12.995439-19.493159-21.117589-29.239739-25.990878l-4.873289-3.24886c-3.24886-1.62443-6.49772-4.87329-8.12215-8.12215-3.24886-3.24886-4.87329-6.49772-6.497719-9.746579-1.62443-3.24886 0-6.49772 3.248859-8.12215 3.24886-1.62443 9.746579-3.24886 19.493159-3.24886l12.99544 1.62443c9.746579 1.62443 19.493159 6.49772 34.113027 16.244299 12.995439 9.746579 24.366449 21.117589 32.488599 35.737458 9.746579 17.868729 22.742019 32.488598 37.361887 42.235178 14.619869 9.746579 29.239738 14.619869 43.859608 14.619869 14.619869 0 27.615308-1.62443 38.986317-3.24886s21.117589-6.49772 30.864168-9.746579c3.24886-30.864168 14.619869-53.606187 32.488599-69.850486-25.990878-3.24886-48.732897-6.49772-69.850486-12.995439-21.117589-4.87329-42.235177-14.619869-63.352766-25.990879-21.117589-12.995439-40.610748-27.615308-55.230617-45.484037-14.619869-17.868729-25.990878-42.235177-35.737458-71.474916-9.746579-29.239738-14.619869-63.352766-14.619869-102.339084 0-55.230617 17.868729-102.339084 53.606187-141.325401-16.244299-40.610748-14.619869-87.719215 4.873289-139.700972 12.995439-4.87329 32.488598-1.62443 58.479477 9.746579 25.990878 9.746579 43.859607 19.493159 56.855046 25.990879 11.371009 6.49772 21.117589 12.995439 29.239739 17.868729 42.235177-11.371009 86.094785-17.868729 129.954392-17.868729s87.719215 6.49772 129.954392 17.868729l25.990879-16.244299c17.868729-11.371009 38.986318-21.117589 61.728336-29.239738 24.366449-9.746579 42.235177-11.371009 55.230617-8.12215 19.493159 51.981757 22.742019 97.465794 4.873289 139.700972 35.737458 38.986318 53.606187 86.094785 53.606187 141.325401 0 38.986318-4.87329 73.099346-14.619869 102.339084-9.746579 29.239738-21.117589 53.606187-35.737458 71.474916-14.619869 17.868729-32.488598 32.488598-55.230617 45.484037-21.117589 12.995439-43.859607 21.117589-63.352766 25.990879-21.117589 4.87329-43.859607 9.746579-69.850486 12.995439 22.742019 21.117589 35.737458 51.981757 35.737458 97.465794v144.574261c0 8.12215 3.24886 14.619869 8.12215 21.117589 4.87329 4.87329 14.619869 6.49772 25.990878 4.87329 103.963514-35.737458 190.058299-97.465794 256.659925-190.058299 66.601626-90.968075 99.090224-193.307158 99.090224-308.641681 1.62443-95.841364-21.117589-183.560579-68.226056-263.157645z" fill="#ffffff" /></svg>
+    </a>
+    
+    
+    
+</div>
+    </div>
+</nav>
+    </div>
+</header>
+
+
+<main id="site-main" class="site-main outer" role="main">
+    <div class="inner">
+        <header class="post-full-header">
+            <section class="post-full-meta">
+                <time  class="post-full-meta-date" datetime="2015-01-16T09:52:17.000Z" itemprop="datePublished">
+                    2015-01-16
+                </time>
+                
+                <span class="date-divider">/</span>
+                
+                <a href="/categories/coding/">coding</a>&nbsp;&nbsp;
+                
+                
+            </section>
+            <h1 class="post-full-title">简单随意的几种编程语言正则支持比较</h1>
+        </header>
+        <article class="post-full no-image">
+            
+            <section class="post-full-content">
+                <div id="lightgallery" class="markdown-body">
+                    <p>那会用各种语言都写过正则匹配，随便乱比较了一下，比较语言包括python、C#和java，没什么逻辑，想到啥看到啥就写的啥，仅供参考</p>
+<h2 id="一、版本"><a href="#一、版本" class="headerlink" title="一、版本"></a>一、版本</h2><ul>
+<li>java8</li>
+<li>C# 版本差异不大吧，不记得了</li>
+<li>python 2.7</li>
+</ul>
+<hr>
+<h2 id="二、比较"><a href="#二、比较" class="headerlink" title="二、比较"></a>二、比较</h2><h3 id="对应函数"><a href="#对应函数" class="headerlink" title="对应函数"></a>对应函数</h3><ul>
+<li>python 的re模块中，search和match对应其他两种语言的match函数，确切的来说是search函数对应</li>
+<li>python的match函数必须从字符串的第0位开始匹配一次，不存在则返回none（不明白这个函数究竟有什么用，正则表达式有自己的^符号来表示从头开始的匹配啊……）</li>
+</ul>
+<a id="more"></a>
+<ul>
+<li>findall函数则对应所谓matches的功能，java中并没有什么matches，只能通过Matcher对象的match()方法不断搜索下去达到相对的效果，C#的matches函数会返回一个MatchCollection匹配结果集合对象（java这个正则支持差评）</li>
+<li>C#的Match对象通过match方法匹配、success属性返回成功与否的结果，匹配位置不会自行移动，要手动设定下一次匹配的offset（辅助参数有index和length来确定匹配位置），java的Matcher对象所用的find方法进行了匹配的同时返回匹配成功与否的结果（一顶C#俩），有start和end方法返回匹配位置，并且会自行随着匹配而移动下一次匹配开始的位置</li>
+</ul>
+<h3 id="操作方式（包括compile、match、find等）"><a href="#操作方式（包括compile、match、find等）" class="headerlink" title="操作方式（包括compile、match、find等）"></a>操作方式（包括compile、match、find等）</h3><ul>
+<li>python中用到的几种都是函数（type()结果为function），java有Pattern对象而C#有Regex对象，java有Matcher对象而C#有Match对象，java一般是用Pattern类的静态方法编译获得该对象，C#则通过以字符串为参数传统新建对象方式获得（new Pattern(str)）。两者的match（Matcher）对象都通过Pattern对象获得，而python则是将Pattern对象作为参数一起放入search（或者findall、match等等）方法中</li>
+</ul>
+<h3 id="功能完善"><a href="#功能完善" class="headerlink" title="功能完善"></a>功能完善</h3><ul>
+<li>python对正则替换支持的最好，sub函数允许自行构建一个函数来对正则匹配的结果进行复杂的操作（这种操作方式的占了python本身“函数也可以是对象”的构建方式的优势），其他两种目测只能强行命名分组替换，需要更多的自行检测匹配结果</li>
+</ul>
+<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><ul>
+<li>默认情况下python、java和C#的.符号都不支持匹配\n换行符，java和C#还不支持\r，C#似乎在一堆字符串里匹配到\r会出现迷之bug……（应该不是bug，还得多看doc）</li>
+<li>java里面\r和\n都视为line terminator，遇到会终止匹配，而C#和python不视\r为line terminator，但是C#输出时作为回到行首符覆盖输出，通过输出我们看到的结果会不一样，而实际上其匹配结果跟python是一样的</li>
+</ul>
+<hr>
+<h2 id="三、后言"><a href="#三、后言" class="headerlink" title="三、后言"></a>三、后言</h2><ul>
+<li>……写的乱七八糟，将来怕是自己都看不懂</li>
+<li>没准为了看得懂回头复习会有新的收获呢</li>
+</ul>
+
+                </div>
+            </section>
+        </article>
+    </div>
+    
+<nav class="pagination">
+    
+    
+    <a class="prev-post" href="/2017/10/24/【Philosophical-Dilemmas】上帝、永生与信仰/">
+        ← 【Philosophical Dilemmas】上帝、永生与信仰
+    </a>
+    
+    <span class="prev-next-post">•</span>
+    
+    
+</nav>
+</main>
+
+<div class="t-g-control">
+    <div class="gotop">
+        <svg class="icon" width="32px" height="32px" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M793.024 710.272a32 32 0 1 0 45.952-44.544l-310.304-320a32 32 0 0 0-46.4 0.48l-297.696 320a32 32 0 0 0 46.848 43.584l274.752-295.328 286.848 295.808z" fill="#8a8a8a" /></svg>
+    </div>
+    <div class="toc-control">
+        <svg class="icon toc-icon" width="32px" height="32.00px" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M779.776 480h-387.2a32 32 0 0 0 0 64h387.2a32 32 0 0 0 0-64M779.776 672h-387.2a32 32 0 0 0 0 64h387.2a32 32 0 0 0 0-64M256 288a32 32 0 1 0 0 64 32 32 0 0 0 0-64M392.576 352h387.2a32 32 0 0 0 0-64h-387.2a32 32 0 0 0 0 64M256 480a32 32 0 1 0 0 64 32 32 0 0 0 0-64M256 672a32 32 0 1 0 0 64 32 32 0 0 0 0-64" fill="#8a8a8a" /></svg>
+        <svg class="icon toc-close" style="display: none;" width="32px" height="32.00px" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M512 960c-247.039484 0-448-200.960516-448-448S264.960516 64 512 64 960 264.960516 960 512 759.039484 960 512 960zM512 128.287273c-211.584464 0-383.712727 172.128262-383.712727 383.712727 0 211.551781 172.128262 383.712727 383.712727 383.712727 211.551781 0 383.712727-172.159226 383.712727-383.712727C895.712727 300.415536 723.551781 128.287273 512 128.287273z" fill="#8a8a8a" /><path d="M557.05545 513.376159l138.367639-136.864185c12.576374-12.416396 12.672705-32.671738 0.25631-45.248112s-32.704421-12.672705-45.248112-0.25631l-138.560301 137.024163-136.447897-136.864185c-12.512727-12.512727-32.735385-12.576374-45.248112-0.063647-12.512727 12.480043-12.54369 32.735385-0.063647 45.248112l136.255235 136.671523-137.376804 135.904314c-12.576374 12.447359-12.672705 32.671738-0.25631 45.248112 6.271845 6.335493 14.496116 9.504099 22.751351 9.504099 8.12794 0 16.25588-3.103239 22.496761-9.247789l137.567746-136.064292 138.687596 139.136568c6.240882 6.271845 14.432469 9.407768 22.65674 9.407768 8.191587 0 16.352211-3.135923 22.591372-9.34412 12.512727-12.480043 12.54369-32.704421 0.063647-45.248112L557.05545 513.376159z" fill="#8a8a8a" /></svg>
+    </div>
+    <div class="gobottom">
+        <svg class="icon" width="32px" height="32.00px" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M231.424 346.208a32 32 0 0 0-46.848 43.584l297.696 320a32 32 0 0 0 46.4 0.48l310.304-320a32 32 0 1 0-45.952-44.544l-286.848 295.808-274.752-295.36z" fill="#8a8a8a" /></svg>
+    </div>
+</div>
+<div class="toc-main" style="right: -100%">
+    <div class="post-toc">
+        <span>TOC</span>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、版本"><span class="toc-text">一、版本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、比较"><span class="toc-text">二、比较</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#对应函数"><span class="toc-text">对应函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#操作方式（包括compile、match、find等）"><span class="toc-text">操作方式（包括compile、match、find等）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#功能完善"><span class="toc-text">功能完善</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#其他"><span class="toc-text">其他</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、后言"><span class="toc-text">三、后言</span></a></li></ol>
+    </div>
+</div>
+
+
+
+        
+
+<aside class="read-next outer">
+    <div class="inner">
+        <div class="read-next-feed">
+            
+            
+
+  <article class="read-next-card"  style="background-image: url(https://i.loli.net/2017/11/26/5a19c56faa29f.jpg)"  >
+    <header class="read-next-card-header">
+      <small class="read-next-card-header-sitetitle">&mdash; ダイスキでダイキライ &mdash;</small>
+      <h3 class="read-next-card-header-title">Recent Posts</h3>
+    </header>
+    <div class="read-next-divider">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 14.5s2 3 5 3 5.5-2.463 5.5-5.5S21 6.5 18 6.5c-5 0-7 11-12 11C2.962 17.5.5 15.037.5 12S3 6.5 6 6.5s4.5 3.5 4.5 3.5"/>
+        </svg>
+    </div>
+    <div class="read-next-card-content">
+      <ul>
+        
+        
+        
+        <li>
+          <a href="/2018/01/29/test/">test</a>
+        </li>
+        
+        
+        
+        <li>
+          <a href="/2018/01/29/stackedit/">stackeditTest</a>
+        </li>
+        
+        
+        
+        <li>
+          <a href="/2018/01/25/利用heroku实现免费的全平台科学上网/">利用heroku实现免费的全平台科学上网</a>
+        </li>
+        
+        
+        
+        
+        
+        
+        
+        
+      </ul>
+    </div>
+    <footer class="read-next-card-footer">
+      <a href="/archives">  MORE  → </a>
+    </footer>
+  </article>
+
+            
+            
+            
+
+<article class="read-next-card"  style="background-image: url(https://i.loli.net/2017/11/26/5a19c56faa29f.jpg)"  >
+    <header class="read-next-card-header" style="padding-bottom: 20px">
+        <h3 class="read-next-card-header-title">Categories</h3>
+    </header>
+    <div class="read-next-card-content">
+        <ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/coding/">coding</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/reading/">reading</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/test/">test</a></li></ul>
+        </ul>
+    </div>
+</article>
+
+
+            
+            
+            
+
+<article class="read-next-card"  style="background-image: url(https://i.loli.net/2017/11/26/5a19c56faa29f.jpg)"  >
+	<header class="read-next-card-header" style="padding-bottom: 20px">
+		<h3 class="read-next-card-header-title">Tag Cloud</h3>
+	</header>
+	<div class="read-next-card-content-ext">
+		<a href="/tags/Docker/" style="font-size: 14px;">Docker</a> <a href="/tags/Philosophical-Dilemmas/" style="font-size: 14px;">Philosophical Dilemmas</a> <a href="/tags/c/" style="font-size: 14px;">c#</a> <a href="/tags/heroku/" style="font-size: 14px;">heroku</a> <a href="/tags/iptables/" style="font-size: 14px;">iptables</a> <a href="/tags/java/" style="font-size: 14px;">java</a> <a href="/tags/network/" style="font-size: 24px;">network</a> <a href="/tags/philosophy/" style="font-size: 14px;">philosophy</a> <a href="/tags/python/" style="font-size: 14px;">python</a> <a href="/tags/stackedit/" style="font-size: 14px;">stackedit</a> <a href="/tags/wall/" style="font-size: 14px;">wall</a>
+	</div>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+<footer class="site-footer outer">
+	<div class="site-footer-content inner">
+		<section class="copyright">
+			<a href="/">ダイスキでダイキライ</a>
+			&copy; 2018
+		</section>
+		<nav class="site-footer-nav">
+			
+			<a href="//hexo.io/">Powered by Hexo</a>
+			<a href="https://github.com/xzhih/hexo-theme-casper">Theme Casper</a>
+		</nav>
+	</div>
+</footer>
+
+<div class="floating-header" >
+    <progress class="progress" value="0">
+        <div class="progress-container">
+            <span class="progress-bar"></span>
+        </div>
+    </progress>
+</div>
+<script src="/js/script.js"></script>
+
+<link rel="stylesheet" href="/css/lightgallery.min.css">
+<script src="/js/lightgallery.min.js"></script>
+<script>
+	$(function () {
+		var postImg = $('#lightgallery').find('img');
+		postImg.addClass('post-img');
+		postImg.each(function () {
+			var imgSrc = $(this).attr('src');
+			$(this).attr('data-src', imgSrc);
+		});
+		$('#lightgallery').lightGallery({selector: '.post-img'});
+	});
+</script>
+
+
+    </div>
+</body>
+</html>
