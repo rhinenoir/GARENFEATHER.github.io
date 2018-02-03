@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.garenfeather.cn/"/>
-  <updated>2018-01-30T17:41:56.124Z</updated>
+  <updated>2018-02-03T15:37:44.032Z</updated>
   <id>http://blog.garenfeather.cn/</id>
   
   <author>
@@ -15,6 +15,42 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Ghost文档翻译——开发模式启动命令对比</title>
+    <link href="http://blog.garenfeather.cn/2018/02/03/Ghost%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E2%80%94%E2%80%94%E5%BC%80%E5%8F%91%E6%A8%A1%E5%BC%8F%E5%90%AF%E5%8A%A8%E5%91%BD%E4%BB%A4%E5%AF%B9%E6%AF%94/"/>
+    <id>http://blog.garenfeather.cn/2018/02/03/Ghost文档翻译——开发模式启动命令对比/</id>
+    <published>2018-02-03T15:35:29.000Z</published>
+    <updated>2018-02-03T15:37:44.032Z</updated>
+    
+    <content type="html"><![CDATA[<hr><p>原文：<a href="https://docs.ghost.org/docs/working-with-ghost" target="_blank" rel="external">working-with-ghost</a><br>翻译部分：</p><ul><li>Day-to-day Development Commands<ul><li>Running Ghost</li></ul></li></ul><h3 id="日常频繁使用的开发命令"><a href="#日常频繁使用的开发命令" class="headerlink" title="日常频繁使用的开发命令"></a>日常频繁使用的开发命令</h3><h4 id="运行Ghost"><a href="#运行Ghost" class="headerlink" title="运行Ghost"></a>运行Ghost</h4><p>Ghost有多种启动方式，每种都各有利弊，这些方式在默认条件下都会从<a href="http://localhost:2368./启动Ghost服务" target="_blank" rel="external">http://localhost:2368./启动Ghost服务</a></p><ul><li><p>grunt dev</p><ul><li>开发模式下最常见的Ghost启动方式</li><li>服务启动时编译构建client文件</li><li>监听server文件，有变化自动重启</li><li>监听client文件，文件变化时敏捷重建，变化包括文件的实时重载</li></ul></li><li><p>grunt dev –server</p><ul><li>启动时不编译client文件，也不监听其变化，其他与上一条命令</li><li>请确保client文件已编译，或者保证其内容为最新（见 <a href="https://docs.ghost.org/docs/working-with-ghost#grunt-build" target="_blank" rel="external">grunt build</a>）</li><li>在确保你不修改client文件的情况下这样有利于最小化启动时间，保存系统资源</li></ul></li><li><p>grunt prod</p><ul><li>生产模式下启动，启动时编译client文件</li><li>既不监听server文件也不监听client文件</li><li>相当于以npm start –production命令启动Ghost</li></ul></li><li><p>node index.js</p><ul><li>单纯的启动Ghost服务器，不构建client，不监听文件变化也不自动重启服务</li><li>当你只想快速启动服务，且不介意手动修改文件要重启服务时适合此命令</li><li><strong>不构建client文件</strong> &amp; 可能会导致后台系统一片空白（见 <a href="https://docs.ghost.org/docs/working-with-ghost#grunt-build" target="_blank" rel="external">grunt build</a>）</li></ul></li></ul><blockquote><p>Written with <a href="https://stackedit.io/" target="_blank" rel="external">StackEdit</a>.</p></blockquote>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;hr&gt;
+&lt;p&gt;原文：&lt;a href=&quot;https://docs.ghost.org/docs/working-with-ghost&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;working-with-ghost&lt;/a&gt;&lt;br&gt;翻译部分：&lt;/p&gt;
+&lt;ul&gt;
+
+      
+    
+    </summary>
+    
+      <category term="translation" scheme="http://blog.garenfeather.cn/categories/translation/"/>
+    
+    
+      <category term="ghost" scheme="http://blog.garenfeather.cn/tags/ghost/"/>
+    
+      <category term="blog" scheme="http://blog.garenfeather.cn/tags/blog/"/>
+    
+      <category term="grunt" scheme="http://blog.garenfeather.cn/tags/grunt/"/>
+    
+      <category term="npm" scheme="http://blog.garenfeather.cn/tags/npm/"/>
+    
+      <category term="node" scheme="http://blog.garenfeather.cn/tags/node/"/>
+    
+  </entry>
   
   <entry>
     <title>test</title>
