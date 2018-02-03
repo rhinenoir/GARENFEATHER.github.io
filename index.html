@@ -1167,6 +1167,271 @@ $(document).ready(function() {
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.garenfeather.cn/2017/11/24/分布式锁机制及几种方案对比/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="GarenFeather">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://chuantu.biz/t6/218/1517328741x-1566683537.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="変わらないで">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/11/24/分布式锁机制及几种方案对比/" itemprop="url">分布式锁机制及几种方案对比</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">投稿日</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-11-24T23:51:54+08:00">
+                2017-11-24
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新日&#58;</span>
+              
+              <time title="更新日" itemprop="dateModified" datetime="2018-02-03T23:55:51+08:00">
+                2018-02-03
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">カテゴリは</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/coding/" itemprop="url" rel="index">
+                    <span itemprop="name">coding</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/11/24/分布式锁机制及几种方案对比/" class="leancloud_visitors" data-flag-title="分布式锁机制及几种方案对比">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">訪問者&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">ワードカウント&#58;</span>
+                
+                <span title="ワードカウント">
+                  662
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ul>
+<li>原文：<a href="http://mp.weixin.qq.com/s?__biz=MzI0NjUxNTY5Nw==&amp;mid=2247484071&amp;idx=1&amp;sn=f2af23340ab34052109065dfc8163f35&amp;chksm=e9bf5039dec8d92fc89155b2d742d11e75231daa6c390378940b34263d839b009a1def8bcf35&amp;mpshare=1&amp;scene=23&amp;srcid=0203YH5S7CyrwQE6uMkLZqOz#rd" target="_blank" rel="external">分布式锁那些事</a></li>
+<li>本文是在原文基础上用自己的语言试着更简洁的转述一遍，类似提纲，加入自己的小理解，和少部分扩展思考，内容基本为原文</li>
+</ul>
+<hr>
+<h2 id="分布式锁机制及几种方案对比"><a href="#分布式锁机制及几种方案对比" class="headerlink" title="分布式锁机制及几种方案对比"></a>分布式锁机制及几种方案对比</h2><h3 id="为什么需要分布式锁"><a href="#为什么需要分布式锁" class="headerlink" title="为什么需要分布式锁"></a>为什么需要分布式锁</h3><ul>
+<li>保证同一方法同一时间只有一个线程执行</li>
+<li>单机性能有限，服务由单体部署拆分成分布式部署</li>
+<li>需要跨进程，跨机，跨数据中心一致性方案(单进程内各语言或自身有锁方案，或配合架构有特定的组件集成)<h3 id="分布式锁要求"><a href="#分布式锁要求" class="headerlink" title="分布式锁要求"></a>分布式锁要求</h3></li>
+<li>同一时刻一个方法只能有一个进程的一个线程执行</li>
+<li>高可用</li>
+<li>高性能</li>
+<li>锁失效方案</li>
+<li>支持阻塞锁，获取锁失败可以继续尝试获取</li>
+<li>支持非阻塞锁，获取失败立刻返回<h3 id="分布式锁的三种方案分析"><a href="#分布式锁的三种方案分析" class="headerlink" title="分布式锁的三种方案分析"></a>分布式锁的三种方案分析</h3><h4 id="数据库方案"><a href="#数据库方案" class="headerlink" title="数据库方案"></a>数据库方案</h4></li>
+</ul>
+<ul>
+<li>操作<ul>
+<li>数据库建表，在<strong>方法名上创建唯一索引</strong></li>
+<li>在表中插入方法名，执行者等的一条数据，插入成功获取锁</li>
+</ul>
+</li>
+<li>优势<ul>
+<li>借助数据库，结构简单</li>
+</ul>
+</li>
+<li>不足<ul>
+<li>受限数据库性能(可能要求多机部署，主备复制，数据同步等)</li>
+<li>没有锁失效方案</li>
+<li>不可重入</li>
+<li>没有阻塞锁方案，需要自行循环<h4 id="Redis方案"><a href="#Redis方案" class="headerlink" title="Redis方案"></a>Redis方案</h4></li>
+</ul>
+</li>
+<li>操作(2.6.12版之前)<ul>
+<li>setnx设置key-value</li>
+<li>expire设置过期时间</li>
+<li>del释放</li>
+</ul>
+</li>
+<li>问题及对应解决方案<ul>
+<li><strong>每一步的操作都要保证原子性</strong>，set完没来得及设expire会导致死锁(2.6.12版实现了将两个操作合并原子化操作)</li>
+<li>分布式环境下，A获取锁后阻塞，锁过期被B获取，A恢复后执行完错误释放了此时属于B的锁(经典CAS算法解决被误释放问题，但原本线程操作未完就失去锁的问题并没解决)</li>
+<li>高可用要求主从复制机制，而主从复制多为异步，会出现数据不一致(不主从复制，用<strong>RedLock</strong>算法，该算法的成熟开源实现即Redisson)</li>
+</ul>
+</li>
+<li>整体优势：借助Redis，实现方便</li>
+<li>问题：超时作为锁失效机制不可靠，若处理时间过长会在完成前失去锁<h4 id="Zookeeper方案"><a href="#Zookeeper方案" class="headerlink" title="Zookeeper方案"></a>Zookeeper方案</h4></li>
+<li>结构：内部分层文件系统目录树</li>
+<li>操作<ul>
+<li>(原文有不清晰之处，待日后补充)</li>
+</ul>
+</li>
+<li>优点<ul>
+<li>高可用</li>
+<li>可重入</li>
+<li>阻塞锁</li>
+<li>解决锁失效</li>
+</ul>
+</li>
+<li>缺点：频繁插入删除性能会比Redis差一些<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3></li>
+</ul>
+<blockquote>
+<p>Written with <a href="https://stackedit.io/" target="_blank" rel="external">StackEdit</a>.<br><!--stackedit_data:
+eyJoaXN0b3J5IjpbMTM2Mzc0NDk3MF19
+--></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+      <link href="/lib/mermaid/mermaid.css" rel="stylesheet"> 
+<script src="/lib/mermaid/mermaid.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+ // 不要用highlight渲染uml图
+ //$('pre code').not(".mermaid").each(function(i, block) {
+   //hljs.highlightBlock(block);
+   //hljs.initLineNumbersOnLoad();
+ //});
+ // 底色防坑.
+ $(".mermaid").parent().css("background","#ffffff");
+ // 只渲染mermaid样式的对象.
+ mermaid.init({startOnLoad:true},$(".mermaid"));
+})
+</script>
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://blog.garenfeather.cn/2017/10/24/【Philosophical-Dilemmas】上帝、永生与信仰/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1624,7 +1889,7 @@ $(document).ready(function() {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">ポスト</span>
                 </a>
               </div>
@@ -1646,7 +1911,7 @@ $(document).ready(function() {
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">タグ</span>
                 </a>
               </div>
