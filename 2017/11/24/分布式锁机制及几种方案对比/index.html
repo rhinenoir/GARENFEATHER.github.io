@@ -81,17 +81,17 @@
 
 
 
-<meta name="description" content="原文：分布式锁那些事 本文是在原文基础上用自己的语言试着更简洁的转述一遍，类似提纲，加入自己的小理解，和少部分扩展思考，内容基本为原文   分布式锁机制及几种方案对比">
+<meta name="description" content="原文：分布式锁那些事 本文是在原文基础上用自己的语言试着更简洁的转述一遍，类似提纲，加入自己的小理解，和少部分扩展思考，内容基本为原文   ¶分布式锁机制及几种方案对比">
 <meta name="keywords" content="distributed,lock,redis,zookeeper,database">
 <meta property="og:type" content="article">
 <meta property="og:title" content="分布式锁机制及几种方案对比">
 <meta property="og:url" content="http://blog.garenfeather.cn/2017/11/24/分布式锁机制及几种方案对比/index.html">
 <meta property="og:site_name" content="変わらないで">
-<meta property="og:description" content="原文：分布式锁那些事 本文是在原文基础上用自己的语言试着更简洁的转述一遍，类似提纲，加入自己的小理解，和少部分扩展思考，内容基本为原文   分布式锁机制及几种方案对比">
+<meta property="og:description" content="原文：分布式锁那些事 本文是在原文基础上用自己的语言试着更简洁的转述一遍，类似提纲，加入自己的小理解，和少部分扩展思考，内容基本为原文   ¶分布式锁机制及几种方案对比">
 <meta property="og:updated_time" content="2018-02-03T16:56:10.956Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="分布式锁机制及几种方案对比">
-<meta name="twitter:description" content="原文：分布式锁那些事 本文是在原文基础上用自己的语言试着更简洁的转述一遍，类似提纲，加入自己的小理解，和少部分扩展思考，内容基本为原文   分布式锁机制及几种方案对比">
+<meta name="twitter:description" content="原文：分布式锁那些事 本文是在原文基础上用自己的语言试着更简洁的转述一遍，类似提纲，加入自己的小理解，和少部分扩展思考，内容基本为原文   ¶分布式锁机制及几种方案对比">
 
 
 
@@ -427,13 +427,16 @@
 <li>本文是在原文基础上用自己的语言试着更简洁的转述一遍，类似提纲，加入自己的小理解，和少部分扩展思考，内容基本为原文</li>
 </ul>
 <hr>
-<h2 id="分布式锁机制及几种方案对比"><a href="#分布式锁机制及几种方案对比" class="headerlink" title="分布式锁机制及几种方案对比"></a>分布式锁机制及几种方案对比</h2><a id="more"></a>
-<h3 id="为什么需要分布式锁"><a href="#为什么需要分布式锁" class="headerlink" title="为什么需要分布式锁"></a>为什么需要分布式锁</h3><ul>
+<h2 id="分布式锁机制及几种方案对比"><a class="header-anchor" href="#分布式锁机制及几种方案对比">¶</a>分布式锁机制及几种方案对比</h2>
+<a id="more"></a>
+<h3 id="为什么需要分布式锁"><a class="header-anchor" href="#为什么需要分布式锁">¶</a>为什么需要分布式锁</h3>
+<ul>
 <li>保证同一方法同一时间只有一个线程执行</li>
 <li>单机性能有限，服务由单体部署拆分成分布式部署</li>
 <li>需要跨进程，跨机，跨数据中心一致性方案(单进程内各语言或自身有锁方案，或配合架构有特定的组件集成)</li>
 </ul>
-<h3 id="分布式锁要求"><a href="#分布式锁要求" class="headerlink" title="分布式锁要求"></a>分布式锁要求</h3><ul>
+<h3 id="分布式锁要求"><a class="header-anchor" href="#分布式锁要求">¶</a>分布式锁要求</h3>
+<ul>
 <li>同一时刻一个方法只能有一个进程的一个线程执行</li>
 <li>高可用</li>
 <li>高性能</li>
@@ -441,17 +444,22 @@
 <li>支持阻塞锁，获取锁失败可以继续尝试获取</li>
 <li>支持非阻塞锁，获取失败立刻返回</li>
 </ul>
-<h3 id="分布式锁的三种方案分析"><a href="#分布式锁的三种方案分析" class="headerlink" title="分布式锁的三种方案分析"></a>分布式锁的三种方案分析</h3><h4 id="数据库方案"><a href="#数据库方案" class="headerlink" title="数据库方案"></a>数据库方案</h4><ul>
-<li>操作<ul>
+<h3 id="分布式锁的三种方案分析"><a class="header-anchor" href="#分布式锁的三种方案分析">¶</a>分布式锁的三种方案分析</h3>
+<h4 id="数据库方案"><a class="header-anchor" href="#数据库方案">¶</a>数据库方案</h4>
+<ul>
+<li>操作
+<ul>
 <li>数据库建表，在<strong>方法名上创建唯一索引</strong></li>
 <li>在表中插入方法名，执行者等的一条数据，插入成功获取锁</li>
 </ul>
 </li>
-<li>优势<ul>
+<li>优势
+<ul>
 <li>借助数据库，结构简单</li>
 </ul>
 </li>
-<li>不足<ul>
+<li>不足
+<ul>
 <li>受限数据库性能(可能要求多机部署，主备复制，数据同步等)</li>
 <li>没有锁失效方案</li>
 <li>不可重入</li>
@@ -459,14 +467,17 @@
 </ul>
 </li>
 </ul>
-<h4 id="Redis方案"><a href="#Redis方案" class="headerlink" title="Redis方案"></a>Redis方案</h4><ul>
-<li>操作(2.6.12版之前)<ul>
+<h4 id="redis方案"><a class="header-anchor" href="#redis方案">¶</a>Redis方案</h4>
+<ul>
+<li>操作(2.6.12版之前)
+<ul>
 <li>setnx设置key-value</li>
 <li>expire设置过期时间</li>
 <li>del释放</li>
 </ul>
 </li>
-<li>问题及对应解决方案<ul>
+<li>问题及对应解决方案
+<ul>
 <li><strong>每一步的操作都要保证原子性</strong>，set完没来得及设expire会导致死锁(2.6.12版实现了将两个操作合并原子化操作)</li>
 <li>分布式环境下，A获取锁后阻塞，锁过期被B获取，A恢复后执行完错误释放了此时属于B的锁(经典CAS算法解决被误释放问题，但原本线程操作未完就失去锁的问题并没解决)</li>
 <li>高可用要求主从复制机制，而主从复制多为异步，会出现数据不一致(不主从复制，用<strong>RedLock</strong>算法，该算法的成熟开源实现即Redisson，<strong>此处并不明白该算法如何解决主从复制的问题</strong>)</li>
@@ -475,13 +486,16 @@
 <li>整体优势：借助Redis，实现方便</li>
 <li>问题：超时作为锁失效机制不可靠，若处理时间过长会在完成前失去锁</li>
 </ul>
-<h4 id="Zookeeper方案"><a href="#Zookeeper方案" class="headerlink" title="Zookeeper方案"></a>Zookeeper方案</h4><ul>
+<h4 id="zookeeper方案"><a class="header-anchor" href="#zookeeper方案">¶</a>Zookeeper方案</h4>
+<ul>
 <li>结构：内部分层文件系统目录树</li>
-<li>操作<ul>
+<li>操作
+<ul>
 <li>(原文有不清晰之处，待日后补充)</li>
 </ul>
 </li>
-<li>优点<ul>
+<li>优点
+<ul>
 <li>高可用</li>
 <li>可重入</li>
 <li>阻塞锁</li>
@@ -490,7 +504,9 @@
 </li>
 <li>缺点：频繁插入删除性能会比Redis差一些</li>
 </ul>
-<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><h4 id="Redlock算法"><a href="#Redlock算法" class="headerlink" title="Redlock算法"></a>Redlock算法</h4><ul>
+<h3 id="其他"><a class="header-anchor" href="#其他">¶</a>其他</h3>
+<h4 id="redlock算法"><a class="header-anchor" href="#redlock算法">¶</a>Redlock算法</h4>
+<ul>
 <li>大致思想为布置多个Redis Master节点，挨个申请锁，获取多数则成功，少数则在所有节点上解锁？</li>
 </ul>
 <blockquote>
@@ -765,7 +781,7 @@ $(document).ready(function() {
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#分布式锁机制及几种方案对比"><span class="nav-number">1.</span> <span class="nav-text">分布式锁机制及几种方案对比</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么需要分布式锁"><span class="nav-number">1.1.</span> <span class="nav-text">为什么需要分布式锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分布式锁要求"><span class="nav-number">1.2.</span> <span class="nav-text">分布式锁要求</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分布式锁的三种方案分析"><span class="nav-number">1.3.</span> <span class="nav-text">分布式锁的三种方案分析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#数据库方案"><span class="nav-number">1.3.1.</span> <span class="nav-text">数据库方案</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Redis方案"><span class="nav-number">1.3.2.</span> <span class="nav-text">Redis方案</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Zookeeper方案"><span class="nav-number">1.3.3.</span> <span class="nav-text">Zookeeper方案</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他"><span class="nav-number">1.4.</span> <span class="nav-text">其他</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Redlock算法"><span class="nav-number">1.4.1.</span> <span class="nav-text">Redlock算法</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#分布式锁机制及几种方案对比"><span class="nav-number">1.</span> <span class="nav-text">¶分布式锁机制及几种方案对比</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么需要分布式锁"><span class="nav-number">1.1.</span> <span class="nav-text">¶为什么需要分布式锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分布式锁要求"><span class="nav-number">1.2.</span> <span class="nav-text">¶分布式锁要求</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分布式锁的三种方案分析"><span class="nav-number">1.3.</span> <span class="nav-text">¶分布式锁的三种方案分析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#数据库方案"><span class="nav-number">1.3.1.</span> <span class="nav-text">¶数据库方案</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#redis方案"><span class="nav-number">1.3.2.</span> <span class="nav-text">¶Redis方案</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#zookeeper方案"><span class="nav-number">1.3.3.</span> <span class="nav-text">¶Zookeeper方案</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他"><span class="nav-number">1.4.</span> <span class="nav-text">¶其他</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#redlock算法"><span class="nav-number">1.4.1.</span> <span class="nav-text">¶Redlock算法</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>

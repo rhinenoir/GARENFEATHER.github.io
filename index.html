@@ -422,14 +422,18 @@
       
         
           <hr>
-<p>原文：<a href="https://docs.ghost.org/docs/working-with-ghost" target="_blank" rel="external">working-with-ghost</a><br>翻译部分：</p>
+<p>原文：<a href="https://docs.ghost.org/docs/working-with-ghost" target="_blank" rel="external">working-with-ghost</a><br>
+翻译部分：</p>
 <ul>
-<li>Day-to-day Development Commands<ul>
+<li>Day-to-day Development Commands
+<ul>
 <li>Running Ghost</li>
 </ul>
 </li>
 </ul>
-<h3 id="日常频繁使用的开发命令"><a href="#日常频繁使用的开发命令" class="headerlink" title="日常频繁使用的开发命令"></a>日常频繁使用的开发命令</h3><h4 id="运行Ghost"><a href="#运行Ghost" class="headerlink" title="运行Ghost"></a>运行Ghost</h4><p>Ghost有多种启动方式，每种都各有利弊，这些方式在默认条件下都会从<a href="http://localhost:2368./启动Ghost服务" target="_blank" rel="external">http://localhost:2368./启动Ghost服务</a></p>
+<h3 id="日常频繁使用的开发命令"><a class="header-anchor" href="#日常频繁使用的开发命令">¶</a>日常频繁使用的开发命令</h3>
+<h4 id="运行ghost"><a class="header-anchor" href="#运行ghost">¶</a>运行Ghost</h4>
+<p>Ghost有多种启动方式，每种都各有利弊，这些方式在默认条件下都会从http://localhost:2368./启动Ghost服务</p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2018/02/03/Ghost文档翻译——开发模式启动命令对比/#more" rel="contents">
@@ -842,17 +846,23 @@ $(document).ready(function() {
 
       
         
-          <h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><h3 id="思路来源"><a href="#思路来源" class="headerlink" title="思路来源"></a>思路来源</h3><h3 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h3><ul>
-<li>一台连得上Google的服务器（测试用，可选）<ul>
+          <h2 id="一-前言"><a class="header-anchor" href="#一-前言">¶</a>一、前言</h2>
+<h3 id="思路来源"><a class="header-anchor" href="#思路来源">¶</a>思路来源</h3>
+<h3 id="准备"><a class="header-anchor" href="#准备">¶</a>准备</h3>
+<ul>
+<li>一台连得上Google的服务器（测试用，可选）
+<ul>
 <li>这里用的是腾讯云买的CentOS 7.2，新加坡节点</li>
 </ul>
 </li>
-<li>一个heroku账号<ul>
+<li>一个heroku账号
+<ul>
 <li>heroku平台注册需要翻墙，但登录和部署均不需要</li>
 <li>账号还有免费app余额</li>
 </ul>
 </li>
-<li>一台<del>便宜且容易搞到手的</del>国内服务器（可选）<ul>
+<li>一台<s>便宜且容易搞到手的</s>国内服务器（可选）
+<ul>
 <li>仅作为中转服务器，不需要多平台共用可以不备</li>
 </ul>
 </li>
@@ -1061,7 +1071,8 @@ $(document).ready(function() {
 
       
         
-          <h2 id="一、坑从何来"><a href="#一、坑从何来" class="headerlink" title="一、坑从何来"></a>一、坑从何来</h2><p>最近正好看到解析Docker单主机网络的部分，提到通过link链接容器，于是深入思考了下link的机制，首先如果为容器添加一条链接会发生以下几件事：</p>
+          <h2 id="一-坑从何来"><a class="header-anchor" href="#一-坑从何来">¶</a>一、坑从何来</h2>
+<p>最近正好看到解析Docker单主机网络的部分，提到通过link链接容器，于是深入思考了下link的机制，首先如果为容器添加一条链接会发生以下几件事：</p>
 <ul>
 <li>描述目标容器的环境变量会被创建</li>
 <li>链接的别名和对应目标容器的ip地址会被添加到DNS覆盖列表中</li>
@@ -1276,7 +1287,7 @@ $(document).ready(function() {
 <li>本文是在原文基础上用自己的语言试着更简洁的转述一遍，类似提纲，加入自己的小理解，和少部分扩展思考，内容基本为原文</li>
 </ul>
 <hr>
-<h2 id="分布式锁机制及几种方案对比"><a href="#分布式锁机制及几种方案对比" class="headerlink" title="分布式锁机制及几种方案对比"></a>分布式锁机制及几种方案对比</h2>
+<h2 id="分布式锁机制及几种方案对比"><a class="header-anchor" href="#分布式锁机制及几种方案对比">¶</a>分布式锁机制及几种方案对比</h2>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2017/11/24/分布式锁机制及几种方案对比/#more" rel="contents">
@@ -1480,9 +1491,10 @@ $(document).ready(function() {
 
       
         
-          <p>前言：首先，这是《Philosophical Dilemmas》第三版中译本《没有标准答案的哲学问题》的读书笔记<del>（<strong>阅读理解</strong>/课后习题/这次语文月考<strong>又挂</strong>了哎）</del>，全书共五章，每章约7个问题，回答包含两到三个立场，都是根本性的问题，难以回答，但还是试着做出选择并给出自己的理由，必然存在前后矛盾，尽力逻辑自洽。全部大概分成五次发，欢迎讨论，求指正。</p>
+          <p>前言：首先，这是《Philosophical Dilemmas》第三版中译本《没有标准答案的哲学问题》的读书笔记~~（<strong>阅读理解</strong>/课后习题/这次语文月考<strong>又挂</strong>了哎）~~，全书共五章，每章约7个问题，回答包含两到三个立场，都是根本性的问题，难以回答，但还是试着做出选择并给出自己的理由，必然存在前后矛盾，尽力逻辑自洽。全部大概分成五次发，欢迎讨论，求指正。</p>
 <hr>
-<h2 id="一、上帝、永生与信仰"><a href="#一、上帝、永生与信仰" class="headerlink" title="一、上帝、永生与信仰"></a>一、上帝、永生与信仰</h2><h3 id="1-上帝存在吗"><a href="#1-上帝存在吗" class="headerlink" title="1 上帝存在吗"></a>1 上帝存在吗</h3>
+<h2 id="一-上帝-永生与信仰"><a class="header-anchor" href="#一-上帝-永生与信仰">¶</a>一、上帝、永生与信仰</h2>
+<h3 id="1-上帝存在吗"><a class="header-anchor" href="#1-上帝存在吗">¶</a>1 上帝存在吗</h3>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2017/10/24/【Philosophical-Dilemmas】上帝、永生与信仰/#more" rel="contents">
@@ -1687,13 +1699,16 @@ $(document).ready(function() {
       
         
           <p>那会用各种语言都写过正则匹配，随便乱比较了一下，比较语言包括python、C#和java，没什么逻辑，想到啥看到啥就写的啥，仅供参考</p>
-<h2 id="一、版本"><a href="#一、版本" class="headerlink" title="一、版本"></a>一、版本</h2><ul>
+<h2 id="一-版本"><a class="header-anchor" href="#一-版本">¶</a>一、版本</h2>
+<ul>
 <li>java8</li>
 <li>C# 版本差异不大吧，不记得了</li>
 <li>python 2.7</li>
 </ul>
 <hr>
-<h2 id="二、比较"><a href="#二、比较" class="headerlink" title="二、比较"></a>二、比较</h2><h3 id="对应函数"><a href="#对应函数" class="headerlink" title="对应函数"></a>对应函数</h3><ul>
+<h2 id="二-比较"><a class="header-anchor" href="#二-比较">¶</a>二、比较</h2>
+<h3 id="对应函数"><a class="header-anchor" href="#对应函数">¶</a>对应函数</h3>
+<ul>
 <li>python 的re模块中，search和match对应其他两种语言的match函数，确切的来说是search函数对应</li>
 <li>python的match函数必须从字符串的第0位开始匹配一次，不存在则返回none（不明白这个函数究竟有什么用，正则表达式有自己的^符号来表示从头开始的匹配啊……）</li>
 </ul>

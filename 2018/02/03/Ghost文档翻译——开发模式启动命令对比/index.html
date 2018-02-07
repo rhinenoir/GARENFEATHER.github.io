@@ -81,17 +81,17 @@
 
 
 
-<meta name="description" content="原文：working-with-ghost翻译部分：  Day-to-day Development Commands Running Ghost    日常频繁使用的开发命令运行GhostGhost有多种启动方式，每种都各有利弊，这些方式在默认条件下都会从http://localhost:2368./启动Ghost服务">
+<meta name="description" content="原文：working-with-ghost 翻译部分：  Day-to-day Development Commands  Running Ghost    ¶日常频繁使用的开发命令 ¶运行Ghost Ghost有多种启动方式，每种都各有利弊，这些方式在默认条件下都会从http://localhost:2368./启动Ghost服务">
 <meta name="keywords" content="ghost,blog,grunt,npm,node">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Ghost文档翻译——开发模式启动命令对比">
 <meta property="og:url" content="http://blog.garenfeather.cn/2018/02/03/Ghost文档翻译——开发模式启动命令对比/index.html">
 <meta property="og:site_name" content="変わらないで">
-<meta property="og:description" content="原文：working-with-ghost翻译部分：  Day-to-day Development Commands Running Ghost    日常频繁使用的开发命令运行GhostGhost有多种启动方式，每种都各有利弊，这些方式在默认条件下都会从http://localhost:2368./启动Ghost服务">
+<meta property="og:description" content="原文：working-with-ghost 翻译部分：  Day-to-day Development Commands  Running Ghost    ¶日常频繁使用的开发命令 ¶运行Ghost Ghost有多种启动方式，每种都各有利弊，这些方式在默认条件下都会从http://localhost:2368./启动Ghost服务">
 <meta property="og:updated_time" content="2018-02-03T16:55:43.249Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ghost文档翻译——开发模式启动命令对比">
-<meta name="twitter:description" content="原文：working-with-ghost翻译部分：  Day-to-day Development Commands Running Ghost    日常频繁使用的开发命令运行GhostGhost有多种启动方式，每种都各有利弊，这些方式在默认条件下都会从http://localhost:2368./启动Ghost服务">
+<meta name="twitter:description" content="原文：working-with-ghost 翻译部分：  Day-to-day Development Commands  Running Ghost    ¶日常频繁使用的开发命令 ¶运行Ghost Ghost有多种启动方式，每种都各有利弊，这些方式在默认条件下都会从http://localhost:2368./启动Ghost服务">
 
 
 
@@ -423,17 +423,22 @@
 
       
         <hr>
-<p>原文：<a href="https://docs.ghost.org/docs/working-with-ghost" target="_blank" rel="external">working-with-ghost</a><br>翻译部分：</p>
+<p>原文：<a href="https://docs.ghost.org/docs/working-with-ghost" target="_blank" rel="external">working-with-ghost</a><br>
+翻译部分：</p>
 <ul>
-<li>Day-to-day Development Commands<ul>
+<li>Day-to-day Development Commands
+<ul>
 <li>Running Ghost</li>
 </ul>
 </li>
 </ul>
-<h3 id="日常频繁使用的开发命令"><a href="#日常频繁使用的开发命令" class="headerlink" title="日常频繁使用的开发命令"></a>日常频繁使用的开发命令</h3><h4 id="运行Ghost"><a href="#运行Ghost" class="headerlink" title="运行Ghost"></a>运行Ghost</h4><p>Ghost有多种启动方式，每种都各有利弊，这些方式在默认条件下都会从<a href="http://localhost:2368./启动Ghost服务" target="_blank" rel="external">http://localhost:2368./启动Ghost服务</a></p>
+<h3 id="日常频繁使用的开发命令"><a class="header-anchor" href="#日常频繁使用的开发命令">¶</a>日常频繁使用的开发命令</h3>
+<h4 id="运行ghost"><a class="header-anchor" href="#运行ghost">¶</a>运行Ghost</h4>
+<p>Ghost有多种启动方式，每种都各有利弊，这些方式在默认条件下都会从http://localhost:2368./启动Ghost服务</p>
 <a id="more"></a>
 <ul>
-<li><p>grunt dev</p>
+<li>
+<p>grunt dev</p>
 <ul>
 <li>开发模式下最常见的Ghost启动方式</li>
 <li>服务启动时编译构建client文件</li>
@@ -441,21 +446,24 @@
 <li>监听client文件，文件变化时敏捷重建，变化包括文件的实时重载</li>
 </ul>
 </li>
-<li><p>grunt dev –server</p>
+<li>
+<p>grunt dev --server</p>
 <ul>
 <li>启动时不编译client文件，也不监听其变化，其他与上一条命令</li>
 <li>请确保client文件已编译，或者保证其内容为最新（见 <a href="https://docs.ghost.org/docs/working-with-ghost#grunt-build" target="_blank" rel="external">grunt build</a>）</li>
 <li>在确保你不修改client文件的情况下这样有利于最小化启动时间，保存系统资源</li>
 </ul>
 </li>
-<li><p>grunt prod</p>
+<li>
+<p>grunt prod</p>
 <ul>
 <li>生产模式下启动，启动时编译client文件</li>
 <li>既不监听server文件也不监听client文件</li>
-<li>相当于以npm start –production命令启动Ghost</li>
+<li>相当于以npm start --production命令启动Ghost</li>
 </ul>
 </li>
-<li><p>node index.js</p>
+<li>
+<p>node index.js</p>
 <ul>
 <li>单纯的启动Ghost服务器，不构建client，不监听文件变化也不自动重启服务</li>
 <li>当你只想快速启动服务，且不介意手动修改文件要重启服务时适合此命令</li>
@@ -731,7 +739,7 @@ $(document).ready(function() {
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#日常频繁使用的开发命令"><span class="nav-number">1.</span> <span class="nav-text">日常频繁使用的开发命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#运行Ghost"><span class="nav-number">1.1.</span> <span class="nav-text">运行Ghost</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#日常频繁使用的开发命令"><span class="nav-number">1.</span> <span class="nav-text">¶日常频繁使用的开发命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#运行ghost"><span class="nav-number">1.1.</span> <span class="nav-text">¶运行Ghost</span></a></li></ol></li></ol></div>
             
 
           </div>

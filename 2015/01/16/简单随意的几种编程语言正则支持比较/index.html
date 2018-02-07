@@ -81,17 +81,17 @@
 
 
 
-<meta name="description" content="那会用各种语言都写过正则匹配，随便乱比较了一下，比较语言包括python、C#和java，没什么逻辑，想到啥看到啥就写的啥，仅供参考 一、版本 java8 C# 版本差异不大吧，不记得了 python 2.7   二、比较对应函数 python 的re模块中，search和match对应其他两种语言的match函数，确切的来说是search函数对应 python的match函数必须从字符串的第0位">
+<meta name="description" content="那会用各种语言都写过正则匹配，随便乱比较了一下，比较语言包括python、C#和java，没什么逻辑，想到啥看到啥就写的啥，仅供参考 ¶一、版本  java8 C# 版本差异不大吧，不记得了 python 2.7   ¶二、比较 ¶对应函数  python 的re模块中，search和match对应其他两种语言的match函数，确切的来说是search函数对应 python的match函数必须从字">
 <meta name="keywords" content="python,c#,java">
 <meta property="og:type" content="article">
 <meta property="og:title" content="简单随意的几种编程语言正则支持比较">
 <meta property="og:url" content="http://blog.garenfeather.cn/2015/01/16/简单随意的几种编程语言正则支持比较/index.html">
 <meta property="og:site_name" content="変わらないで">
-<meta property="og:description" content="那会用各种语言都写过正则匹配，随便乱比较了一下，比较语言包括python、C#和java，没什么逻辑，想到啥看到啥就写的啥，仅供参考 一、版本 java8 C# 版本差异不大吧，不记得了 python 2.7   二、比较对应函数 python 的re模块中，search和match对应其他两种语言的match函数，确切的来说是search函数对应 python的match函数必须从字符串的第0位">
+<meta property="og:description" content="那会用各种语言都写过正则匹配，随便乱比较了一下，比较语言包括python、C#和java，没什么逻辑，想到啥看到啥就写的啥，仅供参考 ¶一、版本  java8 C# 版本差异不大吧，不记得了 python 2.7   ¶二、比较 ¶对应函数  python 的re模块中，search和match对应其他两种语言的match函数，确切的来说是search函数对应 python的match函数必须从字">
 <meta property="og:updated_time" content="2018-01-16T14:32:22.648Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="简单随意的几种编程语言正则支持比较">
-<meta name="twitter:description" content="那会用各种语言都写过正则匹配，随便乱比较了一下，比较语言包括python、C#和java，没什么逻辑，想到啥看到啥就写的啥，仅供参考 一、版本 java8 C# 版本差异不大吧，不记得了 python 2.7   二、比较对应函数 python 的re模块中，search和match对应其他两种语言的match函数，确切的来说是search函数对应 python的match函数必须从字符串的第0位">
+<meta name="twitter:description" content="那会用各种语言都写过正则匹配，随便乱比较了一下，比较语言包括python、C#和java，没什么逻辑，想到啥看到啥就写的啥，仅供参考 ¶一、版本  java8 C# 版本差异不大吧，不记得了 python 2.7   ¶二、比较 ¶对应函数  python 的re模块中，search和match对应其他两种语言的match函数，确切的来说是search函数对应 python的match函数必须从字">
 
 
 
@@ -423,13 +423,16 @@
 
       
         <p>那会用各种语言都写过正则匹配，随便乱比较了一下，比较语言包括python、C#和java，没什么逻辑，想到啥看到啥就写的啥，仅供参考</p>
-<h2 id="一、版本"><a href="#一、版本" class="headerlink" title="一、版本"></a>一、版本</h2><ul>
+<h2 id="一-版本"><a class="header-anchor" href="#一-版本">¶</a>一、版本</h2>
+<ul>
 <li>java8</li>
 <li>C# 版本差异不大吧，不记得了</li>
 <li>python 2.7</li>
 </ul>
 <hr>
-<h2 id="二、比较"><a href="#二、比较" class="headerlink" title="二、比较"></a>二、比较</h2><h3 id="对应函数"><a href="#对应函数" class="headerlink" title="对应函数"></a>对应函数</h3><ul>
+<h2 id="二-比较"><a class="header-anchor" href="#二-比较">¶</a>二、比较</h2>
+<h3 id="对应函数"><a class="header-anchor" href="#对应函数">¶</a>对应函数</h3>
+<ul>
 <li>python 的re模块中，search和match对应其他两种语言的match函数，确切的来说是search函数对应</li>
 <li>python的match函数必须从字符串的第0位开始匹配一次，不存在则返回none（不明白这个函数究竟有什么用，正则表达式有自己的^符号来表示从头开始的匹配啊……）</li>
 </ul>
@@ -438,18 +441,22 @@
 <li>findall函数则对应所谓matches的功能，java中并没有什么matches，只能通过Matcher对象的match()方法不断搜索下去达到相对的效果，C#的matches函数会返回一个MatchCollection匹配结果集合对象（java这个正则支持差评）</li>
 <li>C#的Match对象通过match方法匹配、success属性返回成功与否的结果，匹配位置不会自行移动，要手动设定下一次匹配的offset（辅助参数有index和length来确定匹配位置），java的Matcher对象所用的find方法进行了匹配的同时返回匹配成功与否的结果（一顶C#俩），有start和end方法返回匹配位置，并且会自行随着匹配而移动下一次匹配开始的位置</li>
 </ul>
-<h3 id="操作方式（包括compile、match、find等）"><a href="#操作方式（包括compile、match、find等）" class="headerlink" title="操作方式（包括compile、match、find等）"></a>操作方式（包括compile、match、find等）</h3><ul>
+<h3 id="操作方式-包括compile-match-find等"><a class="header-anchor" href="#操作方式-包括compile-match-find等">¶</a>操作方式（包括compile、match、find等）</h3>
+<ul>
 <li>python中用到的几种都是函数（type()结果为function），java有Pattern对象而C#有Regex对象，java有Matcher对象而C#有Match对象，java一般是用Pattern类的静态方法编译获得该对象，C#则通过以字符串为参数传统新建对象方式获得（new Pattern(str)）。两者的match（Matcher）对象都通过Pattern对象获得，而python则是将Pattern对象作为参数一起放入search（或者findall、match等等）方法中</li>
 </ul>
-<h3 id="功能完善"><a href="#功能完善" class="headerlink" title="功能完善"></a>功能完善</h3><ul>
+<h3 id="功能完善"><a class="header-anchor" href="#功能完善">¶</a>功能完善</h3>
+<ul>
 <li>python对正则替换支持的最好，sub函数允许自行构建一个函数来对正则匹配的结果进行复杂的操作（这种操作方式的占了python本身“函数也可以是对象”的构建方式的优势），其他两种目测只能强行命名分组替换，需要更多的自行检测匹配结果</li>
 </ul>
-<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><ul>
+<h3 id="其他"><a class="header-anchor" href="#其他">¶</a>其他</h3>
+<ul>
 <li>默认情况下python、java和C#的.符号都不支持匹配\n换行符，java和C#还不支持\r，C#似乎在一堆字符串里匹配到\r会出现迷之bug……（应该不是bug，还得多看doc）</li>
 <li>java里面\r和\n都视为line terminator，遇到会终止匹配，而C#和python不视\r为line terminator，但是C#输出时作为回到行首符覆盖输出，通过输出我们看到的结果会不一样，而实际上其匹配结果跟python是一样的</li>
 </ul>
 <hr>
-<h2 id="三、后言"><a href="#三、后言" class="headerlink" title="三、后言"></a>三、后言</h2><ul>
+<h2 id="三-后言"><a class="header-anchor" href="#三-后言">¶</a>三、后言</h2>
+<ul>
 <li>……写的乱七八糟，将来怕是自己都看不懂</li>
 <li>没准为了看得懂回头复习会有新的收获呢</li>
 </ul>
@@ -714,7 +721,7 @@ $(document).ready(function() {
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、版本"><span class="nav-number">1.</span> <span class="nav-text">一、版本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、比较"><span class="nav-number">2.</span> <span class="nav-text">二、比较</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#对应函数"><span class="nav-number">2.1.</span> <span class="nav-text">对应函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#操作方式（包括compile、match、find等）"><span class="nav-number">2.2.</span> <span class="nav-text">操作方式（包括compile、match、find等）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#功能完善"><span class="nav-number">2.3.</span> <span class="nav-text">功能完善</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他"><span class="nav-number">2.4.</span> <span class="nav-text">其他</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、后言"><span class="nav-number">3.</span> <span class="nav-text">三、后言</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一-版本"><span class="nav-number">1.</span> <span class="nav-text">¶一、版本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二-比较"><span class="nav-number">2.</span> <span class="nav-text">¶二、比较</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#对应函数"><span class="nav-number">2.1.</span> <span class="nav-text">¶对应函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#操作方式-包括compile-match-find等"><span class="nav-number">2.2.</span> <span class="nav-text">¶操作方式（包括compile、match、find等）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#功能完善"><span class="nav-number">2.3.</span> <span class="nav-text">¶功能完善</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他"><span class="nav-number">2.4.</span> <span class="nav-text">¶其他</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三-后言"><span class="nav-number">3.</span> <span class="nav-text">¶三、后言</span></a></li></ol></div>
             
 
           </div>

@@ -81,17 +81,17 @@
 
 
 
-<meta name="description" content="一、前言思路来源准备 一台连得上Google的服务器（测试用，可选） 这里用的是腾讯云买的CentOS 7.2，新加坡节点   一个heroku账号 heroku平台注册需要翻墙，但登录和部署均不需要 账号还有免费app余额   一台便宜且容易搞到手的国内服务器（可选） 仅作为中转服务器，不需要多平台共用可以不备   需要梯子服务的平台对应的客户端（Android、Win、Mac、Linux）">
+<meta name="description" content="¶一、前言 ¶思路来源 ¶准备  一台连得上Google的服务器（测试用，可选）  这里用的是腾讯云买的CentOS 7.2，新加坡节点   一个heroku账号  heroku平台注册需要翻墙，但登录和部署均不需要 账号还有免费app余额   一台便宜且容易搞到手的国内服务器（可选）  仅作为中转服务器，不需要多平台共用可以不备   需要梯子服务的平台对应的客户端（Android、Win、Mac">
 <meta name="keywords" content="network,heroku,wall">
 <meta property="og:type" content="article">
 <meta property="og:title" content="利用heroku实现免费的全平台科学上网">
 <meta property="og:url" content="http://blog.garenfeather.cn/2018/01/25/利用heroku实现免费的全平台科学上网/index.html">
 <meta property="og:site_name" content="変わらないで">
-<meta property="og:description" content="一、前言思路来源准备 一台连得上Google的服务器（测试用，可选） 这里用的是腾讯云买的CentOS 7.2，新加坡节点   一个heroku账号 heroku平台注册需要翻墙，但登录和部署均不需要 账号还有免费app余额   一台便宜且容易搞到手的国内服务器（可选） 仅作为中转服务器，不需要多平台共用可以不备   需要梯子服务的平台对应的客户端（Android、Win、Mac、Linux）">
+<meta property="og:description" content="¶一、前言 ¶思路来源 ¶准备  一台连得上Google的服务器（测试用，可选）  这里用的是腾讯云买的CentOS 7.2，新加坡节点   一个heroku账号  heroku平台注册需要翻墙，但登录和部署均不需要 账号还有免费app余额   一台便宜且容易搞到手的国内服务器（可选）  仅作为中转服务器，不需要多平台共用可以不备   需要梯子服务的平台对应的客户端（Android、Win、Mac">
 <meta property="og:updated_time" content="2018-01-25T14:56:34.722Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="利用heroku实现免费的全平台科学上网">
-<meta name="twitter:description" content="一、前言思路来源准备 一台连得上Google的服务器（测试用，可选） 这里用的是腾讯云买的CentOS 7.2，新加坡节点   一个heroku账号 heroku平台注册需要翻墙，但登录和部署均不需要 账号还有免费app余额   一台便宜且容易搞到手的国内服务器（可选） 仅作为中转服务器，不需要多平台共用可以不备   需要梯子服务的平台对应的客户端（Android、Win、Mac、Linux）">
+<meta name="twitter:description" content="¶一、前言 ¶思路来源 ¶准备  一台连得上Google的服务器（测试用，可选）  这里用的是腾讯云买的CentOS 7.2，新加坡节点   一个heroku账号  heroku平台注册需要翻墙，但登录和部署均不需要 账号还有免费app余额   一台便宜且容易搞到手的国内服务器（可选）  仅作为中转服务器，不需要多平台共用可以不备   需要梯子服务的平台对应的客户端（Android、Win、Mac">
 
 
 
@@ -422,17 +422,23 @@
       
 
       
-        <h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><h3 id="思路来源"><a href="#思路来源" class="headerlink" title="思路来源"></a>思路来源</h3><h3 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h3><ul>
-<li>一台连得上Google的服务器（测试用，可选）<ul>
+        <h2 id="一-前言"><a class="header-anchor" href="#一-前言">¶</a>一、前言</h2>
+<h3 id="思路来源"><a class="header-anchor" href="#思路来源">¶</a>思路来源</h3>
+<h3 id="准备"><a class="header-anchor" href="#准备">¶</a>准备</h3>
+<ul>
+<li>一台连得上Google的服务器（测试用，可选）
+<ul>
 <li>这里用的是腾讯云买的CentOS 7.2，新加坡节点</li>
 </ul>
 </li>
-<li>一个heroku账号<ul>
+<li>一个heroku账号
+<ul>
 <li>heroku平台注册需要翻墙，但登录和部署均不需要</li>
 <li>账号还有免费app余额</li>
 </ul>
 </li>
-<li>一台<del>便宜且容易搞到手的</del>国内服务器（可选）<ul>
+<li>一台<s>便宜且容易搞到手的</s>国内服务器（可选）
+<ul>
 <li>仅作为中转服务器，不需要多平台共用可以不备</li>
 </ul>
 </li>
@@ -706,7 +712,7 @@ $(document).ready(function() {
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、前言"><span class="nav-number">1.</span> <span class="nav-text">一、前言</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#思路来源"><span class="nav-number">1.1.</span> <span class="nav-text">思路来源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#准备"><span class="nav-number">1.2.</span> <span class="nav-text">准备</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一-前言"><span class="nav-number">1.</span> <span class="nav-text">¶一、前言</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#思路来源"><span class="nav-number">1.1.</span> <span class="nav-text">¶思路来源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#准备"><span class="nav-number">1.2.</span> <span class="nav-text">¶准备</span></a></li></ol></li></ol></div>
             
 
           </div>
