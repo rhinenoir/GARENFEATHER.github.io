@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.garenfeather.cn/"/>
-  <updated>2018-02-03T16:55:43.249Z</updated>
+  <updated>2018-03-07T13:44:26.118Z</updated>
   <id>http://blog.garenfeather.cn/</id>
   
   <author>
@@ -15,6 +15,34 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>my-mermaid-please</title>
+    <link href="http://blog.garenfeather.cn/2018/03/07/my-mermaid-please/"/>
+    <id>http://blog.garenfeather.cn/2018/03/07/my-mermaid-please/</id>
+    <published>2018-03-07T13:43:22.000Z</published>
+    <updated>2018-03-07T13:44:26.118Z</updated>
+    
+    <content type="html"><![CDATA[<ul><li>test</li></ul><p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">graph TD</div><div class="line">A[Christmas] --&gt;|Get money| B(Go shopping)</div><div class="line">B --&gt; C&#123;Let me think&#125;</div><div class="line">C --&gt;|One| D[Laptop]</div><div class="line">C --&gt;|Two| E[iPhone]</div><div class="line">C --&gt;|Three| F[Car]</div></pre></td></tr></table></figure></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;ul&gt;
+&lt;li&gt;test&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;
+      
+    
+    </summary>
+    
+      <category term="test" scheme="http://blog.garenfeather.cn/categories/test/"/>
+    
+    
+      <category term="test" scheme="http://blog.garenfeather.cn/tags/test/"/>
+    
+  </entry>
   
   <entry>
     <title>Ghost文档翻译——开发模式启动命令对比</title>
