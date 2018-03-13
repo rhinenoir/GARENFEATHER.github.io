@@ -151,9 +151,9 @@
       <category term="coding" scheme="http://blog.garenfeather.cn/categories/coding/"/>
     
     
-      <category term="network" scheme="http://blog.garenfeather.cn/tags/network/"/>
-    
       <category term="heroku" scheme="http://blog.garenfeather.cn/tags/heroku/"/>
+    
+      <category term="network" scheme="http://blog.garenfeather.cn/tags/network/"/>
     
       <category term="wall" scheme="http://blog.garenfeather.cn/tags/wall/"/>
     
@@ -184,9 +184,9 @@
       <category term="coding" scheme="http://blog.garenfeather.cn/categories/coding/"/>
     
     
-      <category term="Docker" scheme="http://blog.garenfeather.cn/tags/Docker/"/>
-    
       <category term="network" scheme="http://blog.garenfeather.cn/tags/network/"/>
+    
+      <category term="Docker" scheme="http://blog.garenfeather.cn/tags/Docker/"/>
     
       <category term="iptables" scheme="http://blog.garenfeather.cn/tags/iptables/"/>
     
