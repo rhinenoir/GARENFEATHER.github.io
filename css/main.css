@@ -556,7 +556,6 @@ pre code {
   padding-right: 10px;
   color: #888f96;
   text-align: right;
-  background-color: #000;
 }
 .highlight .code pre {
   width: 100%;
@@ -1825,7 +1824,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #ff4e94;
+  background: #62fff7;
 }
 .links-of-blogroll {
   font-size: 13px;
