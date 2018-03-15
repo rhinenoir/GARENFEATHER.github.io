@@ -564,7 +564,7 @@ pre code {
   background-color: #1d1f21;
 }
 .highlight .line {
-  height: 20px;
+  height: 22px;
 }
 .gutter {
   -webkit-user-select: none;
@@ -1824,7 +1824,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #4e6c8f;
+  background: #5586b3;
 }
 .links-of-blogroll {
   font-size: 13px;
