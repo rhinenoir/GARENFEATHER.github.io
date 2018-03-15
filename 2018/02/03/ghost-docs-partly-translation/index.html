@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="distributed,lock,redis,zookeeper,database," />
+  <meta name="keywords" content="ghost,blog,grunt,npm,node," />
 
 
 
@@ -81,17 +81,17 @@
 
 
 
-<meta name="description" content="原文：分布式锁那些事 本文是在原文基础上用自己的语言试着更简洁的转述一遍，类似提纲，加入自己的小理解，和少部分扩展思考，内容基本为原文    分布式锁机制及几种方案对比">
-<meta name="keywords" content="distributed,lock,redis,zookeeper,database">
+<meta name="description" content="原文：working-with-ghost 翻译部分：  Day-to-day Development Commands  Running Ghost     日常频繁使用的开发命令  运行Ghost Ghost有多种启动方式，每种都各有利弊，这些方式在默认条件下都会从http://localhost:2368./启动Ghost服务">
+<meta name="keywords" content="ghost,blog,grunt,npm,node">
 <meta property="og:type" content="article">
-<meta property="og:title" content="分布式锁机制及几种方案对比">
-<meta property="og:url" content="http://blog.garenfeather.cn/2017/11/24/分布式锁机制及几种方案对比/index.html">
+<meta property="og:title" content="Ghost文档翻译——开发模式启动命令对比">
+<meta property="og:url" content="http://blog.garenfeather.cn/2018/02/03/ghost-docs-partly-translation/index.html">
 <meta property="og:site_name" content="変わらないで">
-<meta property="og:description" content="原文：分布式锁那些事 本文是在原文基础上用自己的语言试着更简洁的转述一遍，类似提纲，加入自己的小理解，和少部分扩展思考，内容基本为原文    分布式锁机制及几种方案对比">
-<meta property="og:updated_time" content="2018-02-03T16:56:10.956Z">
+<meta property="og:description" content="原文：working-with-ghost 翻译部分：  Day-to-day Development Commands  Running Ghost     日常频繁使用的开发命令  运行Ghost Ghost有多种启动方式，每种都各有利弊，这些方式在默认条件下都会从http://localhost:2368./启动Ghost服务">
+<meta property="og:updated_time" content="2018-02-03T16:55:43.249Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="分布式锁机制及几种方案对比">
-<meta name="twitter:description" content="原文：分布式锁那些事 本文是在原文基础上用自己的语言试着更简洁的转述一遍，类似提纲，加入自己的小理解，和少部分扩展思考，内容基本为原文    分布式锁机制及几种方案对比">
+<meta name="twitter:title" content="Ghost文档翻译——开发模式启动命令对比">
+<meta name="twitter:description" content="原文：working-with-ghost 翻译部分：  Day-to-day Development Commands  Running Ghost     日常频繁使用的开发命令  运行Ghost Ghost有多种启动方式，每种都各有利弊，这些方式在默认条件下都会从http://localhost:2368./启动Ghost服务">
 
 
 
@@ -121,12 +121,12 @@
 
 
 
-  <link rel="canonical" href="http://blog.garenfeather.cn/2017/11/24/分布式锁机制及几种方案对比/"/>
+  <link rel="canonical" href="http://blog.garenfeather.cn/2018/02/03/ghost-docs-partly-translation/"/>
 
 
 
 
-  <title>分布式锁机制及几种方案对比 | 変わらないで</title>
+  <title>Ghost文档翻译——开发模式启动命令对比 | 変わらないで</title>
   
 
 
@@ -291,7 +291,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://blog.garenfeather.cn/2017/11/24/分布式锁机制及几种方案对比/">
+    <link itemprop="mainEntityOfPage" href="http://blog.garenfeather.cn/2018/02/03/ghost-docs-partly-translation/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="GarenFeather">
@@ -308,7 +308,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">分布式锁机制及几种方案对比</h1>
+          <h1 class="post-title" itemprop="name headline">Ghost文档翻译——开发模式启动命令对比</h1>
         
 
         <div class="post-meta">
@@ -320,8 +320,8 @@
               
                 <span class="post-meta-item-text">投稿日</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-11-24T13:51:54+08:00">
-                2017-11-24
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-03T23:35:29+08:00">
+                2018-02-03
               </time>
             
 
@@ -343,8 +343,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/coding/" itemprop="url" rel="index">
-                    <span itemprop="name">coding</span>
+                  <a href="/categories/translation/" itemprop="url" rel="index">
+                    <span itemprop="name">translation</span>
                   </a>
                 </span>
 
@@ -360,7 +360,7 @@
 
           
           
-             <span id="/2017/11/24/分布式锁机制及几种方案对比/" class="leancloud_visitors" data-flag-title="分布式锁机制及几种方案对比">
+             <span id="/2018/02/03/ghost-docs-partly-translation/" class="leancloud_visitors" data-flag-title="Ghost文档翻译——开发模式启动命令对比">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -385,7 +385,7 @@
                   <span class="post-meta-item-text">ワードカウント&#58;</span>
                 
                 <span title="ワードカウント">
-                  721
+                  340
                 </span>
               
 
@@ -410,92 +410,54 @@
       
 
       
-        <ul>
-<li>原文：<a href="http://mp.weixin.qq.com/s?__biz=MzI0NjUxNTY5Nw==&amp;mid=2247484071&amp;idx=1&amp;sn=f2af23340ab34052109065dfc8163f35&amp;chksm=e9bf5039dec8d92fc89155b2d742d11e75231daa6c390378940b34263d839b009a1def8bcf35&amp;mpshare=1&amp;scene=23&amp;srcid=0203YH5S7CyrwQE6uMkLZqOz#rd" target="_blank" rel="external">分布式锁那些事</a></li>
-<li>本文是在原文基础上用自己的语言试着更简洁的转述一遍，类似提纲，加入自己的小理解，和少部分扩展思考，内容基本为原文</li>
+        <hr>
+<p>原文：<a href="https://docs.ghost.org/docs/working-with-ghost" target="_blank" rel="external">working-with-ghost</a><br>
+翻译部分：</p>
+<ul>
+<li>Day-to-day Development Commands
+<ul>
+<li>Running Ghost</li>
 </ul>
-<hr>
-<h2 id="分布式锁机制及几种方案对比"><a class="markdownIt-Anchor" href="#分布式锁机制及几种方案对比"></a> 分布式锁机制及几种方案对比</h2>
+</li>
+</ul>
+<h3 id="日常频繁使用的开发命令"><a class="markdownIt-Anchor" href="#日常频繁使用的开发命令"></a> 日常频繁使用的开发命令</h3>
+<h4 id="运行ghost"><a class="markdownIt-Anchor" href="#运行ghost"></a> 运行Ghost</h4>
+<p>Ghost有多种启动方式，每种都各有利弊，这些方式在默认条件下都会从http://localhost:2368./启动Ghost服务</p>
 <a id="more"></a>
-<h3 id="为什么需要分布式锁"><a class="markdownIt-Anchor" href="#为什么需要分布式锁"></a> 为什么需要分布式锁</h3>
 <ul>
-<li>保证同一方法同一时间只有一个线程执行</li>
-<li>单机性能有限，服务由单体部署拆分成分布式部署</li>
-<li>需要跨进程，跨机，跨数据中心一致性方案(单进程内各语言或自身有锁方案，或配合架构有特定的组件集成)</li>
-</ul>
-<h3 id="分布式锁要求"><a class="markdownIt-Anchor" href="#分布式锁要求"></a> 分布式锁要求</h3>
+<li>
+<p>grunt dev</p>
 <ul>
-<li>同一时刻一个方法只能有一个进程的一个线程执行</li>
-<li>高可用</li>
-<li>高性能</li>
-<li>锁失效方案</li>
-<li>支持阻塞锁，获取锁失败可以继续尝试获取</li>
-<li>支持非阻塞锁，获取失败立刻返回</li>
-</ul>
-<h3 id="分布式锁的三种方案分析"><a class="markdownIt-Anchor" href="#分布式锁的三种方案分析"></a> 分布式锁的三种方案分析</h3>
-<h4 id="数据库方案"><a class="markdownIt-Anchor" href="#数据库方案"></a> 数据库方案</h4>
-<ul>
-<li>操作
-<ul>
-<li>数据库建表，在<strong>方法名上创建唯一索引</strong></li>
-<li>在表中插入方法名，执行者等的一条数据，插入成功获取锁</li>
+<li>开发模式下最常见的Ghost启动方式</li>
+<li>服务启动时编译构建client文件</li>
+<li>监听server文件，有变化自动重启</li>
+<li>监听client文件，文件变化时敏捷重建，变化包括文件的实时重载</li>
 </ul>
 </li>
-<li>优势
+<li>
+<p>grunt dev --server</p>
 <ul>
-<li>借助数据库，结构简单</li>
+<li>启动时不编译client文件，也不监听其变化，其他与上一条命令</li>
+<li>请确保client文件已编译，或者保证其内容为最新（见 <a href="https://docs.ghost.org/docs/working-with-ghost#grunt-build" target="_blank" rel="external">grunt build</a>）</li>
+<li>在确保你不修改client文件的情况下这样有利于最小化启动时间，保存系统资源</li>
 </ul>
 </li>
-<li>不足
+<li>
+<p>grunt prod</p>
 <ul>
-<li>受限数据库性能(可能要求多机部署，主备复制，数据同步等)</li>
-<li>没有锁失效方案</li>
-<li>不可重入</li>
-<li>没有阻塞锁方案，需要自行循环</li>
+<li>生产模式下启动，启动时编译client文件</li>
+<li>既不监听server文件也不监听client文件</li>
+<li>相当于以npm start --production命令启动Ghost</li>
 </ul>
 </li>
-</ul>
-<h4 id="redis方案"><a class="markdownIt-Anchor" href="#redis方案"></a> Redis方案</h4>
+<li>
+<p>node index.js</p>
 <ul>
-<li>操作(2.6.12版之前)
-<ul>
-<li>setnx设置key-value</li>
-<li>expire设置过期时间</li>
-<li>del释放</li>
+<li>单纯的启动Ghost服务器，不构建client，不监听文件变化也不自动重启服务</li>
+<li>当你只想快速启动服务，且不介意手动修改文件要重启服务时适合此命令</li>
+<li><strong>不构建client文件</strong> &amp; 可能会导致后台系统一片空白（见 <a href="https://docs.ghost.org/docs/working-with-ghost#grunt-build" target="_blank" rel="external">grunt build</a>）</li>
 </ul>
 </li>
-<li>问题及对应解决方案
-<ul>
-<li><strong>每一步的操作都要保证原子性</strong>，set完没来得及设expire会导致死锁(2.6.12版实现了将两个操作合并原子化操作)</li>
-<li>分布式环境下，A获取锁后阻塞，锁过期被B获取，A恢复后执行完错误释放了此时属于B的锁(经典CAS算法解决被误释放问题，但原本线程操作未完就失去锁的问题并没解决)</li>
-<li>高可用要求主从复制机制，而主从复制多为异步，会出现数据不一致(不主从复制，用<strong>RedLock</strong>算法，该算法的成熟开源实现即Redisson，<strong>此处并不明白该算法如何解决主从复制的问题</strong>)</li>
-</ul>
-</li>
-<li>整体优势：借助Redis，实现方便</li>
-<li>问题：超时作为锁失效机制不可靠，若处理时间过长会在完成前失去锁</li>
-</ul>
-<h4 id="zookeeper方案"><a class="markdownIt-Anchor" href="#zookeeper方案"></a> Zookeeper方案</h4>
-<ul>
-<li>结构：内部分层文件系统目录树</li>
-<li>操作
-<ul>
-<li>(原文有不清晰之处，待日后补充)</li>
-</ul>
-</li>
-<li>优点
-<ul>
-<li>高可用</li>
-<li>可重入</li>
-<li>阻塞锁</li>
-<li>解决锁失效</li>
-</ul>
-</li>
-<li>缺点：频繁插入删除性能会比Redis差一些</li>
-</ul>
-<h3 id="其他"><a class="markdownIt-Anchor" href="#其他"></a> 其他</h3>
-<h4 id="redlock算法"><a class="markdownIt-Anchor" href="#redlock算法"></a> Redlock算法</h4>
-<ul>
-<li>大致思想为布置多个Redis Master节点，挨个申请锁，获取多数则成功，少数则在所有节点上解锁？</li>
 </ul>
 <blockquote>
 <p>Written with <a href="https://stackedit.io/" target="_blank" rel="external">StackEdit</a>.</p>
@@ -517,15 +479,15 @@
       
         <div class="post-tags">
           
-            <a href="/tags/distributed/" rel="tag"># distributed</a>
+            <a href="/tags/ghost/" rel="tag"># ghost</a>
           
-            <a href="/tags/lock/" rel="tag"># lock</a>
+            <a href="/tags/blog/" rel="tag"># blog</a>
           
-            <a href="/tags/redis/" rel="tag"># redis</a>
+            <a href="/tags/grunt/" rel="tag"># grunt</a>
           
-            <a href="/tags/zookeeper/" rel="tag"># zookeeper</a>
+            <a href="/tags/npm/" rel="tag"># npm</a>
           
-            <a href="/tags/database/" rel="tag"># database</a>
+            <a href="/tags/node/" rel="tag"># node</a>
           
         </div>
       
@@ -538,8 +500,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/10/24/【Philosophical-Dilemmas】上帝、永生与信仰/" rel="next" title="【Philosophical Dilemmas】上帝、永生与信仰">
-                <i class="fa fa-chevron-left"></i> 【Philosophical Dilemmas】上帝、永生与信仰
+              <a href="/2018/01/25/heroku-wall-free/" rel="next" title="利用heroku实现免费的全平台科学上网">
+                <i class="fa fa-chevron-left"></i> 利用heroku实现免费的全平台科学上网
               </a>
             
           </div>
@@ -548,8 +510,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/01/15/Docker添加iptables防火墙规则构建容器间通信/" rel="prev" title="Docker添加iptables防火墙规则构建容器间通信">
-                Docker添加iptables防火墙规则构建容器间通信 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/03/07/my-mermaid-please/" rel="prev" title="my-mermaid-please">
+                my-mermaid-please <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -752,7 +714,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#分布式锁机制及几种方案对比"><span class="nav-number">1.</span> <span class="nav-text"> 分布式锁机制及几种方案对比</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么需要分布式锁"><span class="nav-number">1.1.</span> <span class="nav-text"> 为什么需要分布式锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分布式锁要求"><span class="nav-number">1.2.</span> <span class="nav-text"> 分布式锁要求</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分布式锁的三种方案分析"><span class="nav-number">1.3.</span> <span class="nav-text"> 分布式锁的三种方案分析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#数据库方案"><span class="nav-number">1.3.1.</span> <span class="nav-text"> 数据库方案</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#redis方案"><span class="nav-number">1.3.2.</span> <span class="nav-text"> Redis方案</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#zookeeper方案"><span class="nav-number">1.3.3.</span> <span class="nav-text"> Zookeeper方案</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他"><span class="nav-number">1.4.</span> <span class="nav-text"> 其他</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#redlock算法"><span class="nav-number">1.4.1.</span> <span class="nav-text"> Redlock算法</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#日常频繁使用的开发命令"><span class="nav-number">1.</span> <span class="nav-text"> 日常频繁使用的开发命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#运行ghost"><span class="nav-number">1.1.</span> <span class="nav-text"> 运行Ghost</span></a></li></ol></li></ol></div>
             
 
           </div>

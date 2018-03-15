@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="ja">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="network,heroku,wall," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="変わらないで" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="一、前言  思路来源  准备  一台连得上Google的服务器（测试用，可选）  这里用的是腾讯云买的CentOS 7.2，新加坡节点   一个heroku账号  heroku平台注册需要翻墙，但登录和部署均不需要 账号还有免费app余额   一台便宜且容易搞到手的国内服务器（可选）  仅作为中转服务器，不需要多平台共用可以不备   需要梯子服务的平台对应的客户端（Android、Win、Mac">
+<meta name="keywords" content="network,heroku,wall">
+<meta property="og:type" content="article">
+<meta property="og:title" content="利用heroku实现免费的全平台科学上网">
+<meta property="og:url" content="http://blog.garenfeather.cn/2018/01/25/heroku-wall-free/index.html">
+<meta property="og:site_name" content="変わらないで">
+<meta property="og:description" content="一、前言  思路来源  准备  一台连得上Google的服务器（测试用，可选）  这里用的是腾讯云买的CentOS 7.2，新加坡节点   一个heroku账号  heroku平台注册需要翻墙，但登录和部署均不需要 账号还有免费app余额   一台便宜且容易搞到手的国内服务器（可选）  仅作为中转服务器，不需要多平台共用可以不备   需要梯子服务的平台对应的客户端（Android、Win、Mac">
+<meta property="og:image" content="http://i2.bvimg.com/500967/03c3876ae44ed6ces.png">
+<meta property="og:updated_time" content="2018-03-15T18:22:02.084Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="利用heroku实现免费的全平台科学上网">
+<meta name="twitter:description" content="一、前言  思路来源  准备  一台连得上Google的服务器（测试用，可选）  这里用的是腾讯云买的CentOS 7.2，新加坡节点   一个heroku账号  heroku平台注册需要翻墙，但登录和部署均不需要 账号还有免费app余额   一台便宜且容易搞到手的国内服务器（可选）  仅作为中转服务器，不需要多平台共用可以不备   需要梯子服务的平台对应的客户端（Android、Win、Mac">
+<meta name="twitter:image" content="http://i2.bvimg.com/500967/03c3876ae44ed6ces.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: 'T6MKXY5GW7',
+      apiKey: 'ef92ddd27106adf5875ac72569320509',
+      indexName: 'blog',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"何を探しているの?","hits_empty":"${query}: あら残念、何もない…","hits_stats":"関する結果の数は: ${hits}、 使った時間は約 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.garenfeather.cn/2018/01/25/heroku-wall-free/"/>
+
+
+
+
+  <title>利用heroku实现免费的全平台科学上网 | 変わらないで</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="ja">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta custom-logo">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">変わらないで</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">ダイスキでダイキライ</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            ホーム
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            タグ
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            カテゴリ
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            アーカイブ
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            検索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.garenfeather.cn/2018/01/25/heroku-wall-free/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="GarenFeather">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://media.discordapp.net/attachments/420095259125743637/423186378608738314/logo.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="変わらないで">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">利用heroku实现免费的全平台科学上网</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">投稿日</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-01-25T22:03:23+08:00">
+                2018-01-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">カテゴリは</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/coding/" itemprop="url" rel="index">
+                    <span itemprop="name">coding</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/01/25/heroku-wall-free/" class="leancloud_visitors" data-flag-title="利用heroku实现免费的全平台科学上网">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">訪問者&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">ワードカウント&#58;</span>
+                
+                <span title="ワードカウント">
+                  1,981
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="一-前言"><a class="markdownIt-Anchor" href="#一-前言"></a> 一、前言</h2>
+<h3 id="思路来源"><a class="markdownIt-Anchor" href="#思路来源"></a> 思路来源</h3>
+<h3 id="准备"><a class="markdownIt-Anchor" href="#准备"></a> 准备</h3>
+<ul>
+<li>一台连得上Google的服务器（测试用，可选）
+<ul>
+<li>这里用的是腾讯云买的CentOS 7.2，新加坡节点</li>
+</ul>
+</li>
+<li>一个heroku账号
+<ul>
+<li>heroku平台注册需要翻墙，但登录和部署均不需要</li>
+<li>账号还有免费app余额</li>
+</ul>
+</li>
+<li>一台<s>便宜且容易搞到手的</s>国内服务器（可选）
+<ul>
+<li>仅作为中转服务器，不需要多平台共用可以不备</li>
+</ul>
+</li>
+<li>需要梯子服务的平台对应的客户端（Android、Win、Mac、Linux）</li>
+</ul>
+<a id="more"></a>
+<hr>
+<h2 id="二-搭建梯子"><a class="markdownIt-Anchor" href="#二-搭建梯子"></a> 二、搭建梯子</h2>
+<h3 id="国外服务器手动部署测试"><a class="markdownIt-Anchor" href="#国外服务器手动部署测试"></a> 国外服务器手动部署测试</h3>
+<ul>
+<li>
+<p>首先测试下git上的项目能否正常部署运行服务器程序，这里用的是<a href="https://github.com/shadowsocksr-backup/shadowsocks-rss" target="_blank" rel="external">shadowsocksr</a>，首先登陆服务器</p>
+  <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ git clone -b manyuser https://github.com/shadowsocksr-backup/shadowsocksr.git</div></pre></td></tr></table></figure></div>
+<p>进入到目录，并初始化配置</p>
+  <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ cd shadowsocksr/</div><div class="line">$ ./initcfg.sh</div></pre></td></tr></table></figure></div>
+<p>根据wiki说明如果是多用户的话接下来修改config.json，单用户的话修改user-config.json，我们这里是单用户，修改user-config.json，其他参数默认，只修改密码。同时这里要记住下面几个参数，与后面客户端<strong>保持一致</strong>，参数的具体含义见<a href="https://github.com/shadowsocksr-backup/shadowsocks-rss/wiki/config.json" target="_blank" rel="external">wiki</a></p>
+  <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    &quot;server_port&quot;: 8388,</div><div class="line">    &quot;password&quot;: &quot;12333333&quot;,//你修改的密码</div><div class="line">    &quot;method&quot;: &quot;aes-128-ctr&quot;,</div><div class="line">    &quot;protocol&quot;: &quot;auth_aes128_md5&quot;,</div><div class="line">    &quot;protocol_param&quot;: &quot;&quot;,</div><div class="line">    &quot;obfs&quot;: &quot;tls1.2_ticket_auth_compatible&quot;,</div><div class="line">    &quot;obfs_param&quot;: &quot;&quot;</div><div class="line">&#125;</div></pre></td></tr></table></figure></div>
+<p>修改完毕保存后进入子目录，启动后台进程</p>
+  <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ cd shadowsocks/</div><div class="line">$ python server.py -d start</div></pre></td></tr></table></figure></div>
+<p>查看日志</p>
+  <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ tail -f /var/log/shadowsocksr.log</div></pre></td></tr></table></figure></div>
+<p>正常输出说明启动成功↓</p>
+  <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">2018-01-24 16:46:42 INFO     server.py:46 current process RLIMIT_NOFILE resource: soft 100001 hard 100002</div><div class="line">2018-01-24 16:46:42 INFO     asyncdns.py:324 dns server: [(&apos;100.78.90.8&apos;, 53), (&apos;100.78.90.19&apos;, 53)]</div><div class="line">2018-01-24 16:46:42 INFO     server.py:106 server start with protocol[auth_aes128_md5] password [12333333] method [aes-128-ctr] obfs [tls1.2_ticket_auth_compatible] obfs_param []</div><div class="line">2018-01-24 16:46:42 INFO     server.py:122 starting server at [::]:8388</div><div class="line">2018-01-24 16:46:42 INFO     server.py:142 starting server at 0.0.0.0:8388</div></pre></td></tr></table></figure></div>
+<p>保持日志窗口观察连接情况</p>
+</li>
+<li>
+<p>接下来使用客户端，注意要使用shadowsocksR的客户端，原生的shadowsocks客户端不支持协议混淆，无法直接使用shadowsocksR服务端，几个平台的下载也顺便给出来一下，Assets下有最新版稳定版等</p>
+<ul>
+<li><a href="https://github.com/shadowsocksr-backup/shadowsocksr-csharp/releases" target="_blank" rel="external">Windows</a></li>
+<li><a href="https://github.com/shadowsocksr-backup/shadowsocksr-android/releases" target="_blank" rel="external">Android</a></li>
+<li>苹果选手请自行解决</li>
+</ul>
+<p>这里以Windows客户端为例，下载解压后进入目录，启动ShadowsocksR-dotnet.exe，这里用的是4.0版<br>
+<img src="http://i2.bvimg.com/500967/03c3876ae44ed6ces.png" alt="此处输入图片的描述"><br>
+输入服务器ip，上面修改过的密码，以及协议和混淆等参数与上面保持一致，上面没有修改这里也照默认<br>
+保存启动后可以试着登录Google了，访问正常情况下日志会持续输出，如果没有任何输出说明很可能没连上，可以检查一下服务器端口是否开放了（<em>腾讯云、阿里云等服务器默认的安全组都只打开22、443等几个标准端口，需要自行开放设置</em>）</p>
+</li>
+</ul>
+<h3 id="一键部署上heroku重点"><a class="markdownIt-Anchor" href="#一键部署上heroku重点"></a> 一键部署上heroku（重点）</h3>
+<ul>
+<li>
+<p>经过上面的测试我们确认服务程序能正常运行，现在可以着手布置上云平台了，本来还在思考ssr怎么转换成web服务的形式部署上云平台，然后就发现了<a href="https://github.com/onplus/shadowsocks-heroku" target="_blank" rel="external">这个</a>，一键部署，异常简单，跟着下面作者贴图说明服务端很快就能部署好</p>
+<ul>
+<li>这里注意一点，这个是shadowsocks-heroku，<strong>不是shadowsocksR</strong>，协议不同，是不能直接用刚才的ShadowsocksR客户端来连接的，这点作者在issue里面也提到了</li>
+<li>接原作者的“启动本地 Client”说明，启动后相当于将本地当成一个代理服务器，要走代理则流量都从本地1080端口走：</li>
+</ul>
+  <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">server listening at &#123; address: &apos;127.0.0.1&apos;, family: &apos;IPv4&apos;, port: 1080 &#125;</div></pre></td></tr></table></figure></div>
+<p>简而言之，若要浏览器翻墙还得手动给浏览器做配置，如果有多个浏览器要一一配置，需要修改代理服务器时也要一一修改，比较麻烦，而且只能在PC端应用，要应用到移动端需要另装客户端<a href="https://github.com/onplus/v2hero" target="_blank" rel="external">v2ray</a></p>
+<ul>
+<li>总结下我们对这个梯子的需求大概是：
+<ul>
+<li>一个梯子，多平台通用</li>
+<li>集成到唯一的ShadowsocksR客户端里</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="全平台通用化重点"><a class="markdownIt-Anchor" href="#全平台通用化重点"></a> 全平台通用化（重点）</h3>
+<ul>
+<li>
+<p>为了解决上面两个需求我们需要对协议进行转换，这里涉及到一个转换工具<a href="https://github.com/nadoo/glider" target="_blank" rel="external">glider</a>，可以转换包括socks5、http、ss/ssr内的多种协议，这里我们将socks5转为ssr就可以为客户端所用，glider规则示例说明如下，详细见wiki：</p>
+  <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">listen=ss://AES-128-CFB:password@:8449</div></pre></td></tr></table></figure></div>
+<p>↑ 表示监听8449端口，协议为ss混淆，即ssr</p>
+  <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">forward=socks5://127.0.0.1:1080</div></pre></td></tr></table></figure></div>
+<p>↑ 表示<strong>转发</strong>协议为socks5的本地1080端口的流量到监听的端口上</p>
+</li>
+<li>
+<p>按照原本作者说明的操作整体架构如下，A为本机：</p>
+  <div class="mermaid">
+</div></li>
+</ul>
+<p><svg id="mermaid-svg-cec6cb2725ffcfa9" width="100%" xmlns="http://www.w3.org/2000/svg" height="100%" style="max-width:650px;" viewbox="-50 -10 650 393"><style><br />
+.mermaid .label{font-family:trebuchet ms,verdana,arial;color:#333}.node circle,.node ellipse,.node polygon,.node rect{fill:#cde498;stroke:#13540c;stroke-width:1px}.node.clickable{cursor:pointer}.arrowheadPath{fill:green}.edgePath .path{stroke:green;stroke-width:1.5px}.edgeLabel{background-color:#e8e8e8}.cluster rect{fill:#cdffb2!important;rx:4!important;stroke:#6eaa49!important;stroke-width:1px!important}.cluster text{fill:#333}.actor{stroke:#13540c;fill:#cde498}text.actor{fill:#000;stroke:none}.actor-line{stroke:grey}.messageLine0{marker-end:“url(#arrowhead)”}.messageLine0,.messageLine1{stroke-width:1.5;stroke-dasharray:“2 2”;stroke:#333}#arrowhead{fill:#333}#crosshead path{fill:#333!important;stroke:#333!important}.messageText{fill:#333;stroke:none}.labelBox{stroke:#326932;fill:#cde498}.labelText,.loopText{fill:#000;stroke:none}.loopLine{stroke-width:2;stroke-dasharray:“2 2”;marker-end:“url(#arrowhead)”;stroke:#326932}.note{stroke:#6eaa49;fill:#fff5ad}.noteText{fill:#000;stroke:none;font-family:trebuchet ms,verdana,arial;font-size:14px}.section{stroke:none;opacity:.2}.section0,.section2{fill:#6eaa49}.section1,.section3{fill:#fff;opacity:.2}.sectionTitle0,.sectionTitle1,.sectionTitle2,.sectionTitle3{fill:#333}.sectionTitle{text-anchor:start;font-size:11px;text-height:14px}.grid .tick{stroke:#d3d3d3;opacity:.3;shape-rendering:crispEdges}.grid path{stroke-width:0}.today{fill:none;stroke:red;stroke-width:2px}.task{stroke-width:2}.taskText{text-anchor:middle;font-size:11px}.taskTextOutsideRight{fill:#000;text-anchor:start;font-size:11px}.taskTextOutsideLeft{fill:#000;text-anchor:end;font-size:11px}.taskText0,.taskText1,.taskText2,.taskText3{fill:#fff}.task0,.task1,.task2,.task3{fill:#487e3a;stroke:#13540c}.taskTextOutside0,.taskTextOutside1,.taskTextOutside2,.taskTextOutside3{fill:#000}.active0,.active1,.active2,.active3{fill:#cde498;stroke:#13540c}.activeText0,.activeText1,.activeText2,.activeText3{fill:#000!important}.done0,.done1,.done2,.done3{stroke:grey;fill:#d3d3d3;stroke-width:2}.doneText0,.doneText1,.doneText2,.doneText3{fill:#000!important}.crit0,.crit1,.crit2,.crit3{stroke:#f88;fill:red;stroke-width:2}.activeCrit0,.activeCrit1,.activeCrit2,.activeCrit3{stroke:#f88;fill:#cde498;stroke-width:2}.doneCrit0,.doneCrit1,.doneCrit2,.doneCrit3{stroke:#f88;fill:#d3d3d3;stroke-width:2;cursor:pointer;shape-rendering:crispEdges}.activeCritText0,.activeCritText1,.activeCritText2,.activeCritText3,.doneCritText0,.doneCritText1,.doneCritText2,.doneCritText3{fill:#000!important}.titleText{text-anchor:middle;font-size:18px;fill:#000}g.classGroup text{fill:#13540c;stroke:none;font-family:trebuchet ms,verdana,arial;font-size:10px}g.classGroup rect{fill:#cde498;stroke:#13540c}g.classGroup line{stroke:#13540c;stroke-width:1}svg .classLabel .box{stroke:none;stroke-width:0;fill:#cde498;opacity:.5}svg .classLabel .label{fill:#13540c;font-size:10px}.relation{stroke:#13540c;stroke-width:1;fill:none}#compositionEnd,#compositionStart,.composition{fill:#13540c;stroke:#13540c;stroke-width:1}#aggregationEnd,#aggregationStart,.aggregation{fill:#cde498;stroke:#13540c;stroke-width:1}#dependencyEnd,#dependencyStart,#extensionEnd,#extensionStart{fill:#13540c;stroke:#13540c;stroke-width:1}.node text{font-size:14px}.node text,div.mermaidTooltip{font-family:trebuchet ms,verdana,arial}div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-size:12px;background:#cdffb2;border:1px solid #6eaa49;border-radius:2px;pointer-events:none;z-index:100}<br />
+svg {<br />
+color: rgb(0, 0, 0);<br />
+font: normal normal 400 normal 16px / normal “Times New Roman”;<br />
+}<br />
+</style><g/><g><line id="actor0" x1="75" y1="5" x2="75" y2="382" class="actor-line" stroke-width="0.5px" stroke="#999"/><rect x="0" y="0" fill="#eaeaea" stroke="#666" width="150" height="65" rx="3" ry="3" class="actor"/><text x="75" y="32.5" dominant-baseline="central" alignment-baseline="central" class="actor" style="text-anchor: middle;"><tspan x="75" dy="0">A 其他client/代理</tspan></text></g><g><line id="actor1" x1="275" y1="5" x2="275" y2="382" class="actor-line" stroke-width="0.5px" stroke="#999"/><rect x="200" y="0" fill="#eaeaea" stroke="#666" width="150" height="65" rx="3" ry="3" class="actor"/><text x="275" y="32.5" dominant-baseline="central" alignment-baseline="central" class="actor" style="text-anchor: middle;"><tspan x="275" dy="0">A ssHerokuRe</tspan></text></g><g><line id="actor2" x1="475" y1="5" x2="475" y2="382" class="actor-line" stroke-width="0.5px" stroke="#999"/><rect x="400" y="0" fill="#eaeaea" stroke="#666" width="150" height="65" rx="3" ry="3" class="actor"/><text x="475" y="32.5" dominant-baseline="central" alignment-baseline="central" class="actor" style="text-anchor: middle;"><tspan x="475" dy="0">B heroku</tspan></text></g><defs><marker id="arrowhead" refx="5" refy="2" markerwidth="6" markerheight="4" orient="auto"><path d="M 0,0 V 4 L6,2 Z"/></marker></defs><defs><marker id="crosshead" markerwidth="15" markerheight="8" orient="auto" refx="16" refy="4"><path fill="black" stroke="#000000" stroke-width="1px" d="M 9,2 V 6 L16,4 Z" style="stroke-dasharray: 0, 0;"/><path fill="none" stroke="#000000" stroke-width="1px" d="M 0,1 L 6,7 M 6,1 L 0,7" style="stroke-dasharray: 0, 0;"/></marker></defs><g><text x="175" y="93" class="messageText" style="text-anchor: middle;">connect local 1080</text><line x1="75" y1="100" x2="275" y2="100" class="messageLine0" stroke-width="2" stroke="black" style="fill: none;"/></g><g><text x="375" y="128" class="messageText" style="text-anchor: middle;">connect remote 80</text><line x1="275" y1="135" x2="475" y2="135" class="messageLine0" stroke-width="2" stroke="black" style="fill: none;"/></g><g><rect x="400" y="145" fill="#EDF2AE" stroke="#666" width="150" height="36" rx="0" ry="0" class="note"/><text x="416" y="168" fill="black" class="noteText"><tspan x="416" fill="black">websocket</tspan></text></g><g><rect x="200" y="191" fill="#EDF2AE" stroke="#666" width="150" height="36" rx="0" ry="0" class="note"/><text x="216" y="214" fill="black" class="noteText"><tspan x="216" fill="black">socks5://:1080</tspan></text></g><g><text x="375" y="255" class="messageText" style="text-anchor: middle;">return data</text><line x1="475" y1="262" x2="275" y2="262" class="messageLine0" stroke-width="2" stroke="black" style="fill: none;"/></g><g><text x="175" y="290" class="messageText" style="text-anchor: middle;">return data</text><line x1="275" y1="297" x2="75" y2="297" class="messageLine0" stroke-width="2" stroke="black" style="fill: none;"/></g><g><rect x="0" y="317" fill="#eaeaea" stroke="#666" width="150" height="65" rx="3" ry="3" class="actor"/><text x="75" y="349.5" dominant-baseline="central" alignment-baseline="central" class="actor" style="text-anchor: middle;"><tspan x="75" dy="0">A 其他client/代理</tspan></text></g><g><rect x="200" y="317" fill="#eaeaea" stroke="#666" width="150" height="65" rx="3" ry="3" class="actor"/><text x="275" y="349.5" dominant-baseline="central" alignment-baseline="central" class="actor" style="text-anchor: middle;"><tspan x="275" dy="0">A ssHerokuRe</tspan></text></g><g><rect x="400" y="317" fill="#eaeaea" stroke="#666" width="150" height="65" rx="3" ry="3" class="actor"/><text x="475" y="349.5" dominant-baseline="central" alignment-baseline="central" class="actor" style="text-anchor: middle;"><tspan x="475" dy="0">B heroku</tspan></text></g></svg></p>
+
+<pre><code>我们修改以适应ShadowsocksR客户端的架构如下，A为本机，B为中间服务器：
+
+&lt;div class=&quot;mermaid&quot;&gt;
+</code></pre>
+<p>undefined</p>
+
+    $ npm install
+    <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">没有npm与node请自行安装，操作完后修改config.json:</div></pre></td></tr></table></figure></div>
+<pre><code>{
+    &quot;server&quot;: &quot;xxxx.herokuapp.com&quot;,//你的app
+    &quot;local_address&quot;: &quot;127.0.0.1&quot;,
+    &quot;scheme&quot;: &quot;ws&quot;,
+    &quot;local_port&quot;: 1080,
+    &quot;remote_port&quot;: 80,
+    &quot;password&quot;: &quot;pwd&quot;,//你的密码
+    &quot;timeout&quot;: 600,
+    &quot;method&quot;: &quot;aes-256-cfb&quot;
+} 
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">修改完保存后，运行命令，以后台进程形式运行：</div></pre></td></tr></table></figure></div>
+
+$ nohup node local.js -c config.json &amp;
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">退出目录，下载glider的Linux版，解压后进入主目录下的config目录，参照example：</div></pre></td></tr></table></figure></div>
+
+$ vim glider.conf
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"> </div></pre></td></tr></table></figure></div>
+
+listen=:8443
+listen=ss://AES-128-CFB:password@:8449
+forward=socks5://127.0.0.1:1080
+
+verbose=True
+strategy=rr
+checkwebsite=www.microsoft.com
+checkduration=30
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">8443为http/socks5代理端口，8449为ss混淆代理端口，也就是我们等会客户端需要使用的远程端口。保存后退出config目录，运行命令启动后台进程：</div></pre></td></tr></table></figure></div>
+
+$ nohup ./glider -config config/glider.conf &amp;
+```
+
+启动后可分别查看两个目录的nohup.out查看日志，此时为客户端新添加一个服务器，参数规则照之前一一对应，，**协议改为origin，混淆改为plain**，保存后使用该服务器代理应该可以正常访问了，日志流水上也可看得到
+</code></pre>
+<ul>
+<li>因为多走了一轮代理的原因，访问的延时会比较大（自测在几百ms左右），因此不适合游戏等对时延要求比较严格情况，简单的试了下youtube视频基本流畅，720p左右体验还行，最大的优势在于<strong>免费，不限量，基本不计时</strong></li>
+</ul>
+<hr>
+<h2 id="三-扩展思路"><a class="markdownIt-Anchor" href="#三-扩展思路"></a> 三、扩展思路</h2>
+<h3 id="相关思考"><a class="markdownIt-Anchor" href="#相关思考"></a> 相关思考</h3>
+<ul>
+<li>Shadowsocks-heroku是用websocket代替了原本的socket发起的连接，除了项目的nodejs版之外还有python语言版的链接在项目中可自取</li>
+</ul>
+<h3 id="相关用途及扩展"><a class="markdownIt-Anchor" href="#相关用途及扩展"></a> 相关用途及扩展</h3>
+<ul>
+<li>说道代理就自然能想到爬虫，爬虫总怕不小心就被封了ip，而这里heroku平台提供创建50个免费的app，据测试每个app的ip都不同，代理ip什么的自然可以自由的切换。</li>
+<li>后端云平台是个很好的思路，除了heroku，应该也还存在其他免费的云平台，我们可以将自己的app部署上去，只要国内能正常访问就说明可以作为代理来使用，大致上找的时候符合以下条件都有可用性：
+<ul>
+<li>账户提供一定量免费限额</li>
+<li>服务试用不限制时长（免费试用一个月什么的没太大意义）</li>
+<li>服务试用不限制流量，限制流量基本难以操作了</li>
+</ul>
+</li>
+<li>paas支持的语言零散不全，他们常支持的Ruby On Rails对国内开发者来说较陌生，因此若要搞出其他Shadowsocks-XX平台 服务端部署项目可能需要自行用ruby等语言重写，较麻烦</li>
+</ul>
+<hr>
+<p><strong>有很多地方认识不完整，知识水平有限，抛砖引玉，望大佬们指正。</strong></p>
+<p>参考：</p>
+<ul>
+<li>
+<p><a href="https://rookiefly.cn/detail/128" target="_blank" rel="external">使用heroku+shadowsocks-heroku进行科学上网</a></p>
+</li>
+</ul>
+<hr>
+<blockquote>
+<p>Written with <a href="https://stackedit.io/" target="_blank" rel="external">StackEdit</a>.</p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/network/" rel="tag"># network</a>
+          
+            <a href="/tags/heroku/" rel="tag"># heroku</a>
+          
+            <a href="/tags/wall/" rel="tag"># wall</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/25/利用heroku实现免费的全平台科学上网/" rel="next" title="利用heroku实现免费的全平台科学上网">
+                <i class="fa fa-chevron-left"></i> 利用heroku实现免费的全平台科学上网
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/02/03/ghost-docs-partly-translation/" rel="prev" title="Ghost文档翻译——开发模式启动命令对比">
+                Ghost文档翻译——开发模式启动命令对比 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zMzczMS8xMDI4NQ"></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            見出し
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            概要
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://media.discordapp.net/attachments/420095259125743637/423186378608738314/logo.png"
+                alt="GarenFeather" />
+            
+              <p class="site-author-name" itemprop="name">GarenFeather</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">ポスト</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">カテゴリ</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-name">タグ</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/GARENFEATHER" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:garenfeather@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://plus.google.com/113737038776129268880" target="_blank" title="Google">
+                      
+                        <i class="fa fa-fw fa-google"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://twitter.com/minamotoyoi" target="_blank" title="Twitter">
+                      
+                        <i class="fa fa-fw fa-twitter"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/fog.garen" target="_blank" title="FB Page">
+                      
+                        <i class="fa fa-fw fa-facebook"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://instagram.com/cynaustraline" target="_blank" title="Instagram">
+                      
+                        <i class="fa fa-fw fa-instagram"></i></a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Link Start!
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://cynaustine.herokuapp.com/" title="別の私" target="_blank">別の私</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一-前言"><span class="nav-number">1.</span> <span class="nav-text"> 一、前言</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#思路来源"><span class="nav-number">1.1.</span> <span class="nav-text"> 思路来源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#准备"><span class="nav-number">1.2.</span> <span class="nav-text"> 准备</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二-搭建梯子"><span class="nav-number">2.</span> <span class="nav-text"> 二、搭建梯子</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#国外服务器手动部署测试"><span class="nav-number">2.1.</span> <span class="nav-text"> 国外服务器手动部署测试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一键部署上heroku重点"><span class="nav-number">2.2.</span> <span class="nav-text"> 一键部署上heroku（重点）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#全平台通用化重点"><span class="nav-number">2.3.</span> <span class="nav-text"> 全平台通用化（重点）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三-扩展思路"><span class="nav-number">3.</span> <span class="nav-text"> 三、扩展思路</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#相关思考"><span class="nav-number">3.1.</span> <span class="nav-text"> 相关思考</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#相关用途及扩展"><span class="nav-number">3.2.</span> <span class="nav-text"> 相关用途及扩展</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">GarenFeather</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("1UGe0KySvfOYfaRGOh5ik5qR-gzGzoHsz", "pvwtsczULwC55DmVeLk8ewHJ");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

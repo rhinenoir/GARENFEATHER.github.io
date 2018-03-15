@@ -85,7 +85,7 @@
 <meta name="keywords" content="Docker,network,iptables">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Docker添加iptables防火墙规则构建容器间通信">
-<meta property="og:url" content="http://blog.garenfeather.cn/2018/01/15/Docker添加iptables防火墙规则构建容器间通信/index.html">
+<meta property="og:url" content="http://blog.garenfeather.cn/2018/01/15/docker-iptables-containers-conmunication/index.html">
 <meta property="og:site_name" content="変わらないで">
 <meta property="og:description" content="一、坑从何来 最近正好看到解析Docker单主机网络的部分，提到通过link链接容器，于是深入思考了下link的机制，首先如果为容器添加一条链接会发生以下几件事：  描述目标容器的环境变量会被创建 链接的别名和对应目标容器的ip地址会被添加到DNS覆盖列表中 如果跨容器通信被禁止，Docker会添加特定的防火墙规则来允许被链接的容器间的通信。  重点在于第三点，这里Docker添加的防火墙规则是">
 <meta property="og:image" content="https://s1.ax2x.com/2018/01/15/MBIxe.jpg">
@@ -123,7 +123,7 @@
 
 
 
-  <link rel="canonical" href="http://blog.garenfeather.cn/2018/01/15/Docker添加iptables防火墙规则构建容器间通信/"/>
+  <link rel="canonical" href="http://blog.garenfeather.cn/2018/01/15/docker-iptables-containers-conmunication/"/>
 
 
 
@@ -293,7 +293,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://blog.garenfeather.cn/2018/01/15/Docker添加iptables防火墙规则构建容器间通信/">
+    <link itemprop="mainEntityOfPage" href="http://blog.garenfeather.cn/2018/01/15/docker-iptables-containers-conmunication/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="GarenFeather">
@@ -362,7 +362,7 @@
 
           
           
-             <span id="/2018/01/15/Docker添加iptables防火墙规则构建容器间通信/" class="leancloud_visitors" data-flag-title="Docker添加iptables防火墙规则构建容器间通信">
+             <span id="/2018/01/15/docker-iptables-containers-conmunication/" class="leancloud_visitors" data-flag-title="Docker添加iptables防火墙规则构建容器间通信">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -541,7 +541,7 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/11/24/分布式锁机制及几种方案对比/" rel="next" title="分布式锁机制及几种方案对比">
+              <a href="/2017/11/24/distributed-lock-related-work/" rel="next" title="分布式锁机制及几种方案对比">
                 <i class="fa fa-chevron-left"></i> 分布式锁机制及几种方案对比
               </a>
             
