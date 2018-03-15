@@ -485,7 +485,7 @@ body {
 pre,
 .highlight {
   overflow: auto;
-  margin: 20px 0;
+  margin: 36px 0 0 0;
   padding: 0;
   font-size: 13px;
   color: #c5c8c6;
@@ -1824,7 +1824,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #4e0a09;
+  background: #4e6c8f;
 }
 .links-of-blogroll {
   font-size: 13px;
