@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="ja">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="backend,streaming,transaction,singleton," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="変わらないで" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="二、开放式问题  解释什么是流(streaming)和如何实现一个流？   解释   这里注意一下这个概念是Stream，而不是Flow，Flow一般常见于网络流（Network Flow）。两者中文翻译都是“流”，但概念不同   根据维基百科，流的一般概念是一个包含资料的序列，理论上具有无限、一个接一个（“个”可以是一个字节，一个bit等各种基本数据单元）的特质，区别于将资料包作一整个来进行处">
+<meta name="keywords" content="backend,streaming,transaction,singleton">
+<meta property="og:type" content="article">
+<meta property="og:title" content="开放后端答题（1）——流、自动化、事务、单例">
+<meta property="og:url" content="http://blog.garenfeather.cn/2018/02/01/backend-schedule-01/index.html">
+<meta property="og:site_name" content="変わらないで">
+<meta property="og:description" content="二、开放式问题  解释什么是流(streaming)和如何实现一个流？   解释   这里注意一下这个概念是Stream，而不是Flow，Flow一般常见于网络流（Network Flow）。两者中文翻译都是“流”，但概念不同   根据维基百科，流的一般概念是一个包含资料的序列，理论上具有无限、一个接一个（“个”可以是一个字节，一个bit等各种基本数据单元）的特质，区别于将资料包作一整个来进行处">
+<meta property="og:updated_time" content="2018-03-22T21:26:34.171Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="开放后端答题（1）——流、自动化、事务、单例">
+<meta name="twitter:description" content="二、开放式问题  解释什么是流(streaming)和如何实现一个流？   解释   这里注意一下这个概念是Stream，而不是Flow，Flow一般常见于网络流（Network Flow）。两者中文翻译都是“流”，但概念不同   根据维基百科，流的一般概念是一个包含资料的序列，理论上具有无限、一个接一个（“个”可以是一个字节，一个bit等各种基本数据单元）的特质，区别于将资料包作一整个来进行处">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '9OSB98ABVU',
+      apiKey: '64da7f5f82d5472eb9509afd7f4d29f8',
+      indexName: 'blog',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"何を探しているの?","hits_empty":"${query}: あら残念、何もない…","hits_stats":"関する結果の数は: ${hits}、 使った時間は約 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.garenfeather.cn/2018/02/01/backend-schedule-01/"/>
+
+
+
+
+  <title>开放后端答题（1）——流、自动化、事务、单例 | 変わらないで</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="ja">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta custom-logo">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">変わらないで</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">ダイスキでダイキライ</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            ホーム
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            タグ
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            カテゴリ
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            アーカイブ
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            検索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.garenfeather.cn/2018/02/01/backend-schedule-01/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="GarenFeather">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://media.discordapp.net/attachments/420095259125743637/423186378608738314/logo.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="変わらないで">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">开放后端答题（1）——流、自动化、事务、单例</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">投稿日</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-01T11:12:36+08:00">
+                2018-02-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">カテゴリは</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/coding/" itemprop="url" rel="index">
+                    <span itemprop="name">coding</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/02/01/backend-schedule-01/" class="leancloud_visitors" data-flag-title="开放后端答题（1）——流、自动化、事务、单例">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">訪問者&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">ワードカウント&#58;</span>
+                
+                <span title="ワードカウント">
+                  1,181
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="二-开放式问题"><a class="markdownIt-Anchor" href="#二-开放式问题"></a> 二、开放式问题</h3>
+<h4 id="解释什么是流streaming和如何实现一个流"><a class="markdownIt-Anchor" href="#解释什么是流streaming和如何实现一个流"></a> 解释什么是流(streaming)和如何实现一个流？</h4>
+<ul>
+<li>
+<p>解释</p>
+<ul>
+<li>
+<p>这里注意一下这个概念是Stream，而不是Flow，Flow一般常见于网络流（Network Flow）。两者中文翻译都是“流”，但概念不同</p>
+</li>
+<li>
+<p>根据维基百科，流的一般概念是一个包含资料的序列，理论上具有<strong>无限</strong>、一个接一个（“个”可以是一个字节，一个bit等各种基本数据单元）的特质，区别于将资料包作一整个来进行处理的输送带</p>
+</li>
+<li>
+<p>在计算机里是顺序读取或写入的字节序列，能<strong>统一描述</strong>所有常见输入输出类型的模型，而统一描述之后，相同的程序就可以通过输入输出重定向来处理不同的对象（多态思想）。原本基于分组交换的网络IO在经典的TCP协议设计出来后，大部分也都能用流的模型来描述</p>
+</li>
+<li>
+<p>能体现出流的经典的几种常见应用概念包括过滤器（filters）、重定向（redirect）管道（pipeline）以及懒加载（lazy loading）等</p>
+</li>
+</ul>
+</li>
+<li>
+<p>实现</p>
+<ul>
+<li>一个流实现需要包含容器、来源以及数据等</li>
+<li>对外暴露接口</li>
+</ul>
+</li>
+</ul>
+<h4 id="在你当前的工作流中什么事情是你计划下一步需要自动化的"><a class="markdownIt-Anchor" href="#在你当前的工作流中什么事情是你计划下一步需要自动化的"></a> 在你当前的工作流中，什么事情是你计划下一步需要自动化的？</h4>
+<ul>
+<li>
+<p>我们有一个产品的功能是发送消息，消息发送设置项多且复杂，目前开发过程中都是手动在点击设置发送，频繁重复同样的操作非常浪费时间，希望一个脚本启动就能设置完所有然后发送</p>
+</li>
+<li>
+<p>初步设想的技术栈是 Python+PhantomJS+Selenium 模拟点击过程，以win下exe的形式运行，如果选项className或idName有规律可以考虑做成命令行形式？</p>
+</li>
+<li>
+<p>缺点是根据之前使用的经验selenium控制不好有一定的崩溃几率，暂时不知道解决方式</p>
+</li>
+</ul>
+<hr>
+<h3 id="三-设计模式相关问题"><a class="markdownIt-Anchor" href="#三-设计模式相关问题"></a> 三、设计模式相关问题</h3>
+<h4 id="假设你工作的系统不支持事务性你会如何从头开始实现它"><a class="markdownIt-Anchor" href="#假设你工作的系统不支持事务性你会如何从头开始实现它"></a> 假设你工作的系统不支持事务性，你会如何从头开始实现它？</h4>
+<ul>
+<li>
+<p>事务性本质上可以认为是<strong>原子操作的进一步原子封装</strong>，因此实现的关键还是在于系统当前拥有的原子操作级别（理论上最基础至少在Linux支持基本C的相关库），需要封装的原子操作级别（例如：参考MySQL的数据库事务级别包括Read Uncommitted、Read Committed、Repeatable Read、Serializable等）</p>
+</li>
+<li>
+<p>从事务角度来说若要保证最强一致性，当然可以把数据都锁起来，但这样势必会严重影响并发性能。而除了<strong>一致性强度要求</strong>问题，还有另一个考量是<strong>分段锁数据</strong>，这就对<strong>锁的类型、范围</strong>有要求</p>
+</li>
+<li>
+<p>首先一个<strong>最基本的锁单元</strong>实现方式：（具体代码见代码小全的锁实现），实现了一个基本的锁模块，就可以针对几种常见事务问题来进一步升级锁（例如：解决脏读，不可重复读，幻读等），参考InnoDB引擎，解决幻读可以使用<strong>区间锁</strong>，锁住一部分行范围，不允许其中插入新的数据，在此期间，其它冲突事务会被阻塞</p>
+</li>
+<li>
+<p>涉及重要概念：读、写、计算、一致性、锁、原子操作、数据分段锁</p>
+</li>
+</ul>
+<h4 id="写一个线程安全的单例类"><a class="markdownIt-Anchor" href="#写一个线程安全的单例类"></a> 写一个线程安全的单例类</h4>
+<ul>
+<li>
+<p>此处使用java代码作为实例</p>
+</li>
+<li>
+<p>懒汉式（线程安全，<strong>低效率</strong>）</p>
+</li>
+</ul>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="JAVA"><figure class="iseeu highlight /java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">volatile</span> <span class="keyword">static</span> Singleton instance;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">synchronized</span> Singleton <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span>(instance == <span class="keyword">null</span>) &#123;</div><div class="line">            instance = <span class="keyword">new</span> Singleton();</div><div class="line">            <span class="comment">//这一句并不是一个原子操作，因此需要volatile禁止重排序</span></div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> instance;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></div>
+<p>instance = new Singleton();这一句在内存中有一个指令顺序问题*：1.分配内存。2.调用构造函数给instance初始化。3.instance对象指向分配的内存空间。*若顺序为132的话，2之前instance已经<strong>非空了但并没有初始化完成</strong>，被别的线程抢占，就会直接返回未初始化完成的对象引用导致报错</p>
+<ul>
+<li>饿汉式（饥饿，请求前初始化，<strong>非懒加载</strong>）</li>
+</ul>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="JAVA"><figure class="iseeu highlight /java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Singleton instance = <span class="keyword">new</span> Singleton();</div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span><span class="params">()</span></span>&#123;&#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> instance;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></div>
+<ul>
+<li>双重检验锁</li>
+</ul>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="JAVA"><figure class="iseeu highlight /java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Singleton instance;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span>(instance == <span class="keyword">null</span>) &#123;</div><div class="line">            <span class="keyword">synchronized</span> (Singleton.class) &#123;</div><div class="line">                <span class="keyword">if</span>(instance == <span class="keyword">null</span>) instance = <span class="keyword">new</span> Singleton();</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> instance;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></div>
+<ul>
+<li>静态内部类（懒加载）</li>
+</ul>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="JAVA"><figure class="iseeu highlight /java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">SingleHolder</span> </span>&#123;</div><div class="line">        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> SingleHolder instance = <span class="keyword">new</span> SingleHolder();</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span><span class="params">()</span></span>&#123;&#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> SingleHolder <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> SingleHolder.instance;</div><div class="line">        <span class="comment">//由于instance是静态内部类的静态成员，虽然是私有的也可以直接访问？</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></div>
+<ul>
+<li>枚举（创建枚举<strong>默认</strong>就是<strong>线程安全</strong>的）（<strong>最优</strong>）</li>
+</ul>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="JAVA"><figure class="iseeu highlight /java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">enum</span> EasySingleton&#123;</div><div class="line">    INSTANCE;</div><div class="line">&#125;</div><div class="line">EasySingleton.INSTANCE</div></pre></td></tr></table></figure></div>
+<blockquote>
+<p>Written with <a href="https://stackedit.io/" target="_blank" rel="external">StackEdit</a>.</p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/backend/" rel="tag"># backend</a>
+          
+            <a href="/tags/streaming/" rel="tag"># streaming</a>
+          
+            <a href="/tags/transaction/" rel="tag"># transaction</a>
+          
+            <a href="/tags/singleton/" rel="tag"># singleton</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/25/heroku-wall-free/" rel="next" title="利用heroku实现免费的全平台科学上网">
+                <i class="fa fa-chevron-left"></i> 利用heroku实现免费的全平台科学上网
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/02/03/ghost-docs-partly-translation/" rel="prev" title="Ghost文档翻译——开发模式启动命令对比">
+                Ghost文档翻译——开发模式启动命令对比 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zMzczMS8xMDI4NQ"></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            見出し
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            概要
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://media.discordapp.net/attachments/420095259125743637/423186378608738314/logo.png"
+                alt="GarenFeather" />
+            
+              <p class="site-author-name" itemprop="name">GarenFeather</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">ポスト</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">カテゴリ</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">58</span>
+                  <span class="site-state-item-name">タグ</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/GARENFEATHER" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:garenfeather@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://plus.google.com/113737038776129268880" target="_blank" title="Google">
+                      
+                        <i class="fa fa-fw fa-google"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://twitter.com/minamotoyoi" target="_blank" title="Twitter">
+                      
+                        <i class="fa fa-fw fa-twitter"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/fog.garen" target="_blank" title="FB Page">
+                      
+                        <i class="fa fa-fw fa-facebook"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://instagram.com/cynaustraline" target="_blank" title="Instagram">
+                      
+                        <i class="fa fa-fw fa-instagram"></i></a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Link Start!
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://cynaustine.herokuapp.com/" title="別の私" target="_blank">別の私</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#二-开放式问题"><span class="nav-number">1.</span> <span class="nav-text"> 二、开放式问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#解释什么是流streaming和如何实现一个流"><span class="nav-number">1.1.</span> <span class="nav-text"> 解释什么是流(streaming)和如何实现一个流？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#在你当前的工作流中什么事情是你计划下一步需要自动化的"><span class="nav-number">1.2.</span> <span class="nav-text"> 在你当前的工作流中，什么事情是你计划下一步需要自动化的？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三-设计模式相关问题"><span class="nav-number">2.</span> <span class="nav-text"> 三、设计模式相关问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#假设你工作的系统不支持事务性你会如何从头开始实现它"><span class="nav-number">2.1.</span> <span class="nav-text"> 假设你工作的系统不支持事务性，你会如何从头开始实现它？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#写一个线程安全的单例类"><span class="nav-number">2.2.</span> <span class="nav-text"> 写一个线程安全的单例类</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">GarenFeather</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("Uwvrb3N6FG4hcVXArp0DUBnh-gzGzoHsz", "yI8LpuLPuxR2CQbqBMIu6egM");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
