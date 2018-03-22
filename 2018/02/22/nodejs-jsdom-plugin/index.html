@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="mermaid,nodejs,opensource,jsdom," />
 
 
 
@@ -81,12 +81,17 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="変わらないで">
-<meta property="og:url" content="http://blog.garenfeather.cn/archives/2017/10/index.html">
+<meta name="description" content="背景  我在干啥  markdown渲染引擎的markdown-it的mermaid插件开发中 开发中插件markdown-it-mermaid-x、插件依赖项目mermaid，测试项目testProject 项目A最终是在浏览器环境下运行的所以用到了document、window等js的DOM对象 为了优先验证B的代码正确与否（暂不考虑webpack打包等带来的bug），选择了个workaro">
+<meta name="keywords" content="mermaid,nodejs,opensource,jsdom">
+<meta property="og:type" content="article">
+<meta property="og:title" content="nodejs开发环境下使用jsdom插件关于textContent的小bug">
+<meta property="og:url" content="http://blog.garenfeather.cn/2018/02/22/nodejs-jsdom-plugin/index.html">
 <meta property="og:site_name" content="変わらないで">
+<meta property="og:description" content="背景  我在干啥  markdown渲染引擎的markdown-it的mermaid插件开发中 开发中插件markdown-it-mermaid-x、插件依赖项目mermaid，测试项目testProject 项目A最终是在浏览器环境下运行的所以用到了document、window等js的DOM对象 为了优先验证B的代码正确与否（暂不考虑webpack打包等带来的bug），选择了个workaro">
+<meta property="og:updated_time" content="2018-03-22T13:43:42.718Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="変わらないで">
+<meta name="twitter:title" content="nodejs开发环境下使用jsdom插件关于textContent的小bug">
+<meta name="twitter:description" content="背景  我在干啥  markdown渲染引擎的markdown-it的mermaid插件开发中 开发中插件markdown-it-mermaid-x、插件依赖项目mermaid，测试项目testProject 项目A最终是在浏览器环境下运行的所以用到了document、window等js的DOM对象 为了优先验证B的代码正确与否（暂不考虑webpack打包等带来的bug），选择了个workaro">
 
 
 
@@ -116,12 +121,12 @@
 
 
 
-  <link rel="canonical" href="http://blog.garenfeather.cn/archives/2017/10/"/>
+  <link rel="canonical" href="http://blog.garenfeather.cn/2018/02/22/nodejs-jsdom-plugin/"/>
 
 
 
 
-  <title>アーカイブ | 変わらないで</title>
+  <title>nodejs开发环境下使用jsdom插件关于textContent的小bug | 変わらないで</title>
   
 
 
@@ -140,7 +145,7 @@
     
   
 
-  <div class="container sidebar-position-left page-archive">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -272,74 +277,268 @@
           <div id="content" class="content">
             
 
+  <div id="posts" class="posts-expand">
+    
+
+  
+
   
   
   
-  <div class="post-block archive">
-    <div id="posts" class="posts-collapse">
-      <span class="archive-move-on"></span>
-
-      <span class="archive-page-counter">
-        
-        
-        
-          
-        
-        うーん! 全 12 ポスト もっと書こう！
-      </span>
-
-      
-
-        
-        
-        
-
-        
-          
-          <div class="collection-title">
-            <h1 class="archive-year" id="archive-year-2017">2017</h1>
-          </div>
-        
-        
-
-        
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.garenfeather.cn/2018/02/22/nodejs-jsdom-plugin/">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="GarenFeather">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://media.discordapp.net/attachments/420095259125743637/423186378608738314/logo.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="変わらないで">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/2017/10/24/philosophical-dilemmas-1/" itemprop="url">
-              
-                <span itemprop="name">【Philosophical Dilemmas】上帝、永生与信仰</span>
-              
-            </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">nodejs开发环境下使用jsdom插件关于textContent的小bug</h1>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-10-24T20:24:44+08:00"
-              content="2017-10-24" >
-          10-24
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">投稿日</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-22T20:11:18+08:00">
+                2018-02-22
+              </time>
+            
 
-    </header>
-  </article>
+            
 
+            
+          </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">カテゴリは</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/coding/" itemprop="url" rel="index">
+                    <span itemprop="name">coding</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/02/22/nodejs-jsdom-plugin/" class="leancloud_visitors" data-flag-title="nodejs开发环境下使用jsdom插件关于textContent的小bug">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">訪問者&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">ワードカウント&#58;</span>
+                
+                <span title="ワードカウント">
+                  488
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
+      
 
+      
+        <h2 id="背景"><a class="markdownIt-Anchor" href="#背景"></a> 背景</h2>
+<h3 id="我在干啥"><a class="markdownIt-Anchor" href="#我在干啥"></a> 我在干啥</h3>
+<ul>
+<li>markdown渲染引擎的markdown-it的mermaid插件开发中</li>
+<li>开发中插件markdown-it-mermaid-x、插件依赖项目mermaid，测试项目testProject</li>
+<li>项目A最终是在浏览器环境下运行的所以用到了document、window等js的DOM对象</li>
+<li>为了优先验证B的代码正确与否（暂不考虑webpack打包等带来的bug），选择了个workaround的方案，在C中使用jsdom伪造一个DOM提供window和document</li>
+</ul>
+<h3 id="开发环境版本"><a class="markdownIt-Anchor" href="#开发环境版本"></a> 开发环境版本</h3>
+<ul>
+<li>node：v6.9.0</li>
+<li>npm：3.10.8</li>
+<li>jsdom：^11.6.2</li>
+</ul>
+<hr>
+<h2 id="开发中"><a class="markdownIt-Anchor" href="#开发中"></a> 开发中</h2>
+<h3 id="具体表现"><a class="markdownIt-Anchor" href="#具体表现"></a> 具体表现</h3>
+<ul>
+<li>通过<code>document.createElement('div')</code>新建一个div对象elt，给elt内容赋值部分：</li>
+</ul>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="JAVASCRIPT"><figure class="iseeu highlight /javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> elt = <span class="built_in">document</span>.createElement(<span class="string">'div'</span>)</div><div class="line">elt.className = <span class="string">'mermaid'</span></div><div class="line">elt.innerText = code</div></pre></td></tr></table></figure></div>
+<ul>
+<li>取出值使用</li>
+</ul>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="JAVASCRIPT"><figure class="iseeu highlight /javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> txt = elt.textContent;</div></pre></td></tr></table></figure></div>
+<ul>
+<li>而经过验证，<code>console.log(txt)</code>输出的值为空</li>
+<li>使用对应的如下写法值能正常输出</li>
+</ul>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="JAVASCRIPT"><figure class="iseeu highlight /javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> txt = elt.innerText;</div></pre></td></tr></table></figure></div>
+<h3 id="分析"><a class="markdownIt-Anchor" href="#分析"></a> 分析</h3>
+<ul>
+<li>
+<p>这部分的代码基本上是参考了同样使用了mermaid作为扩展的StackEdit的<a href="https://github.com/benweet/stackedit/blob/master/src/extensions/mermaidExtension.js" target="_blank" rel="external">mermaid扩展部分代码</a>的写法，</p>
+</li>
+<li>
+<p>对比了一下我的代码部分与其区别应该只是使用了jsdom建了一个伪造的DOM</p>
+</li>
+<li>
+<p>同时根据浏览器console里运行的结果<code>elt.innerText</code>与<code>elt.textContent</code>都能输出正确的结果</p>
+</li>
+<li>
+<p>目前暂且记录下这个小bug，将来有机会深入研究再考虑提issue</p>
+</li>
+<li>
+<p>后来进一步踩坑，<strong>大致上可以确定这个bug本身没有什么特别的</strong>，基本上是jsdom、d3、svg支持之间的问题了</p>
+</li>
+<li>
+<p>d3项目似乎要求必须在浏览器环境下执行，而jsdom所模拟的浏览器环境缺乏对svg的相关支持（见jsdom的issue部分），因此一切基于jsdom模拟浏览器环境的插件皆不可用<br>
+，不再深入研究**</p>
+</li>
+</ul>
+<h3 id="吐槽"><a class="markdownIt-Anchor" href="#吐槽"></a> 吐槽</h3>
+<ul>
+<li>╮(╯▽╰)╭找了半天才发现这里变空了，完全没想到</li>
+<li>beyond compare都开了对比半天愣是没明白，一句一句对着改了半天才发现</li>
+</ul>
+<blockquote>
+<p>Written with <a href="https://stackedit.io/" target="_blank" rel="external">StackEdit</a>.</p>
+</blockquote>
+
+      
     </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/mermaid/" rel="tag"># mermaid</a>
+          
+            <a href="/tags/nodejs/" rel="tag"># nodejs</a>
+          
+            <a href="/tags/opensource/" rel="tag"># opensource</a>
+          
+            <a href="/tags/jsdom/" rel="tag"># jsdom</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/02/21/google-puppeteer-plugin-develop/" rel="next" title="Google家开源的puppeteer使用bug修复">
+                <i class="fa fa-chevron-left"></i> Google家开源的puppeteer使用bug修复
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/02/25/decentralization-system-analysis/" rel="prev" title="去中心化系统说明">
+                去中心化系统说明 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
 
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -347,6 +546,15 @@
 
 
           
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zMzczMS8xMDI4NQ"></div>
+    </div>
+
+  
+
+
 
         </div>
         
@@ -367,8 +575,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            見出し
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            概要
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -493,6 +710,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text"> 背景</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#我在干啥"><span class="nav-number">1.1.</span> <span class="nav-text"> 我在干啥</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#开发环境版本"><span class="nav-number">1.2.</span> <span class="nav-text"> 开发环境版本</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#开发中"><span class="nav-number">2.</span> <span class="nav-text"> 开发中</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#具体表现"><span class="nav-number">2.1.</span> <span class="nav-text"> 具体表现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分析"><span class="nav-number">2.2.</span> <span class="nav-text"> 分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#吐槽"><span class="nav-number">2.3.</span> <span class="nav-text"> 吐槽</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -634,6 +867,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
@@ -662,6 +899,17 @@
 
 
 
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
   
 
 
