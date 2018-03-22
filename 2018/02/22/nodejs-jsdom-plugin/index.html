@@ -88,7 +88,7 @@
 <meta property="og:url" content="http://blog.garenfeather.cn/2018/02/22/nodejs-jsdom-plugin/index.html">
 <meta property="og:site_name" content="変わらないで">
 <meta property="og:description" content="背景  我在干啥  markdown渲染引擎的markdown-it的mermaid插件开发中 开发中插件markdown-it-mermaid-x、插件依赖项目mermaid，测试项目testProject 项目A最终是在浏览器环境下运行的所以用到了document、window等js的DOM对象 为了优先验证B的代码正确与否（暂不考虑webpack打包等带来的bug），选择了个workaro">
-<meta property="og:updated_time" content="2018-03-22T13:43:42.718Z">
+<meta property="og:updated_time" content="2018-03-22T13:55:34.474Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="nodejs开发环境下使用jsdom插件关于textContent的小bug">
 <meta name="twitter:description" content="背景  我在干啥  markdown渲染引擎的markdown-it的mermaid插件开发中 开发中插件markdown-it-mermaid-x、插件依赖项目mermaid，测试项目testProject 项目A最终是在浏览器环境下运行的所以用到了document、window等js的DOM对象 为了优先验证B的代码正确与否（暂不考虑webpack打包等带来的bug），选择了个workaro">
@@ -418,6 +418,7 @@
 <li>项目A最终是在浏览器环境下运行的所以用到了document、window等js的DOM对象</li>
 <li>为了优先验证B的代码正确与否（暂不考虑webpack打包等带来的bug），选择了个workaround的方案，在C中使用jsdom伪造一个DOM提供window和document</li>
 </ul>
+<a id="more"></a>
 <h3 id="开发环境版本"><a class="markdownIt-Anchor" href="#开发环境版本"></a> 开发环境版本</h3>
 <ul>
 <li>node：v6.9.0</li>
@@ -604,7 +605,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-count">14</span>
                   <span class="site-state-item-name">ポスト</span>
                 </a>
               </div>
@@ -626,7 +627,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">39</span>
+                  <span class="site-state-item-count">44</span>
                   <span class="site-state-item-name">タグ</span>
                 </a>
               </div>
