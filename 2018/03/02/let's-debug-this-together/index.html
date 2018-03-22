@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="ja">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="hasura,git,paas,docker,wall," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="変わらないで" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="我是谁我在哪我在干嘛  PaaS、IaaS、SaaS 谷歌随便找了一张图，感觉三者的区别还是很明显的↓  图上IaaS和PaaS的区别在于Operating System和Database，不过实际上感觉通常被我们认为是IaaS的AWS还有GCP等都有提供OS级别的管理。不过OS的创建是用户自行选择的，认为平台本身不提供似乎也合理？  我想干嘛 最近对由于对网络的特♂殊♂需♂求升级（国内旁友们应">
+<meta name="keywords" content="hasura,git,paas,docker,wall">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在印度的工程师朋友说，Let&#39;s debug this together!">
+<meta property="og:url" content="http://blog.garenfeather.cn/2018/03/02/let's-debug-this-together/index.html">
+<meta property="og:site_name" content="変わらないで">
+<meta property="og:description" content="我是谁我在哪我在干嘛  PaaS、IaaS、SaaS 谷歌随便找了一张图，感觉三者的区别还是很明显的↓  图上IaaS和PaaS的区别在于Operating System和Database，不过实际上感觉通常被我们认为是IaaS的AWS还有GCP等都有提供OS级别的管理。不过OS的创建是用户自行选择的，认为平台本身不提供似乎也合理？  我想干嘛 最近对由于对网络的特♂殊♂需♂求升级（国内旁友们应">
+<meta property="og:image" content="http://img1.sdnlab.com/wp-content/uploads/2017/11/xaas-gartner-definitions.png">
+<meta property="og:image" content="https://media.discordapp.net/attachments/420095259125743637/420146990928756736/001.png?width=346&height=300">
+<meta property="og:image" content="https://media.discordapp.net/attachments/420095259125743637/420148821792784384/working.pn001.jpg">
+<meta property="og:image" content="http://blog.garenfeather.cn/2018/03/02/let%27s-debug-this-together/%E4%BF%A1%E6%81%AF.jpg">
+<meta property="og:image" content="https://media.discordapp.net/attachments/420095259125743637/420146030290665472/009.jpng">
+<meta property="og:image" content="https://media.discordapp.net/attachments/420095259125743637/420145406035623936/011.png?width=298&height=300">
+<meta property="og:image" content="https://media.discordapp.net/attachments/420095259125743637/420145655407968256/012.png?width=279&height=300">
+<meta property="og:image" content="https://media.discordapp.net/attachments/420095259125743637/420145659643953162/014.png?width=285&height=300">
+<meta property="og:image" content="https://media.discordapp.net/attachments/420095259125743637/420145662366056448/016.png?">
+<meta property="og:image" content="https://media.discordapp.net/attachments/420095259125743637/423923738703298560/012.png?width=279&height=300">
+<meta property="og:image" content="https://media.discordapp.net/attachments/420095259125743637/423923739776778250/014.png?width=285&height=300">
+<meta property="og:image" content="https://media.discordapp.net/attachments/420095259125743637/423923744122339343/016.png?width=286&height=300width=286&height=300011.jpg">
+<meta property="og:image" content="http://blog.garenfeather.cn/2018/03/02/let%27s-debug-this-together/012.jpg">
+<meta property="og:image" content="http://blog.garenfeather.cn/2018/03/02/let%27s-debug-this-together/014.jpg">
+<meta property="og:image" content="http://blog.garenfeather.cn/2018/03/02/let%27s-debug-this-together/016.jpg">
+<meta property="og:updated_time" content="2018-03-22T13:33:02.829Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="在印度的工程师朋友说，Let&#39;s debug this together!">
+<meta name="twitter:description" content="我是谁我在哪我在干嘛  PaaS、IaaS、SaaS 谷歌随便找了一张图，感觉三者的区别还是很明显的↓  图上IaaS和PaaS的区别在于Operating System和Database，不过实际上感觉通常被我们认为是IaaS的AWS还有GCP等都有提供OS级别的管理。不过OS的创建是用户自行选择的，认为平台本身不提供似乎也合理？  我想干嘛 最近对由于对网络的特♂殊♂需♂求升级（国内旁友们应">
+<meta name="twitter:image" content="http://img1.sdnlab.com/wp-content/uploads/2017/11/xaas-gartner-definitions.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: 'T6MKXY5GW7',
+      apiKey: 'ef92ddd27106adf5875ac72569320509',
+      indexName: 'blog',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"何を探しているの?","hits_empty":"${query}: あら残念、何もない…","hits_stats":"関する結果の数は: ${hits}、 使った時間は約 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.garenfeather.cn/2018/03/02/let's-debug-this-together/"/>
+
+
+
+
+  <title>在印度的工程师朋友说，Let's debug this together! | 変わらないで</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="ja">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta custom-logo">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">変わらないで</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">ダイスキでダイキライ</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            ホーム
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            タグ
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            カテゴリ
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            アーカイブ
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            検索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.garenfeather.cn/2018/03/02/let's-debug-this-together/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="GarenFeather">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://media.discordapp.net/attachments/420095259125743637/423186378608738314/logo.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="変わらないで">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">在印度的工程师朋友说，Let's debug this together!</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">投稿日</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-03-02T15:23:20+08:00">
+                2018-03-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">カテゴリは</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/coding/" itemprop="url" rel="index">
+                    <span itemprop="name">coding</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/03/02/let's-debug-this-together/" class="leancloud_visitors" data-flag-title="在印度的工程师朋友说，Let's debug this together!">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">訪問者&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">ワードカウント&#58;</span>
+                
+                <span title="ワードカウント">
+                  2,137
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="我是谁我在哪我在干嘛"><a class="markdownIt-Anchor" href="#我是谁我在哪我在干嘛"></a> 我是谁我在哪我在干嘛</h2>
+<h3 id="paas-iaas-saas"><a class="markdownIt-Anchor" href="#paas-iaas-saas"></a> PaaS、IaaS、SaaS</h3>
+<p>谷歌随便找了一张图，感觉三者的区别还是很明显的↓</p>
+<p><img src="http://img1.sdnlab.com/wp-content/uploads/2017/11/xaas-gartner-definitions.png" alt="Traditional、Colocation、Hosting、IaaS、PaaS、SaaS"></p>
+<p>图上IaaS和PaaS的区别在于Operating System和Database，不过实际上感觉通常被我们认为是IaaS的AWS还有GCP等都有提供OS级别的管理。不过OS的创建是用户自行选择的，认为平台本身不提供似乎也合理？</p>
+<h3 id="我想干嘛"><a class="markdownIt-Anchor" href="#我想干嘛"></a> 我想干嘛</h3>
+<p>最近对由于对网络的特♂殊♂需♂求升级（国内旁友们应该都懂哈），<s>再加上没钱（其实是为了省钱买糖）</s>，开始钻研起了歪门邪道，经过对各种方案的对比整理、原理用法钻研、踩坑跳坑出坑，终于将技术上的需求明确下来了：</p>
+<ul>
+<li><strong>自带基础设施</strong>的云平台（Platform as a Service）</li>
+<li>有至少一个免费、不限时的配额</li>
+<li>支持基于docker/nodejs部署app</li>
+<li>操作流程可理解、相对简洁</li>
+</ul>
+<p>要求自带基础设施是因为在找的过程中发现有的平台虽然自称是PaaS，但实际上可以认为是只提供一套基于IaaS的部署工具——或者说应用管理方案。这种平台他们自己的部署工具大多有一套架构、对应的CLI，但<strong>基础设施还是别人的</strong>。具体表现在看doc你会发现他们要求你有Digitalocean、GCP或者AWS等IaaS才能部署</p>
+<p><s>……emmmm这要都有一台自己的VPS了还要你们何用</s>，参照上一条的定义，这样的平台并不能算作PaaS</p>
+<h3 id="我在干嘛"><a class="markdownIt-Anchor" href="#我在干嘛"></a> 我在干嘛</h3>
+<p>晚上吃饭的时候一时兴起翻到了一个<a href="https://github.com/ripienaar/free-for-dev" target="_blank" rel="external">free for dev</a>列表，理所当然就顺着列表的PaaS、IaaS还有Docker related项翻了起来，最后翻来覆去的试了十几个，加上前几天的浏览整合了下，感觉大概符合要求能用的也就几个：</p>
+<ul>
+<li>Bluemix：乍看上去不复杂，有自己的CLI工具也有配合Pivotal Cloud Foundry的CLI插件，列入考虑</li>
+<li>Openshift：因为是基于Kubernetes架构，一个pod一个app过程极其简单，然而用了不到两天就被ban了……</li>
+<li>Hasura：微服务同样基于Kubernetes架构，<strong>本回的主角</strong></li>
+<li>Pivotal Cloud Foundry：流程复杂了点（要部署docker app要设置diego_docker项，设置该项要admin用户，admin用户要自己创建，自己创建admin又要通过自行部署他们的UAA服务来创建，而这个服务无论是本地还是线上都部署失败），在Github提了issue，后面有空再慢慢跟进吧</li>
+<li>Arukas：还没试就在当晚被告知注册要排队很久，还要绑定银行卡，而且部署的<s>非法</s>app很快就会被ban，遂放弃</li>
+</ul>
+<p>综上所述，当晚摸鱼就决定试试hasura了！</p>
+<h3 id="lets-debug-this-together"><a class="markdownIt-Anchor" href="#lets-debug-this-together"></a> Let’s debug this together</h3>
+<h4 id="大致过程"><a class="markdownIt-Anchor" href="#大致过程"></a> 大致过程</h4>
+<p>先总结下印度工程师朋友的debug思路：</p>
+<ul>
+<li>hasura setup确保工程整体初始化</li>
+<li>怀疑git状态，确认<code>git status</code>与<code>git remote</code>正常，</li>
+<li>确认他们的CLI版本最新</li>
+<li>打开hasura debug，后台源代码查看错误</li>
+<li>中途我怀疑可能是墙还是user的问题所以擅自切到了root账号上了代理
+<ul>
+<li>root账号多报了个credentials的错误，<code>hasura cluster get-credentials -c hasura</code>执行也有返回错误</li>
+<li>被发现切了账号，<code>hasura user-info</code>确认了原本的user正常工作后切回了普通用户</li>
+</ul>
+</li>
+<li>发现我是在VM里操作的，怀疑我弄混了VM和本机设置（……）</li>
+<li>进一步确认<code>git status</code>正常</li>
+<li>确认$HOME变量正常</li>
+<li>后台发现错误是在 <em><strong>git library</strong></em> 里抛出来的，怀疑到 <em><strong>git版本</strong></em> 问题上了</li>
+<li>检查发现我还在使用古老的1.8.xx版本，遂试试升级git</li>
+<li>It works！That’s awesome!</li>
+</ul>
+<h4 id="报错细节"><a class="markdownIt-Anchor" href="#报错细节"></a> 报错细节</h4>
+<p>参照<a href="https://docs.hasura.io/0.15/manual/getting-started/index.html" target="_blank" rel="external">doc</a>，安装CLI，注册好账号，建好project和cluster以及microservice节点，到了<code>git push hasura master</code>这一步的时候出现了问题</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">The authenticity of host &apos;xx.hasura-app.io (xx.xx.58.177)&apos; can&apos;t be established.</div><div class="line">ECDSA key fingerprint is b5:xx:09:72:xx:xx:1e:67:d4:e6:e7:xx:76:xx:0f:xx.</div><div class="line">Are you sure you want to continue connecting (yes/no)? yes</div><div class="line">Warning: Permanently added &apos;xx.hasura-app.io,xx.xx.58.177&apos; (ECDSA) to the list of known hosts.</div><div class="line">Permission denied (publickey).</div><div class="line">fatal: Could not read from remote repository.</div><div class="line"></div><div class="line">Please make sure you have the correct access rights</div><div class="line">and the repository exists.</div></pre></td></tr></table></figure></div>
+<p>起初以为是网络的问题，挂了代理试了一下，还是报错</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">ssh_exchange_identification: Connection closed by remote host</div><div class="line">fatal: Could not read from remote repository.</div><div class="line"></div><div class="line">Please make sure you have the correct access rights</div><div class="line">and the repository exists.</div></pre></td></tr></table></figure></div>
+<p>束手无策，点击了右下角的webim图标将自己的问题发了过去，没期待能得到回复</p>
+<p><img src="https://media.discordapp.net/attachments/420095259125743637/420146990928756736/001.png?width=346&amp;height=300" alt="发送问题"></p>
+<p>意外的是很快就有人回复了我，看了下信息，似乎是个在印度的工程师朋友（妈呀还是k8s相关开发）</p>
+<p><img src="https://media.discordapp.net/attachments/420095259125743637/420148821792784384/working.pn001.jpg" alt="Works on K8S and Cloud Infrastructure"></p>
+<p>意外的是很快就有人回复了我，看了下信息，似乎是个在印度的工程师朋友</p>
+<p><img src="%E4%BF%A1%E6%81%AF.jpg" alt="Works on K8S and Cloud Infrastructure"></p>
+<p>根据指示设置好其他一切漏的设置后接下来<code>git push hasura master</code>基本上都固定报一个错了</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ git push hasura master</div><div class="line">× Pushing project failed error=reference not found</div><div class="line">error: failed to push some refs to &apos;ssh://hasura@xxx.hasura-app.io:22/~/git/xxx&apos;</div></pre></td></tr></table></figure></div>
+<p>于是开始一起debug……</p>
+<p><img src="https://media.discordapp.net/attachments/420095259125743637/420146030290665472/009.jpng" alt="因为习惯Linux敲命令行了哈哈哈"></p>
+<p><img src="https://media.discordapp.net/attachments/420095259125743637/420145406035623936/011.png?width=298&amp;height=300" alt="git版本太老"></p>
+<p><img src="https://media.discordapp.net/attachments/420095259125743637/420145655407968256/012.png?width=279&amp;height=300" alt="为什么是ssh不是常规git协议"></p>
+<p><img src="https://media.discordapp.net/attachments/420095259125743637/420145659643953162/014.png?width=285&amp;height=300" alt="为什么用虚拟机操作"></p>
+<p><img src="https://media.discordapp.net/attachments/420095259125743637/420145662366056448/016.png?" alt="通过他们的Gateway设置http准备好自动跳转https"></p>
+<p><img src="https://media.discordapp.net/attachments/420095259125743637/423923738703298560/012.png?width=279&amp;height=300" alt="为什么是ssh不是常规git协议"></p>
+<p><img src="https://media.discordapp.net/attachments/420095259125743637/423923739776778250/014.png?width=285&amp;height=300" alt="为什么用虚拟机操作"></p>
+<p><img src="https://media.discordapp.net/attachments/420095259125743637/423923744122339343/016.png?width=286&amp;height=300width=286&amp;height=300011.jpg" alt="通过他们的Gateway设置http准备好自动跳转https"></p>
+<p><img src="012.jpg" alt="为什么是ssh不是常规git协议"></p>
+<p><img src="014.jpg" alt="为什么用虚拟机操作"></p>
+<p><img src="016.jpg" alt="通过他们的Gateway设置http准备好自动跳转https"></p>
+<h4 id="问题分析"><a class="markdownIt-Anchor" href="#问题分析"></a> 问题分析</h4>
+<p>普通Github工程remote显示如下：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ git remote -v</div><div class="line">origin	git@github.com:youusername/yourreponame.git (fetch)</div><div class="line">origin	git@github.com:youusername/yourreponame.git (push)</div></pre></td></tr></table></figure></div>
+<p>该工程的remote显示如下</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ git remote -v</div><div class="line">hasura	ssh://hasura@xxx.hasura-app.io:22/~/git/xxx (fetch)</div><div class="line">hasura	ssh://hasura@xxx.hasura-app.io:22/~/git/xxx (push)</div></pre></td></tr></table></figure></div>
+<p>通过remote可以明显看出他们的服务器不是一般的git server，问了下了解到他们确实是用的ssh server代替常规的git server，而低版本的git在解析ssh的时候似乎会出现问题，所以才一直报的error</p>
+<p>实话说这个问题确实不好发现，如果没有后台查代码辅助，我应该是无论如何不会想到git的问题上的，云平台连接报错我总是会怀疑到国内神奇的网络环境上……</p>
+<p>思维还是局限了点，也不知道是受限于经验还是知识了，<s>不过这锅还是甩到墙上吧哈哈哈╮(╯▽╰)╭</s></p>
+<hr>
+<h2 id="后fei记hua"><a class="markdownIt-Anchor" href="#后fei记hua"></a> 后（fei）记（hua）</h2>
+<h3 id="为何如此高兴"><a class="markdownIt-Anchor" href="#为何如此高兴"></a> 为何如此高兴</h3>
+<p>最近沉迷云平台，到处试用，用过的大部分平台虽说有人工求助接口，但很少能回复，更别说是及时回复，更更不用说一直跟着你手把手debug指导问题解决了。当然相信这里面原因复杂，时差、平台规模、bug本身都是阻碍，也不能一味的就说平台的服务不好吧</p>
+<p>不管是时差正好对上了，还是他们的服务就是如此及时，快速的响应、耐心的帮助总是很让人感动的。</p>
+<p>从他们的CLI版本还在0.15.x来看，估计平台建好还不久，用户群体没那么庞大，所以人工服务才如此及时吧，不知道将来规模大了还能不能如此快准稳哈哈哈</p>
+<p>这次debug体验就像一次<strong>远程的结对编程</strong>，解决问题的那一瞬间非常开心，还顺便加了他们的discord讨论群，顺便问了下why not slack，顺便一起作为扩展阅读参考吧</p>
+<ul>
+<li><a href="https://blog.hasura.io/we-are-moving-to-discord-d01e4e6d31b0" target="_blank" rel="external">hasura：为什么讨论平台从slack迁移到了discord</a></li>
+<li><a href="https://reactjs.org/blog/2015/10/19/reactiflux-is-moving-to-discord.html" target="_blank" rel="external">react：为什么讨论平台从slack迁移到了discord</a></li>
+</ul>
+<h3 id="英语表达与知识体系"><a class="markdownIt-Anchor" href="#英语表达与知识体系"></a> 英语表达与知识体系</h3>
+<p>记得以前看过一篇公众号文章，大意是我们获得的大部分知识都停留在某个浅薄的级别上，没有深入理解，不能实际应用，更无法举一反三</p>
+<p>从自己的英文水平上深刻的感受到了这一点</p>
+<p>平常也会看小说，看技术文章，阅读量能勉强维持住，读到复杂颠倒的语句也能理解其意思，但真到了说的时候蹦出来的还是那几句小学英语（I wil、Can I、I should、how…），语序也基本还是中文思考的语序。大概就是只能说出I really feel disappointed而说不出It clearly a bummer的水平吧。</p>
+<p>扎心了，好几次交流途中都感觉无法完整表达出自己的意思，只能拐个弯。句式词汇单一反倒不是最难过的，毕竟交流只要能传达出意思就是胜利，然而事实上就是<strong>传达不出</strong>自己原本想表达的意思……╮(╯_╰)╭很难过了</p>
+<p>慢慢来吧，希望工作后还能有时间精力加强英文水平</p>
+<h3 id="最后"><a class="markdownIt-Anchor" href="#最后"></a> 最后</h3>
+<p><em><strong>Let’s debug this together！</strong></em></p>
+<blockquote>
+<p>Written with <a href="https://stackedit.io/" target="_blank" rel="external">StackEdit</a>.</p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/hasura/" rel="tag"># hasura</a>
+          
+            <a href="/tags/git/" rel="tag"># git</a>
+          
+            <a href="/tags/paas/" rel="tag"># paas</a>
+          
+            <a href="/tags/docker/" rel="tag"># docker</a>
+          
+            <a href="/tags/wall/" rel="tag"># wall</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/02/25/decentralization-system-analysis/" rel="next" title="去中心化系统说明">
+                <i class="fa fa-chevron-left"></i> 去中心化系统说明
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/07/my-mermaid-please/" rel="prev" title="my-mermaid-please">
+                my-mermaid-please <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zMzczMS8xMDI4NQ"></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            見出し
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            概要
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://media.discordapp.net/attachments/420095259125743637/423186378608738314/logo.png"
+                alt="GarenFeather" />
+            
+              <p class="site-author-name" itemprop="name">GarenFeather</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">ポスト</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">カテゴリ</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-name">タグ</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/GARENFEATHER" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:garenfeather@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://plus.google.com/113737038776129268880" target="_blank" title="Google">
+                      
+                        <i class="fa fa-fw fa-google"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://twitter.com/minamotoyoi" target="_blank" title="Twitter">
+                      
+                        <i class="fa fa-fw fa-twitter"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/fog.garen" target="_blank" title="FB Page">
+                      
+                        <i class="fa fa-fw fa-facebook"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://instagram.com/cynaustraline" target="_blank" title="Instagram">
+                      
+                        <i class="fa fa-fw fa-instagram"></i></a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Link Start!
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://cynaustine.herokuapp.com/" title="別の私" target="_blank">別の私</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#我是谁我在哪我在干嘛"><span class="nav-number">1.</span> <span class="nav-text"> 我是谁我在哪我在干嘛</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#paas-iaas-saas"><span class="nav-number">1.1.</span> <span class="nav-text"> PaaS、IaaS、SaaS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#我想干嘛"><span class="nav-number">1.2.</span> <span class="nav-text"> 我想干嘛</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#我在干嘛"><span class="nav-number">1.3.</span> <span class="nav-text"> 我在干嘛</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lets-debug-this-together"><span class="nav-number">1.4.</span> <span class="nav-text"> Let’s debug this together</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#大致过程"><span class="nav-number">1.4.1.</span> <span class="nav-text"> 大致过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#报错细节"><span class="nav-number">1.4.2.</span> <span class="nav-text"> 报错细节</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#问题分析"><span class="nav-number">1.4.3.</span> <span class="nav-text"> 问题分析</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#后fei记hua"><span class="nav-number">2.</span> <span class="nav-text"> 后（fei）记（hua）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#为何如此高兴"><span class="nav-number">2.1.</span> <span class="nav-text"> 为何如此高兴</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#英语表达与知识体系"><span class="nav-number">2.2.</span> <span class="nav-text"> 英语表达与知识体系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#最后"><span class="nav-number">2.3.</span> <span class="nav-text"> 最后</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">GarenFeather</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("1UGe0KySvfOYfaRGOh5ik5qR-gzGzoHsz", "pvwtsczULwC55DmVeLk8ewHJ");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
