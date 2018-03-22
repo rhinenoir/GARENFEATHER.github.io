@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="ja">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="hasura,git,paas,docker,wall," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="変わらないで" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="内容分发  内容分发网络（CDN）  分发树     .mermaid .label{font-family:trebuchet ms,verdana,arial;color:#333}.node circle,.node ellipse,.node polygon,.node rect{fill:#cde498;stroke:#13540c;stroke-width:1px}.node.cli">
+<meta name="keywords" content="hasura,git,paas,docker,wall">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从内容分发到去中心化架构（未完）">
+<meta property="og:url" content="http://blog.garenfeather.cn/2018/03/11/cdn-p2p-decentralization/index.html">
+<meta property="og:site_name" content="変わらないで">
+<meta property="og:description" content="内容分发  内容分发网络（CDN）  分发树     .mermaid .label{font-family:trebuchet ms,verdana,arial;color:#333}.node circle,.node ellipse,.node polygon,.node rect{fill:#cde498;stroke:#13540c;stroke-width:1px}.node.cli">
+<meta property="og:updated_time" content="2018-03-22T13:36:31.479Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="从内容分发到去中心化架构（未完）">
+<meta name="twitter:description" content="内容分发  内容分发网络（CDN）  分发树     .mermaid .label{font-family:trebuchet ms,verdana,arial;color:#333}.node circle,.node ellipse,.node polygon,.node rect{fill:#cde498;stroke:#13540c;stroke-width:1px}.node.cli">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: 'T6MKXY5GW7',
+      apiKey: 'ef92ddd27106adf5875ac72569320509',
+      indexName: 'blog',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"何を探しているの?","hits_empty":"${query}: あら残念、何もない…","hits_stats":"関する結果の数は: ${hits}、 使った時間は約 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.garenfeather.cn/2018/03/11/cdn-p2p-decentralization/"/>
+
+
+
+
+  <title>从内容分发到去中心化架构（未完） | 変わらないで</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="ja">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta custom-logo">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">変わらないで</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">ダイスキでダイキライ</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            ホーム
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            タグ
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            カテゴリ
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            アーカイブ
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            検索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.garenfeather.cn/2018/03/11/cdn-p2p-decentralization/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="GarenFeather">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://media.discordapp.net/attachments/420095259125743637/423186378608738314/logo.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="変わらないで">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">从内容分发到去中心化架构（未完）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">投稿日</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-03-11T16:20:16+08:00">
+                2018-03-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">カテゴリは</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/coding/" itemprop="url" rel="index">
+                    <span itemprop="name">coding</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/03/11/cdn-p2p-decentralization/" class="leancloud_visitors" data-flag-title="从内容分发到去中心化架构（未完）">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">訪問者&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">ワードカウント&#58;</span>
+                
+                <span title="ワードカウント">
+                  1,314
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="内容分发"><a class="markdownIt-Anchor" href="#内容分发"></a> 内容分发</h1>
+<h2 id="内容分发网络cdn"><a class="markdownIt-Anchor" href="#内容分发网络cdn"></a> 内容分发网络（CDN）</h2>
+<h3 id="分发树"><a class="markdownIt-Anchor" href="#分发树"></a> 分发树</h3>
+<div class="mermaid">
+<svg id="mermaid-svg-b31f2b653c70cf8c" xmlns="http://www.w3.org/2000/svg" height="100%" viewbox="0 0 873.5 368" style="max-width:873.5px;"><style>
+  .mermaid .label{font-family:trebuchet ms,verdana,arial;color:#333}.node circle,.node ellipse,.node polygon,.node rect{fill:#cde498;stroke:#13540c;stroke-width:1px}.node.clickable{cursor:pointer}.arrowheadPath{fill:green}.edgePath .path{stroke:green;stroke-width:1.5px}.edgeLabel{background-color:#e8e8e8}.cluster rect{fill:#cdffb2!important;rx:4!important;stroke:#6eaa49!important;stroke-width:1px!important}.cluster text{fill:#333}.actor{stroke:#13540c;fill:#cde498}text.actor{fill:#000;stroke:none}.actor-line{stroke:grey}.messageLine0{marker-end:"url(#arrowhead)"}.messageLine0,.messageLine1{stroke-width:1.5;stroke-dasharray:"2 2";stroke:#333}#arrowhead{fill:#333}#crosshead path{fill:#333!important;stroke:#333!important}.messageText{fill:#333;stroke:none}.labelBox{stroke:#326932;fill:#cde498}.labelText,.loopText{fill:#000;stroke:none}.loopLine{stroke-width:2;stroke-dasharray:"2 2";marker-end:"url(#arrowhead)";stroke:#326932}.note{stroke:#6eaa49;fill:#fff5ad}.noteText{fill:#000;stroke:none;font-family:trebuchet ms,verdana,arial;font-size:14px}.section{stroke:none;opacity:.2}.section0,.section2{fill:#6eaa49}.section1,.section3{fill:#fff;opacity:.2}.sectionTitle0,.sectionTitle1,.sectionTitle2,.sectionTitle3{fill:#333}.sectionTitle{text-anchor:start;font-size:11px;text-height:14px}.grid .tick{stroke:#d3d3d3;opacity:.3;shape-rendering:crispEdges}.grid path{stroke-width:0}.today{fill:none;stroke:red;stroke-width:2px}.task{stroke-width:2}.taskText{text-anchor:middle;font-size:11px}.taskTextOutsideRight{fill:#000;text-anchor:start;font-size:11px}.taskTextOutsideLeft{fill:#000;text-anchor:end;font-size:11px}.taskText0,.taskText1,.taskText2,.taskText3{fill:#fff}.task0,.task1,.task2,.task3{fill:#487e3a;stroke:#13540c}.taskTextOutside0,.taskTextOutside1,.taskTextOutside2,.taskTextOutside3{fill:#000}.active0,.active1,.active2,.active3{fill:#cde498;stroke:#13540c}.activeText0,.activeText1,.activeText2,.activeText3{fill:#000!important}.done0,.done1,.done2,.done3{stroke:grey;fill:#d3d3d3;stroke-width:2}.doneText0,.doneText1,.doneText2,.doneText3{fill:#000!important}.crit0,.crit1,.crit2,.crit3{stroke:#f88;fill:red;stroke-width:2}.activeCrit0,.activeCrit1,.activeCrit2,.activeCrit3{stroke:#f88;fill:#cde498;stroke-width:2}.doneCrit0,.doneCrit1,.doneCrit2,.doneCrit3{stroke:#f88;fill:#d3d3d3;stroke-width:2;cursor:pointer;shape-rendering:crispEdges}.activeCritText0,.activeCritText1,.activeCritText2,.activeCritText3,.doneCritText0,.doneCritText1,.doneCritText2,.doneCritText3{fill:#000!important}.titleText{text-anchor:middle;font-size:18px;fill:#000}g.classGroup text{fill:#13540c;stroke:none;font-family:trebuchet ms,verdana,arial;font-size:10px}g.classGroup rect{fill:#cde498;stroke:#13540c}g.classGroup line{stroke:#13540c;stroke-width:1}svg .classLabel .box{stroke:none;stroke-width:0;fill:#cde498;opacity:.5}svg .classLabel .label{fill:#13540c;font-size:10px}.relation{stroke:#13540c;stroke-width:1;fill:none}#compositionEnd,#compositionStart,.composition{fill:#13540c;stroke:#13540c;stroke-width:1}#aggregationEnd,#aggregationStart,.aggregation{fill:#cde498;stroke:#13540c;stroke-width:1}#dependencyEnd,#dependencyStart,#extensionEnd,#extensionStart{fill:#13540c;stroke:#13540c;stroke-width:1}.node text{font-size:14px}.node text,div.mermaidTooltip{font-family:trebuchet ms,verdana,arial}div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-size:12px;background:#cdffb2;border:1px solid #6eaa49;border-radius:2px;pointer-events:none;z-index:100}
+svg {
+  color: rgb(0, 0, 0);
+  font: normal normal 400 normal 16px / normal "Times New Roman";
+}
+  </style><g><g class="output"><g class="clusters"><g class="cluster" id="subGraph1" transform="translate(420.5,285)" style="opacity: 1;"><rect width="794" height="86" x="-397" y="-43"/><g class="label"><g transform="translate(0,0)"><foreignobject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"/></foreignobject></g></g><text x="0" y="-29" fill="black" stroke="none" id="mermaid-svg-b31f2b653c70cf8cText" style="text-anchor: middle;"> 全球客户</text></g><g class="cluster" id="subGraph0" transform="translate(404.25,149)" style="opacity: 1;"><rect width="768.5" height="86" x="-384.25" y="-43"/><g class="label"><g transform="translate(0,0)"><foreignobject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"/></foreignobject></g></g><text x="0" y="-29" fill="black" stroke="none" id="mermaid-svg-b31f2b653c70cf8cText" style="text-anchor: middle;"> CDN节点</text></g></g><g class="edgePaths"><g class="edgePath" style="opacity: 1;"><path class="path" d="M323.5,46.79545454545455L113.5,81L113.5,106L113.5,131" marker-end="url(#arrowhead67)" style="stroke: #333; fill:none;stroke-width:2px;stroke-dasharray:3;"/><defs><marker id="arrowhead67" viewbox="0 0 10 10" refx="9" refy="5" markerunits="strokeWidth" markerwidth="8" markerheight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M377.5,56L377.5,81L377.5,106L377.5,131" marker-end="url(#arrowhead68)" style="stroke: #333; fill:none;stroke-width:2px;stroke-dasharray:3;"/><defs><marker id="arrowhead68" viewbox="0 0 10 10" refx="9" refy="5" markerunits="strokeWidth" markerwidth="8" markerheight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M431.5,45.714285714285715L678.5,81L678.5,106L678.5,131" marker-end="url(#arrowhead69)" style="stroke: #333; fill:none;stroke-width:2px;stroke-dasharray:3;"/><defs><marker id="arrowhead69" viewbox="0 0 10 10" refx="9" refy="5" markerunits="strokeWidth" markerwidth="8" markerheight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M98.01162790697674,167L76.5,192L76.5,217L76.5,242L76.5,267" marker-end="url(#arrowhead70)" style="fill:none"/><defs><marker id="arrowhead70" viewbox="0 0 10 10" refx="9" refy="5" markerunits="strokeWidth" markerwidth="8" markerheight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M134.01162790697674,167L162.5,192L162.5,217L162.5,242L162.5,267" marker-end="url(#arrowhead71)" style="fill:none"/><defs><marker id="arrowhead71" viewbox="0 0 10 10" refx="9" refy="5" markerunits="strokeWidth" markerwidth="8" markerheight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M343.5,160.33333333333334L248.5,192L248.5,217L248.5,242L248.5,267" marker-end="url(#arrowhead72)" style="fill:none"/><defs><marker id="arrowhead72" viewbox="0 0 10 10" refx="9" refy="5" markerunits="strokeWidth" markerwidth="8" markerheight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M359.5,167L334.5,192L334.5,217L334.5,242L334.5,267" marker-end="url(#arrowhead73)" style="fill:none"/><defs><marker id="arrowhead73" viewbox="0 0 10 10" refx="9" refy="5" markerunits="strokeWidth" markerwidth="8" markerheight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M395.5,167L420.5,192L420.5,217L420.5,242L420.5,267" marker-end="url(#arrowhead74)" style="fill:none"/><defs><marker id="arrowhead74" viewbox="0 0 10 10" refx="9" refy="5" markerunits="strokeWidth" markerwidth="8" markerheight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M411.5,160.33333333333334L506.5,192L506.5,217L506.5,242L506.5,267" marker-end="url(#arrowhead75)" style="fill:none"/><defs><marker id="arrowhead75" viewbox="0 0 10 10" refx="9" refy="5" markerunits="strokeWidth" markerwidth="8" markerheight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M642.5,167L592.5,192L592.5,217L592.5,242L592.5,267" marker-end="url(#arrowhead76)" style="fill:none"/><defs><marker id="arrowhead76" viewbox="0 0 10 10" refx="9" refy="5" markerunits="strokeWidth" markerwidth="8" markerheight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M678.5,167L678.5,192L678.5,217L678.5,242L678.5,267" marker-end="url(#arrowhead77)" style="fill:none"/><defs><marker id="arrowhead77" viewbox="0 0 10 10" refx="9" refy="5" markerunits="strokeWidth" markerwidth="8" markerheight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M714.5,167L764.5,192L764.5,217L764.5,242L764.5,267" marker-end="url(#arrowhead78)" style="fill:none"/><defs><marker id="arrowhead78" viewbox="0 0 10 10" refx="9" refy="5" markerunits="strokeWidth" markerwidth="8" markerheight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker></defs></g></g><g class="edgeLabels"><g class="edgeLabel" transform="" style="opacity: 1;"><g transform="translate(0,0)" class="label"><foreignobject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel"/></div></foreignobject></g></g><g class="edgeLabel" transform="" style="opacity: 1;"><g transform="translate(0,0)" class="label"><foreignobject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel"/></div></foreignobject></g></g><g class="edgeLabel" transform="" style="opacity: 1;"><g transform="translate(0,0)" class="label"><foreignobject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel"/></div></foreignobject></g></g><g class="edgeLabel" transform="" style="opacity: 1;"><g transform="translate(0,0)" class="label"><foreignobject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel"/></div></foreignobject></g></g><g class="edgeLabel" transform="" style="opacity: 1;"><g transform="translate(0,0)" class="label"><foreignobject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel"/></div></foreignobject></g></g><g class="edgeLabel" transform="" style="opacity: 1;"><g transform="translate(0,0)" class="label"><foreignobject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel"/></div></foreignobject></g></g><g class="edgeLabel" transform="" style="opacity: 1;"><g transform="translate(0,0)" class="label"><foreignobject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel"/></div></foreignobject></g></g><g class="edgeLabel" transform="" style="opacity: 1;"><g transform="translate(0,0)" class="label"><foreignobject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel"/></div></foreignobject></g></g><g class="edgeLabel" transform="" style="opacity: 1;"><g transform="translate(0,0)" class="label"><foreignobject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel"/></div></foreignobject></g></g><g class="edgeLabel" transform="" style="opacity: 1;"><g transform="translate(0,0)" class="label"><foreignobject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel"/></div></foreignobject></g></g><g class="edgeLabel" transform="" style="opacity: 1;"><g transform="translate(0,0)" class="label"><foreignobject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel"/></div></foreignobject></g></g><g class="edgeLabel" transform="" style="opacity: 1;"><g transform="translate(0,0)" class="label"><foreignobject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel"/></div></foreignobject></g></g></g><g class="nodes"><g class="node" id="C1" transform="translate(76.5,285)" style="opacity: 1;"><rect rx="0" ry="0" x="-18" y="-18" width="36" height="36"/><g class="label" transform="translate(0,0)"><g transform="translate(-8,-8)"><foreignobject width="16" height="16"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">C1</div></foreignobject></g></g></g><g class="node" id="C2" transform="translate(162.5,285)" style="opacity: 1;"><rect rx="0" ry="0" x="-18" y="-18" width="36" height="36"/><g class="label" transform="translate(0,0)"><g transform="translate(-8,-8)"><foreignobject width="16" height="16"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">C2</div></foreignobject></g></g></g><g class="node" id="C3" transform="translate(248.5,285)" style="opacity: 1;"><rect rx="0" ry="0" x="-18" y="-18" width="36" height="36"/><g class="label" transform="translate(0,0)"><g transform="translate(-8,-8)"><foreignobject width="16" height="16"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">C3</div></foreignobject></g></g></g><g class="node" id="C4" transform="translate(334.5,285)" style="opacity: 1;"><rect rx="0" ry="0" x="-18" y="-18" width="36" height="36"/><g class="label" transform="translate(0,0)"><g transform="translate(-8,-8)"><foreignobject width="16" height="16"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">C4</div></foreignobject></g></g></g><g class="node" id="C5" transform="translate(420.5,285)" style="opacity: 1;"><rect rx="0" ry="0" x="-18" y="-18" width="36" height="36"/><g class="label" transform="translate(0,0)"><g transform="translate(-8,-8)"><foreignobject width="16" height="16"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">C5</div></foreignobject></g></g></g><g class="node" id="C6" transform="translate(506.5,285)" style="opacity: 1;"><rect rx="0" ry="0" x="-18" y="-18" width="36" height="36"/><g class="label" transform="translate(0,0)"><g transform="translate(-8,-8)"><foreignobject width="16" height="16"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">C6</div></foreignobject></g></g></g><g class="node" id="C7" transform="translate(592.5,285)" style="opacity: 1;"><rect rx="0" ry="0" x="-18" y="-18" width="36" height="36"/><g class="label" transform="translate(0,0)"><g transform="translate(-8,-8)"><foreignobject width="16" height="16"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">C7</div></foreignobject></g></g></g><g class="node" id="C8" transform="translate(678.5,285)" style="opacity: 1;"><rect rx="0" ry="0" x="-18" y="-18" width="36" height="36"/><g class="label" transform="translate(0,0)"><g transform="translate(-8,-8)"><foreignobject width="16" height="16"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">C8</div></foreignobject></g></g></g><g class="node" id="C9" transform="translate(764.5,285)" style="opacity: 1;"><rect rx="0" ry="0" x="-18" y="-18" width="36" height="36"/><g class="label" transform="translate(0,0)"><g transform="translate(-8,-8)"><foreignobject width="16" height="16"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">C9</div></foreignobject></g></g></g><g class="node" id="B" transform="translate(113.5,149)" style="opacity: 1;"><rect rx="5" ry="5" x="-26" y="-18" width="52" height="36"/><g class="label" transform="translate(0,0)"><g transform="translate(-16,-8)"><foreignobject width="32" height="16"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">悉尼</div></foreignobject></g></g></g><g class="node" id="C" transform="translate(377.5,149)" style="opacity: 1;"><rect rx="5" ry="5" x="-34" y="-18" width="68" height="36"/><g class="label" transform="translate(0,0)"><g transform="translate(-24,-8)"><foreignobject width="48" height="16"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">波士顿</div></foreignobject></g></g></g><g class="node" id="D" transform="translate(678.5,149)" style="opacity: 1;"><rect rx="5" ry="5" x="-50" y="-18" width="100" height="36"/><g class="label" transform="translate(0,0)"><g transform="translate(-40,-8)"><foreignobject width="80" height="16"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">阿姆斯特丹</div></foreignobject></g></g></g><g class="node" id="A" transform="translate(377.5,38)" style="opacity: 1;"><rect rx="5" ry="5" x="-54" y="-18" width="108" height="36"/><g class="label" transform="translate(0,0)"><g transform="translate(-44,-8)"><foreignobject width="88" height="16"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">CDN源服务器</div></foreignobject></g></g></g></g></g></g></svg>
+</div>
+<h4 id="设置cdn节点为web代理实际不奏效"><a class="markdownIt-Anchor" href="#设置cdn节点为web代理实际不奏效"></a> 设置CDN节点为web代理（实际不奏效）</h4>
+<ul>
+<li>不同客户可能会使用不同代理</li>
+<li>从安全角度考虑，缓存机制通常不能跨组织共享</li>
+<li>可能存在多个CDN，客户端只能使用一个代理缓存，如何选择？</li>
+<li>客户端本身已经使用了代理，不会再自行配置web代理用于CDN用途</li>
+</ul>
+<h4 id="镜像久经考验"><a class="markdownIt-Anchor" href="#镜像久经考验"></a> 镜像（久经考验）</h4>
+<ul>
+<li>源服务器网页上包含了指向不同镜像点的显式链接，通常<strong>告诉用户</strong>这些镜像点的位置</li>
+<li>典型应用是把一个大的软件包放在不同位置的镜像点上</li>
+<li>缺点：还是依靠用户做内容的分发（因为镜像点实际上是不同的web站点）</li>
+</ul>
+<h3 id="dns重定向"><a class="markdownIt-Anchor" href="#dns重定向"></a> DNS重定向</h3>
+<ul>
+<li>客服了上述两种方法的困难</li>
+<li>核心设计：<strong>域名服务器同时作为CDN节点运行</strong></li>
+</ul>
+<h4 id="流程"><a class="markdownIt-Anchor" href="#流程"></a> 流程</h4>
+<ul>
+<li>DNS将<code>www.google.com</code>解析为一个IP地址，DNS查找过程不变</li>
+<li>请求域名服务器解析解析<code>www.google.com</code>时，域名服务器<strong>不是为每个请求返回相同的IP地址，而是根据发出请求的客户端IP地址返回最靠近客户端的CDN节点的IP地址</strong></li>
+</ul>
+<h2 id="对等网络p2p"><a class="markdownIt-Anchor" href="#对等网络p2p"></a> 对等网络（P2P）</h2>
+<ul>
+<li>核心技术：BitTorrent（最著名的协议）、DHT算法（分布式）</li>
+<li>P2P网络的一个重大挑战在于当前面临各种各样的用户，而且用户具有不同的下载和上传容量，如何更好的使用带宽</li>
+<li>P2P系统中，不可能有单个提供商具有监测整个系统的能力，但并<strong>不意味着P2P系统提供隐私保护</strong>，因为用户在一定程度上相互信任 <s>（这不就是传说中的去中心化区块链核心技术吗！原来早就有了！）</s></li>
+</ul>
+<h3 id="bittorrent"><a class="markdownIt-Anchor" href="#bittorrent"></a> BitTorrent</h3>
+<h4 id="问题"><a class="markdownIt-Anchor" href="#问题"></a> 问题</h4>
+<ol>
+<li>一个对等用户如何<strong>找到</strong>具有自己想<strong>下载内容</strong>的<strong>其他</strong>对等<strong>用户</strong></li>
+<li>对等用户们如何<strong>复制（上传）内容</strong>以便为大家提供高速下载</li>
+<li>对等用户们如何相互<strong>鼓励上传</strong>内容给他人同时为自己下载内容</li>
+</ol>
+<h4 id="种子文件"><a class="markdownIt-Anchor" href="#种子文件"></a> 种子文件</h4>
+<ul>
+<li>
+<p>包含内容</p>
+<ul>
+<li><strong>跟踪器</strong>，是一个服务器，将对等用户引导到种子文件内容</li>
+<li>大小相等片或**块（chunk）**清单，给出内容哈希</li>
+</ul>
+</li>
+<li>
+<p>种子文件维护着主动上传和下载该内容的所有其他对等用户列表（用户集群）</p>
+</li>
+<li>
+<p>当一个群首次形成时，有些用户必须拥有组成内容的所有块，这些对等用户就是所谓的种子（seeder）</p>
+</li>
+</ul>
+<h4 id="集群维持"><a class="markdownIt-Anchor" href="#集群维持"></a> 集群维持</h4>
+<ul>
+<li>CDN节点是专门为用户提供内容而设置的，<strong>P2P节点不是</strong>。只下载不提供上传帮助的节点过多，系统将无法正常工作</li>
+<li>当前正在与一个节点交换块的对等节点称为<strong>非阻塞</strong></li>
+<li>BitTorrent奖励表现出良好上传行为的对等节点</li>
+<li>每个对等节点<strong>随机采样</strong>其他对等节点，给他们上传块同时检索他们的块，只与少数最高下载性能的对等节点们继续交易块。同时随机尝试其他对等节点，给新加入节点获得初始块的机会</li>
+</ul>
+<h4 id="核心难题"><a class="markdownIt-Anchor" href="#核心难题"></a> 核心难题</h4>
+<ul>
+<li>跟踪器<strong>必须是分布式</strong>的，而传统思路下是集中式的</li>
+<li>需要一个<strong>完全分布式且表现良好的P2P索引</strong></li>
+<li>由此引入Chord、CAN、Pastry、Tapestry、Kademlia（已被实际使用，称为分布式哈希表）等解决方案</li>
+</ul>
+<h3 id="dht"><a class="markdownIt-Anchor" href="#dht"></a> DHT</h3>
+<h4 id="结构"><a class="markdownIt-Anchor" href="#结构"></a> 结构</h4>
+<ul>
+<li>DHT需要在节点之间的通信采用一个正规结构。传统P2P系统中对等节点之间可以使用任意连接</li>
+<li>DHT称为结构化的P2P网络</li>
+</ul>
+<h4 id="完全分布式且表现良好的p2p索引"><a class="markdownIt-Anchor" href="#完全分布式且表现良好的p2p索引"></a> 完全分布式且表现良好的P2P索引</h4>
+<ul>
+<li>每个节点只需保留<strong>少量</strong>有关<strong>其他节点的信息</strong>（即保持最新索引代价不昂贵）</li>
+<li>每个节点可<strong>快速查看索引</strong>中表现</li>
+<li>每个节点可以<strong>同时使用索引</strong></li>
+</ul>
+<h4 id="chord"><a class="markdownIt-Anchor" href="#chord"></a> Chord</h4>
+<ul>
+<li>总索引是所有用户集群的列表，计算机加入用户集群下载</li>
+<li>查询索引的<strong>关键字</strong>是内容的<strong>种子文件描述</strong></li>
+<li>总索引被广播到DHT的n个参与节点上</li>
+<li>关键：在一个虚拟空间中使用标识符来导航索引而不是使用节点的IP或内容名称</li>
+<li>基本概念：哈希环、一致性哈希</li>
+</ul>
+<h4 id="哈希环"><a class="markdownIt-Anchor" href="#哈希环"></a> 哈希环</h4>
+<ul>
+<li>由于不知节点标识符是否指向实际存在节点，只能线性查找，而线性查找效率低，故考虑维持一定的<strong>跳跃性查找数据结构</strong></li>
+<li>Chord解决方案是维持一个<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>s</mi><mi>t</mi><mi>a</mi><mi>r</mi><mi>t</mi><mo>=</mo><mi>k</mi><mo>+</mo><msup><mn>2</mn><mi>m</mi></msup></mrow><annotation encoding="application/x-tex">start = k+2^m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.69444em;"></span><span class="strut bottom" style="height:0.77777em;vertical-align:-0.08333em;"></span><span class="base textstyle uncramped"><span class="mord mathit">s</span><span class="mord mathit">t</span><span class="mord mathit">a</span><span class="mord mathit" style="margin-right:0.02778em;">r</span><span class="mord mathit">t</span><span class="mrel">=</span><span class="mord mathit" style="margin-right:0.03148em;">k</span><span class="mbin">+</span><span class="mord"><span class="mord mathrm">2</span><span class="vlist"><span style="top:-0.363em;margin-right:0.05em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle uncramped"><span class="mord mathit">m</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span></span></span></span>的指取表数据结构，start为标识符，start=&gt;value为该指向的实际节点</li>
+<li>Redis的基础数据结构中包括有<strong>跳表</strong>，也有类似<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mn>2</mn><mi>m</mi></msup></mrow><annotation encoding="application/x-tex">2^m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.664392em;"></span><span class="strut bottom" style="height:0.664392em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord"><span class="mord mathrm">2</span><span class="vlist"><span style="top:-0.363em;margin-right:0.05em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle uncramped"><span class="mord mathit">m</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span></span></span></span>的跳跃概念，但可以设定的更加随机一些</li>
+</ul>
+<h4 id="其他"><a class="markdownIt-Anchor" href="#其他"></a> 其他</h4>
+<ul>
+<li>DHT在其他分布式技术中也有广泛的应用</li>
+</ul>
+<hr>
+<h1 id="amazon-dynamo"><a class="markdownIt-Anchor" href="#amazon-dynamo"></a> Amazon Dynamo</h1>
+<blockquote>
+<p>Written with <a href="https://stackedit.io/" target="_blank" rel="external">StackEdit</a>.</p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/hasura/" rel="tag"># hasura</a>
+          
+            <a href="/tags/git/" rel="tag"># git</a>
+          
+            <a href="/tags/paas/" rel="tag"># paas</a>
+          
+            <a href="/tags/docker/" rel="tag"># docker</a>
+          
+            <a href="/tags/wall/" rel="tag"># wall</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/07/my-mermaid-please/" rel="next" title="my-mermaid-please">
+                <i class="fa fa-chevron-left"></i> my-mermaid-please
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/16/hexo-next-macpanel-improved/" rel="prev" title="Hexo博客NexT主题代码高亮MacPanel特效配置">
+                Hexo博客NexT主题代码高亮MacPanel特效配置 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zMzczMS8xMDI4NQ"></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            見出し
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            概要
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://media.discordapp.net/attachments/420095259125743637/423186378608738314/logo.png"
+                alt="GarenFeather" />
+            
+              <p class="site-author-name" itemprop="name">GarenFeather</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">ポスト</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">カテゴリ</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">38</span>
+                  <span class="site-state-item-name">タグ</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/GARENFEATHER" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:garenfeather@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://plus.google.com/113737038776129268880" target="_blank" title="Google">
+                      
+                        <i class="fa fa-fw fa-google"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://twitter.com/minamotoyoi" target="_blank" title="Twitter">
+                      
+                        <i class="fa fa-fw fa-twitter"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/fog.garen" target="_blank" title="FB Page">
+                      
+                        <i class="fa fa-fw fa-facebook"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://instagram.com/cynaustraline" target="_blank" title="Instagram">
+                      
+                        <i class="fa fa-fw fa-instagram"></i></a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Link Start!
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://cynaustine.herokuapp.com/" title="別の私" target="_blank">別の私</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#内容分发"><span class="nav-number">1.</span> <span class="nav-text"> 内容分发</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#内容分发网络cdn"><span class="nav-number">1.1.</span> <span class="nav-text"> 内容分发网络（CDN）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#分发树"><span class="nav-number">1.1.1.</span> <span class="nav-text"> 分发树</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#设置cdn节点为web代理实际不奏效"><span class="nav-number">1.1.1.1.</span> <span class="nav-text"> 设置CDN节点为web代理（实际不奏效）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#镜像久经考验"><span class="nav-number">1.1.1.2.</span> <span class="nav-text"> 镜像（久经考验）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dns重定向"><span class="nav-number">1.1.2.</span> <span class="nav-text"> DNS重定向</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#流程"><span class="nav-number">1.1.2.1.</span> <span class="nav-text"> 流程</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对等网络p2p"><span class="nav-number">1.2.</span> <span class="nav-text"> 对等网络（P2P）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#bittorrent"><span class="nav-number">1.2.1.</span> <span class="nav-text"> BitTorrent</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#问题"><span class="nav-number">1.2.1.1.</span> <span class="nav-text"> 问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#种子文件"><span class="nav-number">1.2.1.2.</span> <span class="nav-text"> 种子文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#集群维持"><span class="nav-number">1.2.1.3.</span> <span class="nav-text"> 集群维持</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#核心难题"><span class="nav-number">1.2.1.4.</span> <span class="nav-text"> 核心难题</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dht"><span class="nav-number">1.2.2.</span> <span class="nav-text"> DHT</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#结构"><span class="nav-number">1.2.2.1.</span> <span class="nav-text"> 结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#完全分布式且表现良好的p2p索引"><span class="nav-number">1.2.2.2.</span> <span class="nav-text"> 完全分布式且表现良好的P2P索引</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#chord"><span class="nav-number">1.2.2.3.</span> <span class="nav-text"> Chord</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#哈希环"><span class="nav-number">1.2.2.4.</span> <span class="nav-text"> 哈希环</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#其他"><span class="nav-number">1.2.2.5.</span> <span class="nav-text"> 其他</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#amazon-dynamo"><span class="nav-number">2.</span> <span class="nav-text"> Amazon Dynamo</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">GarenFeather</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("1UGe0KySvfOYfaRGOh5ik5qR-gzGzoHsz", "pvwtsczULwC55DmVeLk8ewHJ");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

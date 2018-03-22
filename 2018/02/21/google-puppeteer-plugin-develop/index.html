@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="ja">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="puppeteer,google,mermaid,nodejs,opensource," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="変わらないで" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="使用及故障  在干啥  在开发mermaid插件（没错我还在持之以恒的死磕）过程中确认到mermaid渲染必须在有浏览器的情况下才能正确渲染，考虑了以下两种headless browser  phantom，node插件为phantom，先考虑这个是因为用过PhantomJS，本机和服务器上也都有装。然而据说已经没人维护了（两年没出新版本？），跑起来也有很多迷之bug（API都找不全），遂放弃">
+<meta name="keywords" content="puppeteer,google,mermaid,nodejs,opensource">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Google家开源的puppeteer使用bug修复">
+<meta property="og:url" content="http://blog.garenfeather.cn/2018/02/21/google-puppeteer-plugin-develop/index.html">
+<meta property="og:site_name" content="変わらないで">
+<meta property="og:description" content="使用及故障  在干啥  在开发mermaid插件（没错我还在持之以恒的死磕）过程中确认到mermaid渲染必须在有浏览器的情况下才能正确渲染，考虑了以下两种headless browser  phantom，node插件为phantom，先考虑这个是因为用过PhantomJS，本机和服务器上也都有装。然而据说已经没人维护了（两年没出新版本？），跑起来也有很多迷之bug（API都找不全），遂放弃">
+<meta property="og:image" content="https://cdn.discordapp.com/attachments/420095259125743637/422016225879785487/QQ20180310210325.png">
+<meta property="og:updated_time" content="2018-03-22T13:39:28.979Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Google家开源的puppeteer使用bug修复">
+<meta name="twitter:description" content="使用及故障  在干啥  在开发mermaid插件（没错我还在持之以恒的死磕）过程中确认到mermaid渲染必须在有浏览器的情况下才能正确渲染，考虑了以下两种headless browser  phantom，node插件为phantom，先考虑这个是因为用过PhantomJS，本机和服务器上也都有装。然而据说已经没人维护了（两年没出新版本？），跑起来也有很多迷之bug（API都找不全），遂放弃">
+<meta name="twitter:image" content="https://cdn.discordapp.com/attachments/420095259125743637/422016225879785487/QQ20180310210325.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: 'T6MKXY5GW7',
+      apiKey: 'ef92ddd27106adf5875ac72569320509',
+      indexName: 'blog',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"何を探しているの?","hits_empty":"${query}: あら残念、何もない…","hits_stats":"関する結果の数は: ${hits}、 使った時間は約 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.garenfeather.cn/2018/02/21/google-puppeteer-plugin-develop/"/>
+
+
+
+
+  <title>Google家开源的puppeteer使用bug修复 | 変わらないで</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="ja">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta custom-logo">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">変わらないで</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">ダイスキでダイキライ</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            ホーム
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            タグ
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            カテゴリ
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            アーカイブ
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            検索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.garenfeather.cn/2018/02/21/google-puppeteer-plugin-develop/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="GarenFeather">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://media.discordapp.net/attachments/420095259125743637/423186378608738314/logo.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="変わらないで">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Google家开源的puppeteer使用bug修复</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">投稿日</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-21T19:10:18+08:00">
+                2018-02-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">カテゴリは</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/coding/" itemprop="url" rel="index">
+                    <span itemprop="name">coding</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/02/21/google-puppeteer-plugin-develop/" class="leancloud_visitors" data-flag-title="Google家开源的puppeteer使用bug修复">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">訪問者&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">ワードカウント&#58;</span>
+                
+                <span title="ワードカウント">
+                  1,403
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="使用及故障"><a class="markdownIt-Anchor" href="#使用及故障"></a> 使用及故障</h2>
+<h3 id="在干啥"><a class="markdownIt-Anchor" href="#在干啥"></a> 在干啥</h3>
+<ul>
+<li>在开发mermaid插件（没错我还在持之以恒的死磕）过程中确认到mermaid渲染必须在有浏览器的情况下才能正确渲染，考虑了以下两种headless browser
+<ul>
+<li>phantom，node插件为phantom，先考虑这个是因为用过PhantomJS，本机和服务器上也都有装。然而据说已经没人维护了（两年没出新版本？），跑起来也有很多迷之bug（API都找不全），遂放弃</li>
+<li>puppeteer，mermaid的开发者有提供官方的cli工具行就是基于此开发的，至少可以确认可运行</li>
+</ul>
+</li>
+</ul>
+<h3 id="天坑故障系列集合"><a class="markdownIt-Anchor" href="#天坑故障系列集合"></a> 天坑故障系列集合</h3>
+<h4 id="缺包"><a class="markdownIt-Anchor" href="#缺包"></a> 缺包</h4>
+<p>首先项目里正常安装</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ npm i puppeteer --save</div></pre></td></tr></table></figure></div>
+<p>安装过程没报错，运行demo的时候就开始爆炸了</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">Promise &#123;</div><div class="line">  &lt;pending&gt;,</div><div class="line">  domain: </div><div class="line">   Domain &#123;</div><div class="line">     domain: null,</div><div class="line">     _events: &#123; error: [Function: debugDomainError] &#125;,</div><div class="line">     _eventsCount: 1,</div><div class="line">     _maxListeners: undefined,</div><div class="line">     members: [] &#125; &#125;</div><div class="line">&gt; (node:65773) UnhandledPromiseRejectionWarning: Unhandled promise rejection (rejection id: 3): Error: Failed to launch chrome!</div><div class="line">/home/garen/Desktop/testProject/node_modules/puppeteer/.local-chromium/linux-536395/chrome-linux/chrome: error while loading shared libraries: libXss.so.1: cannot open shared object file: No such file or directory</div><div class="line"></div><div class="line"></div><div class="line">TROUBLESHOOTING: https://github.com/GoogleChrome/puppeteer/blob/master/docs/troubleshooting.md</div></pre></td></tr></table></figure></div>
+<p>进入安装目录查看：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ cd node_modules/puppeteer/.local-chromium/linux-536395/chrome-linux/</div></pre></td></tr></table></figure></div>
+<p>检查bug的时候有小伙伴说可能是内核的原因，不过个人感觉更新内核还是要谨慎，顺便检查了下内核版本</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">$ cat /etc/*-release</div><div class="line">CentOS Linux release 7.2.1511 (Core) </div><div class="line">NAME=&quot;CentOS Linux&quot;</div><div class="line">VERSION=&quot;7 (Core)&quot;</div><div class="line">ID=&quot;centos&quot;</div><div class="line">ID_LIKE=&quot;rhel fedora&quot;</div><div class="line">VERSION_ID=&quot;7&quot;</div><div class="line">PRETTY_NAME=&quot;CentOS Linux 7 (Core)&quot;</div><div class="line">ANSI_COLOR=&quot;0;31&quot;</div><div class="line">CPE_NAME=&quot;cpe:/o:centos:centos:7&quot;</div><div class="line">HOME_URL=&quot;https://www.centos.org/&quot;</div><div class="line">BUG_REPORT_URL=&quot;https://bugs.centos.org/&quot;</div><div class="line"></div><div class="line">CENTOS_MANTISBT_PROJECT=&quot;CentOS-7&quot;</div><div class="line">CENTOS_MANTISBT_PROJECT_VERSION=&quot;7&quot;</div><div class="line">REDHAT_SUPPORT_PRODUCT=&quot;centos&quot;</div><div class="line">REDHAT_SUPPORT_PRODUCT_VERSION=&quot;7&quot;</div><div class="line"></div><div class="line">CentOS Linux release 7.2.1511 (Core) </div><div class="line">CentOS Linux release 7.2.1511 (Core)</div></pre></td></tr></table></figure></div>
+<p>应该不需要……继续检查</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ ldd chrome | grep not</div><div class="line">./chrome: /lib64/libnss3.so: version `NSS_3.22&apos; not found (required by ./chrome)</div><div class="line">	libXss.so.1 =&gt; not found</div></pre></td></tr></table></figure></div>
+<p>可以发现有两个<code>not found</code>，一个个解决。重新运行了下上面的命令，定位一下</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">$ ldd chrome</div><div class="line">...</div><div class="line">linux-vdso.so.1 =&gt;  (0x00007ffcbbf62000)</div><div class="line">libpthread.so.0 =&gt; /lib64/libpthread.so.0 (0x00007f94b90a8000)</div><div class="line">libdl.so.2 =&gt; /lib64/libdl.so.2 (0x00007f94b8ea4000)</div><div class="line">librt.so.1 =&gt; /lib64/librt.so.1 (0x00007f94b8c9b000)</div><div class="line">libX11.so.6 =&gt; /lib64/libX11.so.6 (0x00007f94b895d000)</div><div class="line">...</div></pre></td></tr></table></figure></div>
+<p>发现能够正常找到的so文件基本都在<code>/usr/lib</code>目录下，然后查找缺失的so文件：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ locate libXss.so.1</div><div class="line">/usr/lib/vmware-tools/lib32/libXss.so.1</div><div class="line">/usr/lib/vmware-tools/lib32/libXss.so.1/libXss.so.1</div><div class="line">/usr/lib/vmware-tools/lib64/libXss.so.1</div><div class="line">/usr/lib/vmware-tools/lib64/libXss.so.1/libXss.so.1</div></pre></td></tr></table></figure></div>
+<p>……所以其实文件是有的，只是不在对的目录？试着把<code>vmware-tools</code>目录下的<code>libXss.so.1</code>移到<code>/usr/lib</code>目录下，并没有用。重新搜索，以下方案在我的虚拟机上成功：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># yum install libXScrnSaver-1.2.2-6.1.el7.x86_64</div></pre></td></tr></table></figure></div>
+<p>装完后再执行相同的命令，报错变成了：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ ldd chrome | grep not</div><div class="line">./chrome: /lib64/libnss3.so: version `NSS_3.22&apos; not found (required by ./chrome)</div></pre></td></tr></table></figure></div>
+<p>少了一个，继续试试……按照上面的<a href="https://github.com/GoogleChrome/puppeteer/blob/master/docs/troubleshooting.md" target="_blank" rel="external">troubleshooting</a>文件，一口气先确保安装了所有CentOS需要的依赖</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install pango.x86_64 libXcomposite.x86_64 libXcursor.x86_64 libXdamage.x86_64 libXext.x86_64 libXi.x86_64 libXtst.x86_64 cups-libs.x86_64 libXScrnSaver.x86_64 libXrandr.x86_64 GConf2.x86_64 alsa-lib.x86_64 atk.x86_64 gtk3.x86_64 ipa-gothic-fonts xorg-x11-fonts-100dpi xorg-x11-fonts-75dpi xorg-x11-utils xorg-x11-fonts-cyrillic xorg-x11-fonts-Type1 xorg-x11-fonts-misc</div></pre></td></tr></table></figure></div>
+<p>安装完还是老样子并没有回复╮(╯▽╰)╭，果然不会这么简单就解决的。看起来问题出在安装的<code>chromium</code>（从目录上看序号大概是***536395***？）上，试着换个puppeteer看看安装的版本会不会变化。查看<code>package.json</code>确认当前版本为<code>1.1.1</code>最新版，试着降到<code>1.1.0</code>、<code>1.0.0</code>版本</p>
+<p>1.1.0版本安装过程部分如下：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&gt; node install.js</div><div class="line"></div><div class="line">Downloading Chromium r536395 - 96.2 Mb [====================] 100% 0.0s</div></pre></td></tr></table></figure></div>
+<p>从序号上可以发现还是同一款的chromium，降到1.0.0发现序号开始不同了：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&gt; node install.js</div><div class="line"></div><div class="line">Downloading Chromium r526987 - 97.1 Mb [====================] 100% 0.0s</div></pre></td></tr></table></figure></div>
+<p>安装好后再试一试，当然还是没什么卵用啦【微笑渐渐消失.jpg</p>
+<p>继续艰苦的Google搜索，最后发现了看起来可靠的操作（跪谢这位大佬，好人一生平安）</p>
+<p><img src="https://cdn.discordapp.com/attachments/420095259125743637/422016225879785487/QQ20180310210325.png" alt="enter image description here"></p>
+<p>于是尝试了这个方法，这里国内的小伙伴们注意下，这个操作<strong>似乎需要挂代理</strong>（但是直接ping mirror.webtatic.com显示又正常，不太明白这里），不然会超时阻塞，报类似的错如下：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Could not retrieve mirrorlist https://mirror.webtatic.com/yum/el7/x86_64/mirrorlist error was</div><div class="line">12: Timeout on https://mirror.webtatic.com/yum/el7/x86_64/mirrorlist: (28, &apos;Operation timed out after 30000 milliseconds with 0 out of 0 bytes received&apos;)</div></pre></td></tr></table></figure></div>
+<p>我这里挂了proxychains4设置好的代理执行操作：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"># proxychains4 yum provides */libnss3.so</div><div class="line">......</div><div class="line">nss-3.28.4-12.el7_4.x86_64 : Network Security Services</div><div class="line">Repo        : updates</div><div class="line">Matched from:</div><div class="line">Filename    : /usr/lib64/libnss3.so</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">nss-3.28.4-15.el7_4.i686 : Network Security Services</div><div class="line">Repo        : updates</div><div class="line">Matched from:</div><div class="line">Filename    : /usr/lib/libnss3.so</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">nss-3.28.4-15.el7_4.x86_64 : Network Security Services</div><div class="line">Repo        : updates</div><div class="line">Matched from:</div><div class="line">Filename    : /usr/lib64/libnss3.so</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">nss-3.28.4-15.el7_4.x86_64 : Network Security Services</div><div class="line">Repo        : @updates</div><div class="line">Matched from:</div><div class="line">Filename    : /usr/lib64/libnss3.so</div><div class="line">......</div></pre></td></tr></table></figure></div>
+<p>选择了最新的一个match目录<code>/usr/lib64/libnss3.so</code>的版本，yum安装</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># yum install nss-3.28.4-15.el7_4.x86_64</div></pre></td></tr></table></figure></div>
+<p>安装完后再执行操作检查，没有缺包了！哦也！(<sup>o</sup>)/</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ ldd chrome | grep not</div><div class="line">$</div></pre></td></tr></table></figure></div>
+<h4 id="沙盒环境存在问题"><a class="markdownIt-Anchor" href="#沙盒环境存在问题"></a> 沙盒环境存在问题</h4>
+<p>上面解决完后新的bug立刻就来：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">(node:72791) UnhandledPromiseRejectionWarning: Unhandled promise rejection (rejection id: 1): Error: Failed to launch chrome!</div><div class="line">[0310/051527.838287:FATAL:zygote_host_impl_linux.cc(126)] No usable sandbox! Update your kernel or see https://chromium.googlesource.com/chromium/src/+/master/docs/linux_suid_sandbox_development.md for more information on developing with the SUID sandbox. If you want to live dangerously and need an immediate workaround, you can try using --no-sandbox.</div></pre></td></tr></table></figure></div>
+<p>这个解决方案很清晰了，直接修改launch的参数</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="JAVASCRIPT"><figure class="iseeu highlight /javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> browser = <span class="keyword">await</span> puppeteer.launch(&#123; <span class="attr">args</span>: [<span class="string">'--no-sandbox'</span>, <span class="string">'--disable-setuid-sandbox'</span>] &#125;);</div></pre></td></tr></table></figure></div>
+<hr>
+<h2 id="后记"><a class="markdownIt-Anchor" href="#后记"></a> 后记</h2>
+<ul>
+<li>都是一把辛酸泪啊……开源皆天坑果然是真理○|￣|_</li>
+<li>要……有……耐……心</li>
+<li>有时候是ZhenJiang不知道为这种乱七八糟的坑花费时间到底值不值啊Orz</li>
+</ul>
+<blockquote>
+<p>Written with <a href="https://stackedit.io/" target="_blank" rel="external">StackEdit</a>.</p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/puppeteer/" rel="tag"># puppeteer</a>
+          
+            <a href="/tags/google/" rel="tag"># google</a>
+          
+            <a href="/tags/mermaid/" rel="tag"># mermaid</a>
+          
+            <a href="/tags/nodejs/" rel="tag"># nodejs</a>
+          
+            <a href="/tags/opensource/" rel="tag"># opensource</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/02/03/ghost-docs-partly-translation/" rel="next" title="Ghost文档翻译——开发模式启动命令对比">
+                <i class="fa fa-chevron-left"></i> Ghost文档翻译——开发模式启动命令对比
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/02/25/decentralization-system-analysis/" rel="prev" title="去中心化系统说明">
+                去中心化系统说明 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zMzczMS8xMDI4NQ"></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            見出し
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            概要
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://media.discordapp.net/attachments/420095259125743637/423186378608738314/logo.png"
+                alt="GarenFeather" />
+            
+              <p class="site-author-name" itemprop="name">GarenFeather</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">ポスト</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">カテゴリ</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">38</span>
+                  <span class="site-state-item-name">タグ</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/GARENFEATHER" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:garenfeather@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://plus.google.com/113737038776129268880" target="_blank" title="Google">
+                      
+                        <i class="fa fa-fw fa-google"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://twitter.com/minamotoyoi" target="_blank" title="Twitter">
+                      
+                        <i class="fa fa-fw fa-twitter"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/fog.garen" target="_blank" title="FB Page">
+                      
+                        <i class="fa fa-fw fa-facebook"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://instagram.com/cynaustraline" target="_blank" title="Instagram">
+                      
+                        <i class="fa fa-fw fa-instagram"></i></a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Link Start!
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://cynaustine.herokuapp.com/" title="別の私" target="_blank">別の私</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用及故障"><span class="nav-number">1.</span> <span class="nav-text"> 使用及故障</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#在干啥"><span class="nav-number">1.1.</span> <span class="nav-text"> 在干啥</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#天坑故障系列集合"><span class="nav-number">1.2.</span> <span class="nav-text"> 天坑故障系列集合</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#缺包"><span class="nav-number">1.2.1.</span> <span class="nav-text"> 缺包</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#沙盒环境存在问题"><span class="nav-number">1.2.2.</span> <span class="nav-text"> 沙盒环境存在问题</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#后记"><span class="nav-number">2.</span> <span class="nav-text"> 后记</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">GarenFeather</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("1UGe0KySvfOYfaRGOh5ik5qR-gzGzoHsz", "pvwtsczULwC55DmVeLk8ewHJ");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
