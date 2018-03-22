@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="ja">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="network,nonblocking,asynchrounous,synchrounous," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="変わらないで" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="非阻塞I/O详解——翻译 标签（空格分隔）： 非阻塞 IO   Author: Cindy Sridharan Time: Oct 25, 2017 Original: Nonblocking I/O">
+<meta name="keywords" content="network,nonblocking,asynchrounous,synchrounous">
+<meta property="og:type" content="article">
+<meta property="og:title" content="非阻塞I&#x2F;O详解——翻译（1.26更新未完）">
+<meta property="og:url" content="http://blog.garenfeather.cn/2018/01/03/nonblocking-io-translation/index.html">
+<meta property="og:site_name" content="変わらないで">
+<meta property="og:description" content="非阻塞I/O详解——翻译 标签（空格分隔）： 非阻塞 IO   Author: Cindy Sridharan Time: Oct 25, 2017 Original: Nonblocking I/O">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1600/1*gfTRsvc5wJlEeAA1O3QD3g.png">
+<meta property="og:updated_time" content="2018-03-22T14:09:35.923Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="非阻塞I&#x2F;O详解——翻译（1.26更新未完）">
+<meta name="twitter:description" content="非阻塞I/O详解——翻译 标签（空格分隔）： 非阻塞 IO   Author: Cindy Sridharan Time: Oct 25, 2017 Original: Nonblocking I/O">
+<meta name="twitter:image" content="https://cdn-images-1.medium.com/max/1600/1*gfTRsvc5wJlEeAA1O3QD3g.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: 'T6MKXY5GW7',
+      apiKey: 'ef92ddd27106adf5875ac72569320509',
+      indexName: 'blog',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"何を探しているの?","hits_empty":"${query}: あら残念、何もない…","hits_stats":"関する結果の数は: ${hits}、 使った時間は約 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.garenfeather.cn/2018/01/03/nonblocking-io-translation/"/>
+
+
+
+
+  <title>非阻塞I/O详解——翻译（1.26更新未完） | 変わらないで</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="ja">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta custom-logo">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">変わらないで</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">ダイスキでダイキライ</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            ホーム
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            タグ
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            カテゴリ
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            アーカイブ
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            検索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.garenfeather.cn/2018/01/03/nonblocking-io-translation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="GarenFeather">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://media.discordapp.net/attachments/420095259125743637/423186378608738314/logo.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="変わらないで">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">非阻塞I/O详解——翻译（1.26更新未完）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">投稿日</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-01-03T15:21:28+08:00">
+                2018-01-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">カテゴリは</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/translation/" itemprop="url" rel="index">
+                    <span itemprop="name">translation</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/01/03/nonblocking-io-translation/" class="leancloud_visitors" data-flag-title="非阻塞I/O详解——翻译（1.26更新未完）">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">訪問者&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">ワードカウント&#58;</span>
+                
+                <span title="ワードカウント">
+                  1,701
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="非阻塞io详解翻译"><a class="markdownIt-Anchor" href="#非阻塞io详解翻译"></a> 非阻塞I/O详解——翻译</h1>
+<p>标签（空格分隔）： 非阻塞 IO</p>
+<hr>
+<ul>
+<li>Author: <a href="https://medium.com/@copyconstruct?source=post_header_lockup" target="_blank" rel="external">Cindy Sridharan</a></li>
+<li>Time: Oct 25, 2017</li>
+<li>Original: <a href="https://medium.com/@copyconstruct/nonblocking-i-o-99948ad7c957" target="_blank" rel="external">Nonblocking I/O</a></li>
+</ul>
+<a id="more"></a>
+<h2 id="非阻塞io"><a class="markdownIt-Anchor" href="#非阻塞io"></a> 非阻塞I/O</h2>
+<h3 id="描述符究竟是什么"><a class="markdownIt-Anchor" href="#描述符究竟是什么"></a> 描述符究竟是什么</h3>
+<p>Unix中所有的I/O的基础构建模块都是一个字节序列。而大多数程序甚至运行在更简单的抽象层次————一个字节流或I/O流上。</p>
+<p>进程通过<strong>描述符</strong>来引用若干个I/O流，描述符又被人们熟知为<strong>文件描述符</strong>。而管道、文件、FIFO队列、POSIX的IPC机制（消息队列、信号量、共享内存）以及事件队列等都是通过<strong>描述符</strong>引用I/O流的实例。</p>
+<p>描述符或是由诸如<em>open、pipe、socket</em>等系统调用显式创建，或是从父进程处继承。在以下情形描述符会被释放：</p>
+<ul>
+<li>进程退出</li>
+<li><strong>close</strong>系统函数被调用</li>
+<li>被标记为<em>close on exec</em>的情况下，在函数exec调用后隐式释放</li>
+</ul>
+<p>这里注意<em>close on exec</em>————一个进程分叉时，它所有的描述符都会“复制”到子进程中去。如果描述符中有哪一个被标记为<em>close on exec</em>，那么在父进程调用fork之后而子进程执行exec之前，子进程中被标记为close on exec的描述符会被关闭，变为不可用状态</p>
+<p>数据转换过程的发生实际上就是是read或write的系统函数被调用</p>
+<p><img src="https://cdn-images-1.medium.com/max/1600/1*gfTRsvc5wJlEeAA1O3QD3g.png" alt="第七章. I/O 系统 概述, 来自《FreeBSD操作系统的设计与实现. 第315页"></p>
+<p>每个描述符指向一个数据结构，称为内核中的文件条目（file entry），该结构以字节为单位维护一个文件偏移量（file offset），从文件条目对象的开头开始。open系统调用创建一个新的文件条目，其中包含了每单个描述符的文件偏移量。</p>
+<p>编辑：fork系统调用致使描述符在父子进程间共享（引用语义上的）。所以父子进程实际上使用同一个描述符，在文件条目中引用同一个偏移量。dup/dup2也使用同样的语义来复制一个文件描述符</p>
+<p>在Slack的<a href="https://dist-sys-slack.herokuapp.com/" target="_blank" rel="external">dist-sys</a>里可见的C示例代码确认了这一点</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="C"><figure class="iseeu highlight /c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/stat.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;fcntl.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">char</span> *argv[])</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> fd = open(<span class="string">"abc.txt"</span>, O_WRONLY | O_CREAT | O_TRUNC, <span class="number">0666</span>);</div><div class="line">    fork();</div><div class="line">    write(fd, <span class="string">"xyz"</span>, <span class="number">3</span>);</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"%ld\n"</span>, lseek(fd, <span class="number">0</span>, SEEK_CUR));</div><div class="line">    close(fd);</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></div>
+<p>运行结果：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="C"><figure class="iseeu highlight /c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="number">3</span></div><div class="line"><span class="number">6</span></div></pre></td></tr></table></figure></div>
+<p>更有趣的是在描述符被共享的情况下<em>close on exec</em>标志位所做的事。我的猜测是如果该标志位的设置会将这一描述符从子进程描述符表中移除，以至于父进程可以继续使用，而子进程在<em>exec</em>执行之后则无法使用该描述符</p>
+<p>因为多个描述符可能会引用同一个文件条目，文件条目的数据结构中为每个描述符维护着相应的偏移量。<em>Read</em>和<em>Write</em>的调用操作从该偏移量处开始执行，偏移量本身也在每次数据转换后更新自身值。偏移量决定了下一个读或写操作从文件条目的什么位置开始。进程</p>
+<h3 id="非阻塞描述符"><a class="markdownIt-Anchor" href="#非阻塞描述符"></a> 非阻塞描述符</h3>
+<h4 id="条件触发"><a class="markdownIt-Anchor" href="#条件触发"></a> 条件触发</h4>
+<h4 id="边缘触发"><a class="markdownIt-Anchor" href="#边缘触发"></a> 边缘触发</h4>
+<h3 id="描述符的多路io"><a class="markdownIt-Anchor" href="#描述符的多路io"></a> 描述符的多路I/O</h3>
+<ul>
+<li>非阻塞型I/O</li>
+<li>信号驱动型I/O</li>
+<li>轮询型I/O</li>
+<li>BSD专用内核事件轮询型I/O（kevent系统调用）</li>
+</ul>
+<h3 id="非阻塞型io"><a class="markdownIt-Anchor" href="#非阻塞型io"></a> 非阻塞型I/O</h3>
+<h4 id="描述符发生了什么"><a class="markdownIt-Anchor" href="#描述符发生了什么"></a> 描述符发生了什么</h4>
+<h4 id="进程发生了什么"><a class="markdownIt-Anchor" href="#进程发生了什么"></a> 进程发生了什么</h4>
+<h4 id="内核发生了什么"><a class="markdownIt-Anchor" href="#内核发生了什么"></a> 内核发生了什么</h4>
+<h4 id="缺陷是什么"><a class="markdownIt-Anchor" href="#缺陷是什么"></a> 缺陷是什么</h4>
+<ul>
+<li>频繁查询确认：</li>
+<li>非频繁查询确认：</li>
+</ul>
+<h4 id="什么情况下适用"><a class="markdownIt-Anchor" href="#什么情况下适用"></a> 什么情况下适用？</h4>
+<h3 id="信号驱动型io"><a class="markdownIt-Anchor" href="#信号驱动型io"></a> 信号驱动型I/O</h3>
+<h4 id="描述符发生了什么-2"><a class="markdownIt-Anchor" href="#描述符发生了什么-2"></a> 描述符发生了什么</h4>
+<h4 id="进程发生了什么-2"><a class="markdownIt-Anchor" href="#进程发生了什么-2"></a> 进程发生了什么</h4>
+<h4 id="内核发生了什么-2"><a class="markdownIt-Anchor" href="#内核发生了什么-2"></a> 内核发生了什么</h4>
+<h4 id="缺陷是什么-2"><a class="markdownIt-Anchor" href="#缺陷是什么-2"></a> 缺陷是什么</h4>
+<h4 id="什么情况下适用-2"><a class="markdownIt-Anchor" href="#什么情况下适用-2"></a> 什么情况下适用？</h4>
+<h3 id="轮询型io"><a class="markdownIt-Anchor" href="#轮询型io"></a> 轮询型I/O</h3>
+<h4 id="描述符发生了什么-3"><a class="markdownIt-Anchor" href="#描述符发生了什么-3"></a> 描述符发生了什么</h4>
+<h4 id="进程发生了什么-3"><a class="markdownIt-Anchor" href="#进程发生了什么-3"></a> 进程发生了什么</h4>
+<h4 id="内核发生了什么-3"><a class="markdownIt-Anchor" href="#内核发生了什么-3"></a> 内核发生了什么</h4>
+<h4 id="缺陷是什么-3"><a class="markdownIt-Anchor" href="#缺陷是什么-3"></a> 缺陷是什么</h4>
+<h4 id="什么情况下适用-3"><a class="markdownIt-Anchor" href="#什么情况下适用-3"></a> 什么情况下适用？</h4>
+<h3 id="bsd内核事件轮询型io"><a class="markdownIt-Anchor" href="#bsd内核事件轮询型io"></a> BSD内核事件轮询型I/O</h3>
+<h4 id="描述符发生了什么-4"><a class="markdownIt-Anchor" href="#描述符发生了什么-4"></a> 描述符发生了什么</h4>
+<h4 id="进程发生了什么-4"><a class="markdownIt-Anchor" href="#进程发生了什么-4"></a> 进程发生了什么</h4>
+<h4 id="内核发生了什么-4"><a class="markdownIt-Anchor" href="#内核发生了什么-4"></a> 内核发生了什么</h4>
+<h4 id="缺陷是什么-4"><a class="markdownIt-Anchor" href="#缺陷是什么-4"></a> 缺陷是什么</h4>
+<h4 id="什么情况下适用-4"><a class="markdownIt-Anchor" href="#什么情况下适用-4"></a> 什么情况下适用？</h4>
+<h3 id="posix异步io"><a class="markdownIt-Anchor" href="#posix异步io"></a> POSIX异步I/O</h3>
+<p>在Linux上，执行并行I/O的另一种方法是使用依赖于<a href="https://www.gnu.org/software/libc/manual/html_node/Asynchronous-I_002fO.html" target="_blank" rel="external">glibc</a>的<a href="threads%20based%20implementation">基于多线程实现</a></p>
+<blockquote>
+<p><em>These functions are part of the library with realtime functions named librt. They are not actually part of the libc binary. The implementation of these functions can be done using support in the kernel (if available) or using an implementation based on threads at user level. In the latter case it might be necessary to link applications with the thread library libpthread in addition to librt.</em></p>
+</blockquote>
+<p>当然，这种方式也不是没有缺点的：</p>
+<blockquote>
+<p><em>This has a number of limitations, most notably that maintaining multiple threads to perform I/O operations is expensive and scales poorly. Work has been in progress for some time on a kernel state-machine-based implementation of asynchronous I/O (see <a href="https://linux.die.net/man/2/io_submit" target="_blank" rel="external">io_submit</a>, <a href="https://linux.die.net/man/2/io_setup" target="_blank" rel="external">io_setup</a>, <a href="https://linux.die.net/man/2/io_cancel" target="_blank" rel="external">io_cancel</a>, <a href="https://linux.die.net/man/2/io_destroy" target="_blank" rel="external">io_destroy</a>, <a href="https://linux.die.net/man/2/io_getevents" target="_blank" rel="external">io_getevents</a>), but this implementation hasn’t yet matured to the point where the POSIX AIO implementation can be completely reimplemented using the kernel system calls.</em></p>
+</blockquote>
+<p>在FreeBSD上，POSIX AIO 通过<a href="https://www.freebsd.org/cgi/man.cgi?query=aio&amp;sektion=4" target="_blank" rel="external">aio</a>系统调用实现。队列中的I/O操作会由一个异步的“内核进程”（又被称为“内核I/O守护进程”或“AIO守护进程”）来执行。多个AIO守护进程被分到一系列可配置池里。每个池子会根据负载情况增加或移除AIO守护进程。其中一个AIO守护进程池被用于为socket们的异步I/O请求提供服务，另一个则用于服务除对原始磁盘的异步I/O请求以外的全部异步I/O请求</p>
+<p>执行一个异步I/O操作过程是这样的：</p>
+<ul>
+<li>
+<p>内核创建一个异步I/O请求结构，结构内包含执行所需相关信息</p>
+</li>
+<li>
+<p>如果内核缓冲区无法立即容纳请求的资源，该请求结构会进入队列中</p>
+</li>
+<li>
+<p>如果请求创建时，AIO守护进程不可用，请求结构会进入队列等待进程和系统调用返回</p>
+</li>
+<li>
+<p>下一个可用的AIO守护进程使用内核的同步路径来处理该请求</p>
+</li>
+<li>
+<p>守护进程完成I/O后，请求结构被标记为完成，并返回相应结果或错误码</p>
+</li>
+<li>
+<p>如果I/O操作完成，进程使用<a href="http://pubs.opengroup.org/onlinepubs/9699919799/functions/aio_error.html" target="_blank" rel="external">aio_error</a>系统调用来轮询，这个是调用通过检查之前内核创建的异步I/O请求结构状态来实现的</p>
+</li>
+<li>
+<p>如果进程运行到了I/O不完成就无法继续的地方，它可以调用<a href="http://pubs.opengroup.org/onlinepubs/9699919799/functions/aio_suspend.html" target="_blank" rel="external">aio_suspend</a>等待直到I/O完成</p>
+</li>
+<li>
+<p>进程会在AIO请求结构处被投入睡眠，当I/O操作完成时进程会被唤醒，或进程本身设置了当I/O操作完成时发送一个信号给自己中断唤醒</p>
+</li>
+<li>
+<p>当标识I/O操作完成的<a href="http://pubs.opengroup.org/onlinepubs/9699919799/functions/aio_suspend.html" target="_blank" rel="external">aio_suspend</a>、<a href="http://pubs.opengroup.org/onlinepubs/9699919799/functions/aio_error.html" target="_blank" rel="external">aio_error</a>返回或中断信号到达时，使用<a href="http://pubs.opengroup.org/onlinepubs/9699919799/functions/aio_return.html" target="_blank" rel="external">aio_return</a>系统调用来获得其返回结果</p>
+</li>
+</ul>
+<blockquote>
+<p>Written with <a href="https://stackedit.io/" target="_blank" rel="external">StackEdit</a>.</p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/network/" rel="tag"># network</a>
+          
+            <a href="/tags/nonblocking/" rel="tag"># nonblocking</a>
+          
+            <a href="/tags/asynchrounous/" rel="tag"># asynchrounous</a>
+          
+            <a href="/tags/synchrounous/" rel="tag"># synchrounous</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/01/wx-push-func-other/" rel="next" title="推送、架构、可重入函数与优化设计知识梳理">
+                <i class="fa fa-chevron-left"></i> 推送、架构、可重入函数与优化设计知识梳理
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/15/docker-iptables-containers-conmunication/" rel="prev" title="Docker添加iptables防火墙规则构建容器间通信">
+                Docker添加iptables防火墙规则构建容器间通信 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zMzczMS8xMDI4NQ"></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            見出し
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            概要
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://media.discordapp.net/attachments/420095259125743637/423186378608738314/logo.png"
+                alt="GarenFeather" />
+            
+              <p class="site-author-name" itemprop="name">GarenFeather</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-name">ポスト</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">カテゴリ</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">50</span>
+                  <span class="site-state-item-name">タグ</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/GARENFEATHER" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:garenfeather@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://plus.google.com/113737038776129268880" target="_blank" title="Google">
+                      
+                        <i class="fa fa-fw fa-google"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://twitter.com/minamotoyoi" target="_blank" title="Twitter">
+                      
+                        <i class="fa fa-fw fa-twitter"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/fog.garen" target="_blank" title="FB Page">
+                      
+                        <i class="fa fa-fw fa-facebook"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://instagram.com/cynaustraline" target="_blank" title="Instagram">
+                      
+                        <i class="fa fa-fw fa-instagram"></i></a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Link Start!
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://cynaustine.herokuapp.com/" title="別の私" target="_blank">別の私</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#非阻塞io详解翻译"><span class="nav-number">1.</span> <span class="nav-text"> 非阻塞I/O详解——翻译</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#非阻塞io"><span class="nav-number">1.1.</span> <span class="nav-text"> 非阻塞I/O</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#描述符究竟是什么"><span class="nav-number">1.1.1.</span> <span class="nav-text"> 描述符究竟是什么</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#非阻塞描述符"><span class="nav-number">1.1.2.</span> <span class="nav-text"> 非阻塞描述符</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#条件触发"><span class="nav-number">1.1.2.1.</span> <span class="nav-text"> 条件触发</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#边缘触发"><span class="nav-number">1.1.2.2.</span> <span class="nav-text"> 边缘触发</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#描述符的多路io"><span class="nav-number">1.1.3.</span> <span class="nav-text"> 描述符的多路I/O</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#非阻塞型io"><span class="nav-number">1.1.4.</span> <span class="nav-text"> 非阻塞型I/O</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#描述符发生了什么"><span class="nav-number">1.1.4.1.</span> <span class="nav-text"> 描述符发生了什么</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#进程发生了什么"><span class="nav-number">1.1.4.2.</span> <span class="nav-text"> 进程发生了什么</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#内核发生了什么"><span class="nav-number">1.1.4.3.</span> <span class="nav-text"> 内核发生了什么</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#缺陷是什么"><span class="nav-number">1.1.4.4.</span> <span class="nav-text"> 缺陷是什么</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#什么情况下适用"><span class="nav-number">1.1.4.5.</span> <span class="nav-text"> 什么情况下适用？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#信号驱动型io"><span class="nav-number">1.1.5.</span> <span class="nav-text"> 信号驱动型I/O</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#描述符发生了什么-2"><span class="nav-number">1.1.5.1.</span> <span class="nav-text"> 描述符发生了什么</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#进程发生了什么-2"><span class="nav-number">1.1.5.2.</span> <span class="nav-text"> 进程发生了什么</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#内核发生了什么-2"><span class="nav-number">1.1.5.3.</span> <span class="nav-text"> 内核发生了什么</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#缺陷是什么-2"><span class="nav-number">1.1.5.4.</span> <span class="nav-text"> 缺陷是什么</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#什么情况下适用-2"><span class="nav-number">1.1.5.5.</span> <span class="nav-text"> 什么情况下适用？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#轮询型io"><span class="nav-number">1.1.6.</span> <span class="nav-text"> 轮询型I/O</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#描述符发生了什么-3"><span class="nav-number">1.1.6.1.</span> <span class="nav-text"> 描述符发生了什么</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#进程发生了什么-3"><span class="nav-number">1.1.6.2.</span> <span class="nav-text"> 进程发生了什么</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#内核发生了什么-3"><span class="nav-number">1.1.6.3.</span> <span class="nav-text"> 内核发生了什么</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#缺陷是什么-3"><span class="nav-number">1.1.6.4.</span> <span class="nav-text"> 缺陷是什么</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#什么情况下适用-3"><span class="nav-number">1.1.6.5.</span> <span class="nav-text"> 什么情况下适用？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#bsd内核事件轮询型io"><span class="nav-number">1.1.7.</span> <span class="nav-text"> BSD内核事件轮询型I/O</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#描述符发生了什么-4"><span class="nav-number">1.1.7.1.</span> <span class="nav-text"> 描述符发生了什么</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#进程发生了什么-4"><span class="nav-number">1.1.7.2.</span> <span class="nav-text"> 进程发生了什么</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#内核发生了什么-4"><span class="nav-number">1.1.7.3.</span> <span class="nav-text"> 内核发生了什么</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#缺陷是什么-4"><span class="nav-number">1.1.7.4.</span> <span class="nav-text"> 缺陷是什么</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#什么情况下适用-4"><span class="nav-number">1.1.7.5.</span> <span class="nav-text"> 什么情况下适用？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#posix异步io"><span class="nav-number">1.1.8.</span> <span class="nav-text"> POSIX异步I/O</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">GarenFeather</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("1UGe0KySvfOYfaRGOh5ik5qR-gzGzoHsz", "pvwtsczULwC55DmVeLk8ewHJ");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
