@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="ja">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="backend,history,development," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="変わらないで" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="非原创，是对知乎某个回答的梳理    把复杂的逻辑控制、等待、资源竞争变成人可以理解的行为是生产力的进步">
+<meta name="keywords" content="backend,history,development">
+<meta property="og:type" content="article">
+<meta property="og:title" content="WEB后端发展历史总结">
+<meta property="og:url" content="http://blog.garenfeather.cn/2017/09/16/backend-history-all/index.html">
+<meta property="og:site_name" content="変わらないで">
+<meta property="og:description" content="非原创，是对知乎某个回答的梳理    把复杂的逻辑控制、等待、资源竞争变成人可以理解的行为是生产力的进步">
+<meta property="og:updated_time" content="2018-03-22T22:03:45.962Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="WEB后端发展历史总结">
+<meta name="twitter:description" content="非原创，是对知乎某个回答的梳理    把复杂的逻辑控制、等待、资源竞争变成人可以理解的行为是生产力的进步">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '9OSB98ABVU',
+      apiKey: '64da7f5f82d5472eb9509afd7f4d29f8',
+      indexName: 'blog',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"何を探しているの?","hits_empty":"${query}: あら残念、何もない…","hits_stats":"関する結果の数は: ${hits}、 使った時間は約 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.garenfeather.cn/2017/09/16/backend-history-all/"/>
+
+
+
+
+  <title>WEB后端发展历史总结 | 変わらないで</title>
+  
+
+
+
+
+
+
+
+
+  <script type="text/javascript">window.$crisp=[];window.CRISP_WEBSITE_ID="2ad0184d-eed9-4314-b63d-0648d8c81230";(function(){d=document;s=d.createElement("script");s.src="https://client.crisp.chat/l.js";s.async=1;d.getElementsByTagName("head")[0].appendChild(s);})();</script>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="ja">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta custom-logo">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">変わらないで</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">ダイスキでダイキライ</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            ホーム
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            タグ
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            カテゴリ
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            アーカイブ
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            検索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.garenfeather.cn/2017/09/16/backend-history-all/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="GarenFeather">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://media.discordapp.net/attachments/420095259125743637/423186378608738314/logo.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="変わらないで">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">WEB后端发展历史总结</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">投稿日</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-16T20:14:48+08:00">
+                2017-09-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">カテゴリは</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/coding/" itemprop="url" rel="index">
+                    <span itemprop="name">coding</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/09/16/backend-history-all/" class="leancloud_visitors" data-flag-title="WEB后端发展历史总结">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">訪問者&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">ワードカウント&#58;</span>
+                
+                <span title="ワードカウント">
+                  322
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <ul>
+<li><strong>非原创，是对知乎某个回答的梳理</strong></li>
+</ul>
+<hr>
+<h3 id="把复杂的逻辑控制-等待-资源竞争变成人可以理解的行为是生产力的进步"><a class="markdownIt-Anchor" href="#把复杂的逻辑控制-等待-资源竞争变成人可以理解的行为是生产力的进步"></a> 把复杂的逻辑控制、等待、资源竞争变成人可以理解的行为是生产力的进步</h3>
+<a id="more"></a>
+<hr>
+<h3 id="成本曲线和研发曲线交替上升"><a class="markdownIt-Anchor" href="#成本曲线和研发曲线交替上升"></a> 成本曲线和研发曲线交替上升</h3>
+<ul>
+<li>2003-2008（Web2.0时代）
+<ul>
+<li>nginx爆发式增长（nginx）</li>
+<li>Event Loop具象化</li>
+<li>memcached解救数据库（缓存）</li>
+<li>git革命开发流程（协同工程化）</li>
+</ul>
+</li>
+<li>2006-2011
+<ul>
+<li>传统多进程、多线程 =&gt; coroutine（协程）
+<ul>
+<li>本质：用户态 任务切换行为</li>
+<li>意义：不改代码前提提高了吞吐， 或提供原生轻量并发</li>
+<li>同步写异步</li>
+</ul>
+</li>
+<li>EventLoop库：libev、libevent等</li>
+<li>node js
+<ul>
+<li>前后端分界模糊</li>
+<li>前端领域革命~~（新时代的撕逼）~~</li>
+</ul>
+</li>
+<li>redis（带有复杂数据结构的memcached）</li>
+<li>工程领域抽象
+<ul>
+<li>SaaS（Software-as-a-Service）：抽象软件服务</li>
+<li>PaaS（Platform-as-a-Service）：抽象基础设施/平台</li>
+<li>IaaS（Infrastructure-as-a-Service）：抽象硬件</li>
+</ul>
+</li>
+<li><s>《人人都是架构师》</s></li>
+</ul>
+</li>
+<li>2012-2017（移动时代）
+<ul>
+<li>迭代高速化
+<ul>
+<li>开发边界模糊</li>
+</ul>
+</li>
+<li>数据实用化
+<ul>
+<li>重视数据
+<ul>
+<li>Hadoop全家桶</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>传统数据库升华
+<ul>
+<li>tidb</li>
+<li>ocean base</li>
+</ul>
+</li>
+<li>内核创新
+<ul>
+<li>bbr</li>
+<li>bpdk</li>
+</ul>
+</li>
+<li>虚拟化挑战
+<ul>
+<li>内核层面解决<strong>隔离</strong>和<strong>性能</strong>的问题</li>
+</ul>
+</li>
+<li>项目扁平化</li>
+</ul>
+</li>
+</ul>
+<div class="mermaid">
+<svg id="mermaid-svg-fb4efec775368ea0" xmlns="http://www.w3.org/2000/svg" height="100%" viewbox="0 0 524 96" style="max-width:524px;"><style>
+  .mermaid .label{font-family:trebuchet ms,verdana,arial;color:#333}.node circle,.node ellipse,.node polygon,.node rect{fill:#cde498;stroke:#13540c;stroke-width:1px}.node.clickable{cursor:pointer}.arrowheadPath{fill:green}.edgePath .path{stroke:green;stroke-width:1.5px}.edgeLabel{background-color:#e8e8e8}.cluster rect{fill:#cdffb2!important;rx:4!important;stroke:#6eaa49!important;stroke-width:1px!important}.cluster text{fill:#333}.actor{stroke:#13540c;fill:#cde498}text.actor{fill:#000;stroke:none}.actor-line{stroke:grey}.messageLine0{marker-end:"url(#arrowhead)"}.messageLine0,.messageLine1{stroke-width:1.5;stroke-dasharray:"2 2";stroke:#333}#arrowhead{fill:#333}#crosshead path{fill:#333!important;stroke:#333!important}.messageText{fill:#333;stroke:none}.labelBox{stroke:#326932;fill:#cde498}.labelText,.loopText{fill:#000;stroke:none}.loopLine{stroke-width:2;stroke-dasharray:"2 2";marker-end:"url(#arrowhead)";stroke:#326932}.note{stroke:#6eaa49;fill:#fff5ad}.noteText{fill:#000;stroke:none;font-family:trebuchet ms,verdana,arial;font-size:14px}.section{stroke:none;opacity:.2}.section0,.section2{fill:#6eaa49}.section1,.section3{fill:#fff;opacity:.2}.sectionTitle0,.sectionTitle1,.sectionTitle2,.sectionTitle3{fill:#333}.sectionTitle{text-anchor:start;font-size:11px;text-height:14px}.grid .tick{stroke:#d3d3d3;opacity:.3;shape-rendering:crispEdges}.grid path{stroke-width:0}.today{fill:none;stroke:red;stroke-width:2px}.task{stroke-width:2}.taskText{text-anchor:middle;font-size:11px}.taskTextOutsideRight{fill:#000;text-anchor:start;font-size:11px}.taskTextOutsideLeft{fill:#000;text-anchor:end;font-size:11px}.taskText0,.taskText1,.taskText2,.taskText3{fill:#fff}.task0,.task1,.task2,.task3{fill:#487e3a;stroke:#13540c}.taskTextOutside0,.taskTextOutside1,.taskTextOutside2,.taskTextOutside3{fill:#000}.active0,.active1,.active2,.active3{fill:#cde498;stroke:#13540c}.activeText0,.activeText1,.activeText2,.activeText3{fill:#000!important}.done0,.done1,.done2,.done3{stroke:grey;fill:#d3d3d3;stroke-width:2}.doneText0,.doneText1,.doneText2,.doneText3{fill:#000!important}.crit0,.crit1,.crit2,.crit3{stroke:#f88;fill:red;stroke-width:2}.activeCrit0,.activeCrit1,.activeCrit2,.activeCrit3{stroke:#f88;fill:#cde498;stroke-width:2}.doneCrit0,.doneCrit1,.doneCrit2,.doneCrit3{stroke:#f88;fill:#d3d3d3;stroke-width:2;cursor:pointer;shape-rendering:crispEdges}.activeCritText0,.activeCritText1,.activeCritText2,.activeCritText3,.doneCritText0,.doneCritText1,.doneCritText2,.doneCritText3{fill:#000!important}.titleText{text-anchor:middle;font-size:18px;fill:#000}g.classGroup text{fill:#13540c;stroke:none;font-family:trebuchet ms,verdana,arial;font-size:10px}g.classGroup rect{fill:#cde498;stroke:#13540c}g.classGroup line{stroke:#13540c;stroke-width:1}svg .classLabel .box{stroke:none;stroke-width:0;fill:#cde498;opacity:.5}svg .classLabel .label{fill:#13540c;font-size:10px}.relation{stroke:#13540c;stroke-width:1;fill:none}#compositionEnd,#compositionStart,.composition{fill:#13540c;stroke:#13540c;stroke-width:1}#aggregationEnd,#aggregationStart,.aggregation{fill:#cde498;stroke:#13540c;stroke-width:1}#dependencyEnd,#dependencyStart,#extensionEnd,#extensionStart{fill:#13540c;stroke:#13540c;stroke-width:1}.node text{font-size:14px}.node text,div.mermaidTooltip{font-family:trebuchet ms,verdana,arial}div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-size:12px;background:#cdffb2;border:1px solid #6eaa49;border-radius:2px;pointer-events:none;z-index:100}
+svg {
+  color: rgb(0, 0, 0);
+  font: normal normal 400 normal 16px / normal "Times New Roman";
+}
+  </style><g><g class="output"><g class="clusters"/><g class="edgePaths"><g class="edgePath" style="opacity: 1;"><path class="path" d="M120,38L145,38L170,38" marker-end="url(#arrowhead13)" style="fill:none"/><defs><marker id="arrowhead13" viewbox="0 0 10 10" refx="9" refy="5" markerunits="strokeWidth" markerwidth="8" markerheight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M286,38L351,38L416,38" marker-end="url(#arrowhead14)" style="fill:none"/><defs><marker id="arrowhead14" viewbox="0 0 10 10" refx="9" refy="5" markerunits="strokeWidth" markerwidth="8" markerheight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker></defs></g></g><g class="edgeLabels"><g class="edgeLabel" transform="" style="opacity: 1;"><g transform="translate(0,0)" class="label"><foreignobject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel"/></div></foreignobject></g></g><g class="edgeLabel" transform="translate(351,38)" style="opacity: 1;"><g transform="translate(-40,-8)" class="label"><foreignobject width="80" height="16"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel">管理调用链</span></div></foreignobject></g></g></g><g class="nodes"><g class="node" id="A" transform="translate(70,38)" style="opacity: 1;"><rect rx="5" ry="5" x="-50" y="-18" width="100" height="36"/><g class="label" transform="translate(0,0)"><g transform="translate(-40,-8)"><foreignobject width="80" height="16"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">项目扁平化</div></foreignobject></g></g></g><g class="node" id="B" transform="translate(228,38)" style="opacity: 1;"><rect rx="5" ry="5" x="-58" y="-18" width="116" height="36"/><g class="label" transform="translate(0,0)"><g transform="translate(-48,-8)"><foreignobject width="96" height="16"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">碎片项目增加</div></foreignobject></g></g></g><g class="node" id="C" transform="translate(450,38)" style="opacity: 1;"><rect rx="5" ry="5" x="-34" y="-18" width="68" height="36"/><g class="label" transform="translate(0,0)"><g transform="translate(-24,-8)"><foreignobject width="48" height="16"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">微服务</div></foreignobject></g></g></g></g></g></g></svg>
+</div>
+<blockquote>
+<p>Written with <a href="https://stackedit.io/" target="_blank" rel="external">StackEdit</a>.</p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/backend/" rel="tag"># backend</a>
+          
+            <a href="/tags/history/" rel="tag"># history</a>
+          
+            <a href="/tags/development/" rel="tag"># development</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/01/16/comparison-for-regex-among-several-languages/" rel="next" title="简单随意的几种编程语言正则支持比较">
+                <i class="fa fa-chevron-left"></i> 简单随意的几种编程语言正则支持比较
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/10/24/philosophical-dilemmas-1/" rel="prev" title="【Philosophical Dilemmas】上帝、永生与信仰">
+                【Philosophical Dilemmas】上帝、永生与信仰 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zMzczMS8xMDI4NQ"></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            見出し
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            概要
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://media.discordapp.net/attachments/420095259125743637/423186378608738314/logo.png"
+                alt="GarenFeather" />
+            
+              <p class="site-author-name" itemprop="name">GarenFeather</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">ポスト</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">カテゴリ</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-name">タグ</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/GARENFEATHER" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:garenfeather@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://plus.google.com/113737038776129268880" target="_blank" title="Google">
+                      
+                        <i class="fa fa-fw fa-google"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://twitter.com/minamotoyoi" target="_blank" title="Twitter">
+                      
+                        <i class="fa fa-fw fa-twitter"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/fog.garen" target="_blank" title="FB Page">
+                      
+                        <i class="fa fa-fw fa-facebook"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://instagram.com/cynaustraline" target="_blank" title="Instagram">
+                      
+                        <i class="fa fa-fw fa-instagram"></i></a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Link Start!
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://ghost.garenfeather.cn" title="別の私" target="_blank">別の私</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#把复杂的逻辑控制-等待-资源竞争变成人可以理解的行为是生产力的进步"><span class="nav-number">1.</span> <span class="nav-text"> 把复杂的逻辑控制、等待、资源竞争变成人可以理解的行为是生产力的进步</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#成本曲线和研发曲线交替上升"><span class="nav-number">2.</span> <span class="nav-text"> 成本曲线和研发曲线交替上升</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">GarenFeather</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("Uwvrb3N6FG4hcVXArp0DUBnh-gzGzoHsz", "yI8LpuLPuxR2CQbqBMIu6egM");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
