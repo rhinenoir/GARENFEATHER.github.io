@@ -1489,7 +1489,7 @@
                   <span class="post-meta-item-text">ワードカウント&#58;</span>
                 
                 <span title="ワードカウント">
-                  906
+                  890
                 </span>
               
 
@@ -1515,9 +1515,7 @@
 
       
         
-          
-            <h1 id="paxos核心思想-流程-扩展与思考学习记录"><a class="markdownIt-Anchor" href="#paxos核心思想-流程-扩展与思考学习记录"></a> Paxos核心思想、流程、扩展与思考学习记录</h1>
-<hr>
+          <hr>
 <ul>
 <li>参考：<a href="https://www.zhihu.com/question/19787937/answer/82340987" target="_blank" rel="external">如何浅显易懂地解说 Paxos 的算法？</a></li>
 </ul>
@@ -1527,77 +1525,13 @@
 <li>允许一定数量进程挂掉</li>
 <li>达成一致性是指<strong>半数以上同意</strong></li>
 </ul>
-<h3 id="三大核心要求"><a class="markdownIt-Anchor" href="#三大核心要求"></a> 三大核心要求</h3>
-<ul>
-<li>合法性（Validity）：达成一致性值value必须是由某个进程提出的</li>
-<li>共识性（Consensus）：一旦就value值达成一致，不能再对另一个value达成一致</li>
-<li>可终止性（Termination）：一致性总是能达成（非理论定义上，详见FLP问题，简而言之异步环境下任何一致性算法都存在永不终止的可能）</li>
-</ul>
-<h2 id="理解本质"><a class="markdownIt-Anchor" href="#理解本质"></a> 理解本质</h2>
-<ul>
-<li>一旦提案I达成一致性，<strong>任何比该提案ID更大的提案内容都会被“渲染”成提案I的内容</strong>，从而实际意义上结束流程。因为任意两个多数集合必然有交集，而达成一致的提案ID一定最大，在下一个提案中选取已回复的最大ID提案就必然会选中已达成一致的提案</li>
-<li>从概念上看，对acceptor来说第一个提案无法拒绝，任意ID大于当前已接受提案的新提案也<strong>没有理由被拒绝</strong>，必须接受</li>
-<li>注意一下<strong>提案ID与提案的值分离</strong>，提案ID是取决于proposer通过某种方式（例如已经得到实现的全局自增id）获得的ID，但其提案值取决于预提案阶段收到的acceptor们的返回值</li>
-</ul>
-<h2 id="流程"><a class="markdownIt-Anchor" href="#流程"></a> 流程</h2>
-<ul>
-<li>
-<p>阶段一 预提案阶段：</p>
-<ul>
-<li>
-<p>提议者Proposer：向接受者Acceptor广播预提案，附带接下来提案Proposal的proposal_id</p>
-</li>
-<li>
-<p>接受者Acceptor：收到预提案后更新a_proposal_id = max(proposal_id,a_proposal_id)，如果预提案的proposal_id&gt;a_proposal_id，Acceptor回复记录的接受过的proposal_id最大的提案，并<strong>承诺</strong>不再接受比预提案中附带的proposal_id更小的提案</p>
-</li>
-</ul>
-</li>
-<li>
-<p>阶段二 提案阶段：</p>
-<ul>
-<li>
-<p>提议者Proposer：等待直到收到大多数接受者对预提案的回复，从所有回复的提案组成的法定数目的提案集合K中挑选proposal_id最大的提案，以该提案的值作为本次提案的值。如果K是空集，那么可以给提案任意赋值。然后把该提案广播给接受者们，<strong>提案和预提案共享同一个proposal_id</strong></p>
-</li>
-<li>
-<p>接受者Acceptor：如果收到的提案的proposal_id&gt;= a.proposal_id，那么接受这个提案，更新a_proposal_id = max(proposal_id,a_proposal_id)，更新记录的提案</p>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="扩展"><a class="markdownIt-Anchor" href="#扩展"></a> 扩展</h2>
-<h3 id="理解误区"><a class="markdownIt-Anchor" href="#理解误区"></a> 理解误区</h3>
-<ul>
-<li>分清<strong>提案</strong>和<strong>预提案</strong>两个不同的阶段，<strong>预提案阶段不会接受提案</strong>，不同的proposer处于不同的阶段，一个proposer<strong>获得多数acceptor的响应后</strong>结束其预提案阶段</li>
-<li>当前整个环境中不同proposer两个阶段混杂进行，而信息是进程间沟通的唯一手段，预提案<strong>本质</strong>上起了<strong>消息传递扩散</strong>的作用</li>
-<li>算法结果不唯一，时间顺序对结果有很大的影响，一定程度上取决于<strong>谁能更快的走完整个流程</strong>，即最快争取到半数同意</li>
-</ul>
-<h3 id="活锁"><a class="markdownIt-Anchor" href="#活锁"></a> 活锁</h3>
-<ul>
-<li>流程</li>
-</ul>
-<div class="mermaid">
-<svg id="mermaid-svg-1af7d4c4dd04a18d" xmlns="http://www.w3.org/2000/svg" height="100%" viewbox="0 0 436 122.5" style="max-width:436px;"><style>
-  .mermaid .label{font-family:trebuchet ms,verdana,arial;color:#333}.node circle,.node ellipse,.node polygon,.node rect{fill:#cde498;stroke:#13540c;stroke-width:1px}.node.clickable{cursor:pointer}.arrowheadPath{fill:green}.edgePath .path{stroke:green;stroke-width:1.5px}.edgeLabel{background-color:#e8e8e8}.cluster rect{fill:#cdffb2!important;rx:4!important;stroke:#6eaa49!important;stroke-width:1px!important}.cluster text{fill:#333}.actor{stroke:#13540c;fill:#cde498}text.actor{fill:#000;stroke:none}.actor-line{stroke:grey}.messageLine0{marker-end:"url(#arrowhead)"}.messageLine0,.messageLine1{stroke-width:1.5;stroke-dasharray:"2 2";stroke:#333}#arrowhead{fill:#333}#crosshead path{fill:#333!important;stroke:#333!important}.messageText{fill:#333;stroke:none}.labelBox{stroke:#326932;fill:#cde498}.labelText,.loopText{fill:#000;stroke:none}.loopLine{stroke-width:2;stroke-dasharray:"2 2";marker-end:"url(#arrowhead)";stroke:#326932}.note{stroke:#6eaa49;fill:#fff5ad}.noteText{fill:#000;stroke:none;font-family:trebuchet ms,verdana,arial;font-size:14px}.section{stroke:none;opacity:.2}.section0,.section2{fill:#6eaa49}.section1,.section3{fill:#fff;opacity:.2}.sectionTitle0,.sectionTitle1,.sectionTitle2,.sectionTitle3{fill:#333}.sectionTitle{text-anchor:start;font-size:11px;text-height:14px}.grid .tick{stroke:#d3d3d3;opacity:.3;shape-rendering:crispEdges}.grid path{stroke-width:0}.today{fill:none;stroke:red;stroke-width:2px}.task{stroke-width:2}.taskText{text-anchor:middle;font-size:11px}.taskTextOutsideRight{fill:#000;text-anchor:start;font-size:11px}.taskTextOutsideLeft{fill:#000;text-anchor:end;font-size:11px}.taskText0,.taskText1,.taskText2,.taskText3{fill:#fff}.task0,.task1,.task2,.task3{fill:#487e3a;stroke:#13540c}.taskTextOutside0,.taskTextOutside1,.taskTextOutside2,.taskTextOutside3{fill:#000}.active0,.active1,.active2,.active3{fill:#cde498;stroke:#13540c}.activeText0,.activeText1,.activeText2,.activeText3{fill:#000!important}.done0,.done1,.done2,.done3{stroke:grey;fill:#d3d3d3;stroke-width:2}.doneText0,.doneText1,.doneText2,.doneText3{fill:#000!important}.crit0,.crit1,.crit2,.crit3{stroke:#f88;fill:red;stroke-width:2}.activeCrit0,.activeCrit1,.activeCrit2,.activeCrit3{stroke:#f88;fill:#cde498;stroke-width:2}.doneCrit0,.doneCrit1,.doneCrit2,.doneCrit3{stroke:#f88;fill:#d3d3d3;stroke-width:2;cursor:pointer;shape-rendering:crispEdges}.activeCritText0,.activeCritText1,.activeCritText2,.activeCritText3,.doneCritText0,.doneCritText1,.doneCritText2,.doneCritText3{fill:#000!important}.titleText{text-anchor:middle;font-size:18px;fill:#000}g.classGroup text{fill:#13540c;stroke:none;font-family:trebuchet ms,verdana,arial;font-size:10px}g.classGroup rect{fill:#cde498;stroke:#13540c}g.classGroup line{stroke:#13540c;stroke-width:1}svg .classLabel .box{stroke:none;stroke-width:0;fill:#cde498;opacity:.5}svg .classLabel .label{fill:#13540c;font-size:10px}.relation{stroke:#13540c;stroke-width:1;fill:none}#compositionEnd,#compositionStart,.composition{fill:#13540c;stroke:#13540c;stroke-width:1}#aggregationEnd,#aggregationStart,.aggregation{fill:#cde498;stroke:#13540c;stroke-width:1}#dependencyEnd,#dependencyStart,#extensionEnd,#extensionStart{fill:#13540c;stroke:#13540c;stroke-width:1}.node text{font-size:14px}.node text,div.mermaidTooltip{font-family:trebuchet ms,verdana,arial}div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-size:12px;background:#cdffb2;border:1px solid #6eaa49;border-radius:2px;pointer-events:none;z-index:100}
-svg {
-  color: rgb(0, 0, 0);
-  font: normal normal 400 normal 16px / normal "Times New Roman";
-}
-  </style><g><g class="output"><g class="clusters"/><g class="edgePaths"><g class="edgePath" style="opacity: 1;"><path class="path" d="M112,47.33098591549296L137,38L162,38" marker-end="url(#arrowhead16)" style="fill:none"/><defs><marker id="arrowhead16" viewbox="0 0 10 10" refx="9" refy="5" markerunits="strokeWidth" markerwidth="8" markerheight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M286,38L311,38L336,50.04545454545455" marker-end="url(#arrowhead17)" style="fill:none"/><defs><marker id="arrowhead17" viewbox="0 0 10 10" refx="9" refy="5" markerunits="strokeWidth" markerwidth="8" markerheight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M336,78.95454545454545L311,91L224,91L137,91L112,81.66901408450704" marker-end="url(#arrowhead18)" style="fill:none"/><defs><marker id="arrowhead18" viewbox="0 0 10 10" refx="9" refy="5" markerunits="strokeWidth" markerwidth="8" markerheight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker></defs></g></g><g class="edgeLabels"><g class="edgeLabel" transform="" style="opacity: 1;"><g transform="translate(0,0)" class="label"><foreignobject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel"/></div></foreignobject></g></g><g class="edgeLabel" transform="" style="opacity: 1;"><g transform="translate(0,0)" class="label"><foreignobject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel"/></div></foreignobject></g></g><g class="edgeLabel" transform="" style="opacity: 1;"><g transform="translate(0,0)" class="label"><foreignobject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel"/></div></foreignobject></g></g></g><g class="nodes"><g class="node" id="提案i提出" transform="translate(66,64.5)" style="opacity: 1;"><rect rx="0" ry="0" x="-46" y="-18" width="92" height="36"/><g class="label" transform="translate(0,0)"><g transform="translate(-36,-8)"><foreignobject width="72" height="16"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">提案i提出</div></foreignobject></g></g></g><g class="node" id="预提案i+1截胡" transform="translate(224,38)" style="opacity: 1;"><rect rx="0" ry="0" x="-62" y="-18" width="124" height="36"/><g class="label" transform="translate(0,0)"><g transform="translate(-52,-8)"><foreignobject width="104" height="16"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">预提案i+1截胡</div></foreignobject></g></g></g><g class="node" id="i=i+1" transform="translate(366,64.5)" style="opacity: 1;"><rect rx="0" ry="0" x="-30" y="-18" width="60" height="36"/><g class="label" transform="translate(0,0)"><g transform="translate(-20,-8)"><foreignobject width="40" height="16"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">i=i+1</div></foreignobject></g></g></g></g></g></g></svg>
-</div>
-<ul>
-<li>这一般是纯理论上的问题，实际工程应用上分布式系统应该并不会出现如此“有序”的场景（一环扣一环，卡死提案的通过提交），而且若进程数总量一定，最终递归还是会被停止的？</li>
-</ul>
-<h3 id="其他工程实现细节待补充"><a class="markdownIt-Anchor" href="#其他工程实现细节待补充"></a> 其他工程实现细节（待补充）</h3>
-<ul>
-<li>
-<p>全局唯一自增ID</p>
-</li>
-</ul>
-<blockquote>
-<p>Written with <a href="https://stackedit.io/" target="_blank" rel="external">StackEdit</a>.</p>
-</blockquote>
-
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/02/18/paxos-learn-extension/#more" rel="contents">
+              続きを読む &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
