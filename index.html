@@ -288,6 +288,422 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.garenfeather.cn/2018/03/25/openshift-ghost-blog-docker-https/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="GarenFeather">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://media.discordapp.net/attachments/420095259125743637/423186378608738314/logo.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="変わらないで">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/25/openshift-ghost-blog-docker-https/" itemprop="url">OpenShift搭建免费Ghost博客及Hexo博客全站HTTPS</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">投稿日</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-03-25T15:14:48+08:00">
+                2018-03-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">カテゴリは</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/coding/" itemprop="url" rel="index">
+                    <span itemprop="name">coding</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/03/25/openshift-ghost-blog-docker-https/" class="leancloud_visitors" data-flag-title="OpenShift搭建免费Ghost博客及Hexo博客全站HTTPS">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">訪問者&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">ワードカウント&#58;</span>
+                
+                <span title="ワードカウント">
+                  3,535
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ul>
+<li><s>本文又名论没钱且懒的选手如何一点一点艰难的的死蹭资源</s></li>
+<li>Kubernetes的知识部分为参考官网文档结合自己理解所写，发现错误请指正</li>
+</ul>
+<hr>
+<h1 id="openshift"><a class="markdownIt-Anchor" href="#openshift"></a> OpenShift</h1>
+<h2 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h2>
+<ul>
+<li>使用OpenShift的starter tier，即免费版。自行注册账号、创建项目等，最后打开web console来到管理界面</li>
+<li>这里提醒一下，注册完要尽快创建项目开始使用集群，不然预分配的空间会被回收，下一次再来用要重新申请分配，会等很久（我等了好几天）</li>
+<li>整体上看项目基于<code>Kubernetes</code>搭建集群环境，Kubernetes又是Docker的集群编排工具，是以<strong>容器为中心的基础架构</strong>，所以我们可以看到<code>Kubernetes</code>的各种名词如Deployment、Pod，也能看到Docker相关的Persistent Volume等名词</li>
+</ul>
+<h3 id="deployment"><a class="markdownIt-Anchor" href="#deployment"></a> Deployment</h3>
+<ul>
+<li>
+<p>字面含义，一个“部署实体”，可以粗浅的认为是一个配置结构，决定一定数量的Pod的结构，引用官网原文↓</p>
+<blockquote>
+<p>Deployment为Pod和Replica Set提供声明式更新。你只需要在 Deployment 中描述您想要的目标状态是什么，Deployment controller 就会帮您将 Pod 和ReplicaSet 的实际状态改变到您的目标状态。</p>
+</blockquote>
+</li>
+<li>
+<p>通过后文提及的配置流程也可以看出作为运行实例的Pod的环境变量、存储挂载等运行配置参数都在Deployment控制面板中完成</p>
+</li>
+<li>
+<p>根据以下文档原文以及几种结构实体之间的关系，可以理解诸如手动删除Pod（错误行为）、修改Deployment引发Pod自动升级等现象的本质。在后文的操作环境下默认一个Deployment应该是对应至少一个Pod的，因此删除Pod集群会自动补上一个相同的Pod</p>
+<blockquote>
+<p>您不该手动管理由 Deployment 创建的 Replica Set，否则您就篡越了 Deployment controller 的职责！</p>
+</blockquote>
+</li>
+</ul>
+<div class="mermaid">
+<svg id="mermaid-svg-d1abf21aaa935f46" xmlns="http://www.w3.org/2000/svg" height="100%" viewbox="0 0 714 268" style="max-width:714px;"><style>
+  .mermaid .label{font-family:trebuchet ms,verdana,arial;color:#333}.node circle,.node ellipse,.node polygon,.node rect{fill:#cde498;stroke:#13540c;stroke-width:1px}.node.clickable{cursor:pointer}.arrowheadPath{fill:green}.edgePath .path{stroke:green;stroke-width:1.5px}.edgeLabel{background-color:#e8e8e8}.cluster rect{fill:#cdffb2!important;rx:4!important;stroke:#6eaa49!important;stroke-width:1px!important}.cluster text{fill:#333}.actor{stroke:#13540c;fill:#cde498}text.actor{fill:#000;stroke:none}.actor-line{stroke:grey}.messageLine0{marker-end:"url(#arrowhead)"}.messageLine0,.messageLine1{stroke-width:1.5;stroke-dasharray:"2 2";stroke:#333}#arrowhead{fill:#333}#crosshead path{fill:#333!important;stroke:#333!important}.messageText{fill:#333;stroke:none}.labelBox{stroke:#326932;fill:#cde498}.labelText,.loopText{fill:#000;stroke:none}.loopLine{stroke-width:2;stroke-dasharray:"2 2";marker-end:"url(#arrowhead)";stroke:#326932}.note{stroke:#6eaa49;fill:#fff5ad}.noteText{fill:#000;stroke:none;font-family:trebuchet ms,verdana,arial;font-size:14px}.section{stroke:none;opacity:.2}.section0,.section2{fill:#6eaa49}.section1,.section3{fill:#fff;opacity:.2}.sectionTitle0,.sectionTitle1,.sectionTitle2,.sectionTitle3{fill:#333}.sectionTitle{text-anchor:start;font-size:11px;text-height:14px}.grid .tick{stroke:#d3d3d3;opacity:.3;shape-rendering:crispEdges}.grid path{stroke-width:0}.today{fill:none;stroke:red;stroke-width:2px}.task{stroke-width:2}.taskText{text-anchor:middle;font-size:11px}.taskTextOutsideRight{fill:#000;text-anchor:start;font-size:11px}.taskTextOutsideLeft{fill:#000;text-anchor:end;font-size:11px}.taskText0,.taskText1,.taskText2,.taskText3{fill:#fff}.task0,.task1,.task2,.task3{fill:#487e3a;stroke:#13540c}.taskTextOutside0,.taskTextOutside1,.taskTextOutside2,.taskTextOutside3{fill:#000}.active0,.active1,.active2,.active3{fill:#cde498;stroke:#13540c}.activeText0,.activeText1,.activeText2,.activeText3{fill:#000!important}.done0,.done1,.done2,.done3{stroke:grey;fill:#d3d3d3;stroke-width:2}.doneText0,.doneText1,.doneText2,.doneText3{fill:#000!important}.crit0,.crit1,.crit2,.crit3{stroke:#f88;fill:red;stroke-width:2}.activeCrit0,.activeCrit1,.activeCrit2,.activeCrit3{stroke:#f88;fill:#cde498;stroke-width:2}.doneCrit0,.doneCrit1,.doneCrit2,.doneCrit3{stroke:#f88;fill:#d3d3d3;stroke-width:2;cursor:pointer;shape-rendering:crispEdges}.activeCritText0,.activeCritText1,.activeCritText2,.activeCritText3,.doneCritText0,.doneCritText1,.doneCritText2,.doneCritText3{fill:#000!important}.titleText{text-anchor:middle;font-size:18px;fill:#000}g.classGroup text{fill:#13540c;stroke:none;font-family:trebuchet ms,verdana,arial;font-size:10px}g.classGroup rect{fill:#cde498;stroke:#13540c}g.classGroup line{stroke:#13540c;stroke-width:1}svg .classLabel .box{stroke:none;stroke-width:0;fill:#cde498;opacity:.5}svg .classLabel .label{fill:#13540c;font-size:10px}.relation{stroke:#13540c;stroke-width:1;fill:none}#compositionEnd,#compositionStart,.composition{fill:#13540c;stroke:#13540c;stroke-width:1}#aggregationEnd,#aggregationStart,.aggregation{fill:#cde498;stroke:#13540c;stroke-width:1}#dependencyEnd,#dependencyStart,#extensionEnd,#extensionStart{fill:#13540c;stroke:#13540c;stroke-width:1}.node text{font-size:14px}.node text,div.mermaidTooltip{font-family:trebuchet ms,verdana,arial}div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-size:12px;background:#cdffb2;border:1px solid #6eaa49;border-radius:2px;pointer-events:none;z-index:100}
+svg {
+  color: rgb(0, 0, 0);
+  font: normal normal 400 normal 16px / normal "Times New Roman";
+}
+  </style><g><g class="output"><g class="clusters"/><g class="edgePaths"><g class="edgePath" style="opacity: 1;"><path class="path" d="M120,124L161,124L202,124" marker-end="url(#arrowhead21)" style="fill:none"/><defs><marker id="arrowhead21" viewbox="0 0 10 10" refx="9" refy="5" markerunits="strokeWidth" markerwidth="8" markerheight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M302,124L367,124L432,124" marker-end="url(#arrowhead22)" style="fill:none"/><defs><marker id="arrowhead22" viewbox="0 0 10 10" refx="9" refy="5" markerunits="strokeWidth" markerwidth="8" markerheight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M463.83720930232556,106L501,38L526,38" marker-end="url(#arrowhead23)" style="fill:none"/><defs><marker id="arrowhead23" viewbox="0 0 10 10" refx="9" refy="5" markerunits="strokeWidth" markerwidth="8" markerheight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M476,124L501,124L526,124" marker-end="url(#arrowhead24)" style="fill:none"/><defs><marker id="arrowhead24" viewbox="0 0 10 10" refx="9" refy="5" markerunits="strokeWidth" markerwidth="8" markerheight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M463.83720930232556,142L501,210L526,210" marker-end="url(#arrowhead25)" style="fill:none"/><defs><marker id="arrowhead25" viewbox="0 0 10 10" refx="9" refy="5" markerunits="strokeWidth" markerwidth="8" markerheight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker></defs></g></g><g class="edgeLabels"><g class="edgeLabel" transform="translate(161,124)" style="opacity: 1;"><g transform="translate(-16,-8)" class="label"><foreignobject width="32" height="16"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel">创建</span></div></foreignobject></g></g><g class="edgeLabel" transform="translate(367,124)" style="opacity: 1;"><g transform="translate(-40,-8)" class="label"><foreignobject width="80" height="16"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel">在后台创建</span></div></foreignobject></g></g><g class="edgeLabel" transform="" style="opacity: 1;"><g transform="translate(0,0)" class="label"><foreignobject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel"/></div></foreignobject></g></g><g class="edgeLabel" transform="" style="opacity: 1;"><g transform="translate(0,0)" class="label"><foreignobject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel"/></div></foreignobject></g></g><g class="edgeLabel" transform="" style="opacity: 1;"><g transform="translate(0,0)" class="label"><foreignobject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel"/></div></foreignobject></g></g></g><g class="nodes"><g class="node" id="A" transform="translate(70,124)" style="opacity: 1;"><rect rx="5" ry="5" x="-50" y="-18" width="100" height="36"/><g class="label" transform="translate(0,0)"><g transform="translate(-40,-8)"><foreignobject width="80" height="16"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">Deployment</div></foreignobject></g></g></g><g class="node" id="B" transform="translate(252,124)" style="opacity: 1;"><rect rx="5" ry="5" x="-50" y="-18" width="100" height="36"/><g class="label" transform="translate(0,0)"><g transform="translate(-40,-8)"><foreignobject width="80" height="16"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">ReplicaSet</div></foreignobject></g></g></g><g class="node" id="C" transform="translate(454,124)" style="opacity: 1;"><rect rx="5" ry="5" x="-22" y="-18" width="44" height="36"/><g class="label" transform="translate(0,0)"><g transform="translate(-12,-8)"><foreignobject width="24" height="16"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">Pod</div></foreignobject></g></g></g><g class="node" id="D" transform="translate(600,38)" style="opacity: 1;"><rect rx="5" ry="5" x="-74" y="-18" width="148" height="36"/><g class="label" transform="translate(0,0)"><g transform="translate(-64,-8)"><foreignobject width="128" height="16"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">容器/其他Runtime</div></foreignobject></g></g></g><g class="node" id="E" transform="translate(600,124)" style="opacity: 1;"><rect rx="5" ry="5" x="-74" y="-18" width="148" height="36"/><g class="label" transform="translate(0,0)"><g transform="translate(-64,-8)"><foreignobject width="128" height="16"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">容器/其他Runtime</div></foreignobject></g></g></g><g class="node" id="F" transform="translate(600,210)" style="opacity: 1;"><rect rx="5" ry="5" x="-74" y="-18" width="148" height="36"/><g class="label" transform="translate(0,0)"><g transform="translate(-64,-8)"><foreignobject width="128" height="16"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">容器/其他Runtime</div></foreignobject></g></g></g></g></g></g></svg>
+</div>
+<ul>
+<li>
+<p>同样是参照以下文档说明，可以看到在即使重新Deploy失败，集群也不会瘫痪，可以直接选择取消操作自动回滚</p>
+<blockquote>
+<p>如果当前状态不稳定，回滚到之前的Deployment revision。每次回滚都会更新</p>
+</blockquote>
+</li>
+<li>
+<p>理论上对Deployment的修改会发出rollout，这不一定是我们期望的，例如下文会提到的替换存储卷和修改环境变量等都会引发不必要的rollout，因此需要暂停整个Deployment再恢复</p>
+<blockquote>
+<p>您可以在发出一次或多次更新前暂停一个 Deployment，然后再恢复它。这样您就能多次暂停和恢复 Deployment，在此期间进行一些修复工作，而不会发出不必要的 rollout。</p>
+</blockquote>
+<blockquote>
+<p>Paused和没有paused的Deployment之间的唯一区别就是，所有对paused deployment中的PodTemplateSpec的修改都不会触发新的rollout。Deployment被创建之后默认是非paused。</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="pod"><a class="markdownIt-Anchor" href="#pod"></a> Pod</h3>
+<ul>
+<li>
+<p>Kubernetes对象模型中可部署的最小对象，基本单位，<strong>一个Pod</strong>代表集群上正在运行的<strong>一个进程</strong>，Pod封装<strong>一个或多个</strong>容器。</p>
+<blockquote>
+<p>Docker是Kubernetes Pod中最常见的runtime ，Pods也支持其他容器runtimes。</p>
+</blockquote>
+</li>
+<li>
+<p>如果需要水平扩展应用（例如，运行多个实例），则应该使用多个Pods，每个实例一个Pod。在Kubernetes中，这样通常称为Replication。</p>
+</li>
+<li>
+<p>每个Pod被分配一个<strong>独立的IP地址</strong>，Pod中的每个容器<strong>共享网络命名空间</strong>，包括IP地址和网络端口。Pod内的容器可以使用localhost相互通信。当Pod中的容器与Pod 外部通信时，他们必须协调如何使用共享网络资源（如端口）。</p>
+</li>
+<li>
+<p>重启<strong>Pod中的容器</strong>跟重启<strong>Pod</strong>不是一回事。Pod<strong>只提供容器的运行环境</strong>并<strong>保持</strong>容器的<strong>运行状态</strong>，重启容器不会造成Pod重启。</p>
+</li>
+<li>
+<p>Pod提供两种资源：<strong>网络</strong>和<strong>存储</strong></p>
+</li>
+</ul>
+<h3 id="persistent-volume"><a class="markdownIt-Anchor" href="#persistent-volume"></a> Persistent Volume</h3>
+<ul>
+<li>持久化卷</li>
+<li>字面意义，Docker默认情况下数据在容器中产生，而容器删除后内容也会一并丢失，因此有必要将数据提取出来</li>
+<li>Docker本身有两种存储卷操作方式，一种是<strong>绑定挂载存储卷</strong>，另一种是<strong>管理存储卷</strong></li>
+<li>绑定挂载存储卷直接使用用户提供的主机目录或文件（–volume A:B），管理存储卷的Cassandra和Progres示例如下</li>
+</ul>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">$ docker run -d \</div><div class="line">--volume /var/lib/cassandra/data \</div><div class="line">--name cass-shared \</div><div class="line">alpine <span class="built_in">echo</span> Data Container</div><div class="line"></div><div class="line">$ docker run -d \</div><div class="line">--volume-from cass-shared\</div><div class="line">--name cass1 \</div><div class="line">cassandra:2.2</div></pre></td></tr></table></figure></div>
+<div class="mermaid">
+<svg id="mermaid-svg-b2ce45c0fe74f8e7" xmlns="http://www.w3.org/2000/svg" height="100%" viewbox="0 0 786 232.5" style="max-width:786px;"><style>
+  .mermaid .label{font-family:trebuchet ms,verdana,arial;color:#333}.node circle,.node ellipse,.node polygon,.node rect{fill:#cde498;stroke:#13540c;stroke-width:1px}.node.clickable{cursor:pointer}.arrowheadPath{fill:green}.edgePath .path{stroke:green;stroke-width:1.5px}.edgeLabel{background-color:#e8e8e8}.cluster rect{fill:#cdffb2!important;rx:4!important;stroke:#6eaa49!important;stroke-width:1px!important}.cluster text{fill:#333}.actor{stroke:#13540c;fill:#cde498}text.actor{fill:#000;stroke:none}.actor-line{stroke:grey}.messageLine0{marker-end:"url(#arrowhead)"}.messageLine0,.messageLine1{stroke-width:1.5;stroke-dasharray:"2 2";stroke:#333}#arrowhead{fill:#333}#crosshead path{fill:#333!important;stroke:#333!important}.messageText{fill:#333;stroke:none}.labelBox{stroke:#326932;fill:#cde498}.labelText,.loopText{fill:#000;stroke:none}.loopLine{stroke-width:2;stroke-dasharray:"2 2";marker-end:"url(#arrowhead)";stroke:#326932}.note{stroke:#6eaa49;fill:#fff5ad}.noteText{fill:#000;stroke:none;font-family:trebuchet ms,verdana,arial;font-size:14px}.section{stroke:none;opacity:.2}.section0,.section2{fill:#6eaa49}.section1,.section3{fill:#fff;opacity:.2}.sectionTitle0,.sectionTitle1,.sectionTitle2,.sectionTitle3{fill:#333}.sectionTitle{text-anchor:start;font-size:11px;text-height:14px}.grid .tick{stroke:#d3d3d3;opacity:.3;shape-rendering:crispEdges}.grid path{stroke-width:0}.today{fill:none;stroke:red;stroke-width:2px}.task{stroke-width:2}.taskText{text-anchor:middle;font-size:11px}.taskTextOutsideRight{fill:#000;text-anchor:start;font-size:11px}.taskTextOutsideLeft{fill:#000;text-anchor:end;font-size:11px}.taskText0,.taskText1,.taskText2,.taskText3{fill:#fff}.task0,.task1,.task2,.task3{fill:#487e3a;stroke:#13540c}.taskTextOutside0,.taskTextOutside1,.taskTextOutside2,.taskTextOutside3{fill:#000}.active0,.active1,.active2,.active3{fill:#cde498;stroke:#13540c}.activeText0,.activeText1,.activeText2,.activeText3{fill:#000!important}.done0,.done1,.done2,.done3{stroke:grey;fill:#d3d3d3;stroke-width:2}.doneText0,.doneText1,.doneText2,.doneText3{fill:#000!important}.crit0,.crit1,.crit2,.crit3{stroke:#f88;fill:red;stroke-width:2}.activeCrit0,.activeCrit1,.activeCrit2,.activeCrit3{stroke:#f88;fill:#cde498;stroke-width:2}.doneCrit0,.doneCrit1,.doneCrit2,.doneCrit3{stroke:#f88;fill:#d3d3d3;stroke-width:2;cursor:pointer;shape-rendering:crispEdges}.activeCritText0,.activeCritText1,.activeCritText2,.activeCritText3,.doneCritText0,.doneCritText1,.doneCritText2,.doneCritText3{fill:#000!important}.titleText{text-anchor:middle;font-size:18px;fill:#000}g.classGroup text{fill:#13540c;stroke:none;font-family:trebuchet ms,verdana,arial;font-size:10px}g.classGroup rect{fill:#cde498;stroke:#13540c}g.classGroup line{stroke:#13540c;stroke-width:1}svg .classLabel .box{stroke:none;stroke-width:0;fill:#cde498;opacity:.5}svg .classLabel .label{fill:#13540c;font-size:10px}.relation{stroke:#13540c;stroke-width:1;fill:none}#compositionEnd,#compositionStart,.composition{fill:#13540c;stroke:#13540c;stroke-width:1}#aggregationEnd,#aggregationStart,.aggregation{fill:#cde498;stroke:#13540c;stroke-width:1}#dependencyEnd,#dependencyStart,#extensionEnd,#extensionStart{fill:#13540c;stroke:#13540c;stroke-width:1}.node text{font-size:14px}.node text,div.mermaidTooltip{font-family:trebuchet ms,verdana,arial}div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-size:12px;background:#cdffb2;border:1px solid #6eaa49;border-radius:2px;pointer-events:none;z-index:100}
+svg {
+  color: rgb(0, 0, 0);
+  font: normal normal 400 normal 16px / normal "Times New Roman";
+}
+  </style><g><g class="output"><g class="clusters"/><g class="edgePaths"><g class="edgePath" style="opacity: 1;"><path class="path" d="M80,88.5L105,88.5L130,88.5" marker-end="url(#arrowhead27)" style="fill:none"/><defs><marker id="arrowhead27" viewbox="0 0 10 10" refx="9" refy="5" markerunits="strokeWidth" markerwidth="8" markerheight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M80,174.5L105,174.5L130,174.5" marker-end="url(#arrowhead28)" style="fill:none"/><defs><marker id="arrowhead28" viewbox="0 0 10 10" refx="9" refy="5" markerunits="strokeWidth" markerwidth="8" markerheight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M190,76.0984251968504L287,36L384,52.70198675496689" marker-end="url(#arrowhead29)" style="fill:none"/><defs><marker id="arrowhead29" viewbox="0 0 10 10" refx="9" refy="5" markerunits="strokeWidth" markerwidth="8" markerheight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M190,158.08267716535434L287,105L384,77.37748344370861" marker-end="url(#arrowhead30)" style="fill:none"/><defs><marker id="arrowhead30" viewbox="0 0 10 10" refx="9" refy="5" markerunits="strokeWidth" markerwidth="8" markerheight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M492,62L517,62L606.2628571428571,123.5" marker-end="url(#arrowhead31)" style="fill:none"/><defs><marker id="arrowhead31" viewbox="0 0 10 10" refx="9" refy="5" markerunits="strokeWidth" markerwidth="8" markerheight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M190,102.90944881889763L287,149.5L438,149.5L517,149.5L542,149.5" marker-end="url(#arrowhead32)" style="stroke: #333; fill:none;stroke-width:2px;stroke-dasharray:3;"/><defs><marker id="arrowhead32" viewbox="0 0 10 10" refx="9" refy="5" markerunits="strokeWidth" markerwidth="8" markerheight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M190,181.11417322834646L287,202.5L438,202.5L517,202.5L581.6981132075472,175.5" marker-end="url(#arrowhead33)" style="stroke: #333; fill:none;stroke-width:2px;stroke-dasharray:3;"/><defs><marker id="arrowhead33" viewbox="0 0 10 10" refx="9" refy="5" markerunits="strokeWidth" markerwidth="8" markerheight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker></defs></g></g><g class="edgeLabels"><g class="edgeLabel" transform="" style="opacity: 1;"><g transform="translate(0,0)" class="label"><foreignobject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel"/></div></foreignobject></g></g><g class="edgeLabel" transform="" style="opacity: 1;"><g transform="translate(0,0)" class="label"><foreignobject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel"/></div></foreignobject></g></g><g class="edgeLabel" transform="translate(287,36)" style="opacity: 1;"><g transform="translate(-64,-16)" class="label"><foreignobject width="128" height="32"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel">从cass-shared<br/>复制存储卷的定义</span></div></foreignobject></g></g><g class="edgeLabel" transform="translate(287,105)" style="opacity: 1;"><g transform="translate(-72,-16)" class="label"><foreignobject width="144" height="32"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel">将存储卷的定义复制<br/>到新的Cassandra</span></div></foreignobject></g></g><g class="edgeLabel" transform="" style="opacity: 1;"><g transform="translate(0,0)" class="label"><foreignobject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel"/></div></foreignobject></g></g><g class="edgeLabel" transform="" style="opacity: 1;"><g transform="translate(0,0)" class="label"><foreignobject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel"/></div></foreignobject></g></g><g class="edgeLabel" transform="" style="opacity: 1;"><g transform="translate(0,0)" class="label"><foreignobject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel"/></div></foreignobject></g></g></g><g class="nodes"><g class="node" id="A" transform="translate(50,88.5)" style="opacity: 1;"><rect rx="0" ry="0" x="-30" y="-18" width="60" height="36"/><g class="label" transform="translate(0,0)"><g transform="translate(-20,-8)"><foreignobject width="40" height="16"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">CQLSH</div></foreignobject></g></g></g><g class="node" id="B" transform="translate(160,88.5)" style="opacity: 1;"><rect rx="0" ry="0" x="-30" y="-18" width="60" height="36"/><g class="label" transform="translate(0,0)"><g transform="translate(-20,-8)"><foreignobject width="40" height="16"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">cass1</div></foreignobject></g></g></g><g class="node" id="C" transform="translate(50,174.5)" style="opacity: 1;"><rect rx="0" ry="0" x="-30" y="-18" width="60" height="36"/><g class="label" transform="translate(0,0)"><g transform="translate(-20,-8)"><foreignobject width="40" height="16"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">CQLSH</div></foreignobject></g></g></g><g class="node" id="D" transform="translate(160,174.5)" style="opacity: 1;"><rect rx="0" ry="0" x="-30" y="-18" width="60" height="36"/><g class="label" transform="translate(0,0)"><g transform="translate(-20,-8)"><foreignobject width="40" height="16"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">cass2</div></foreignobject></g></g></g><g class="node" id="E" transform="translate(438,62)" style="opacity: 1;"><rect rx="0" ry="0" x="-54" y="-18" width="108" height="36"/><g class="label" transform="translate(0,0)"><g transform="translate(-44,-8)"><foreignobject width="88" height="16"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">cass-shared</div></foreignobject></g></g></g><g class="node" id="F" transform="translate(644,149.5)" style="opacity: 1;"><rect rx="5" ry="5" x="-102" y="-26" width="204" height="52"/><g class="label" transform="translate(0,0)"><g transform="translate(-92,-16)"><foreignobject width="184" height="32"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">存储卷<br/>/var/lib/cassandra/data</div></foreignobject></g></g></g></g></g></g></svg>
+</div>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="BASH"><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ docker create -v /dbdata --name dbstore training/postgres /bin/<span class="literal">true</span></div><div class="line"></div><div class="line">$ docker run -d --volumes-from dbstore --name db1 training/postgres</div></pre></td></tr></table></figure></div>
+<ul>
+<li><s>上面这部分解释说明其实跟本文关系不大，我们此处知道是把数据持久化需要的部分就行</s></li>
+</ul>
+<hr>
+<h2 id="部署app"><a class="markdownIt-Anchor" href="#部署app"></a> 部署APP</h2>
+<h3 id="过程"><a class="markdownIt-Anchor" href="#过程"></a> 过程</h3>
+<p>部署之前先在Storage面板中创建好Persistent Volume Claim，配置保持默认，读写模式注意一定要设置为<code>Read-Write-Once</code>，创建好后信息大概如下↓</p>
+<p><img src="https://media.discordapp.net/attachments/420095259125743637/427352064327155722/op-08.png" alt="持久化存储卷"></p>
+<p>使用Ghost现成的Docker镜像部署，web console界面点击右上角<code>Add To Project</code>的<code>Deploy Image</code></p>
+<p><img src="https://media.discordapp.net/attachments/420095259125743637/427352051635191818/op-01.png" alt="Deploy Image"></p>
+<p>Image Name模式，输入ghost，点击搜索键，没有特殊要求全部保持默认设置</p>
+<p><img src="https://media.discordapp.net/attachments/420095259125743637/427352059268956161/op-04.png" alt="Default"></p>
+<p>部署完成后在Overview界面展开详细，可以看到表示正常的蓝色状态Pod</p>
+<p><img src="https://media.discordapp.net/attachments/420095259125743637/427354096672964608/H05BIEB7KUKTRKMM.png" alt="Pod Deploy"></p>
+<p>在下方Networking右边点击Create Route，设置保持默认，创建成功后可以看到你公开的路径，复制下来等会有用。此时点开路径，可以看到博客的默认界面</p>
+<p><img src="https://media.discordapp.net/attachments/420095259125743637/427352061571760128/op-06.png" alt="Route"></p>
+<p>点击到边栏Applications的的Deployments，点击刚才的部署，进入Environment内，添加环境变量<code>url</code>，值为刚才的<strong>完整路径</strong>，如：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Name:url</div><div class="line">Value:http://iron-rhine.1d35.starter-us-east-1.openshiftapps.com</div></pre></td></tr></table></figure></div>
+<p>点击保存后会自动开始Deploy，等Overview界面板中的Pod恢复蓝色，再次回到刚才Applications的的Deployments内，先点击右上角如图的<code>Pause Rollouts</code>，暂停Pod的活动，看到相应的暂停提示后切换到Configuration界面</p>
+<p><img src="https://media.discordapp.net/attachments/420095259125743637/427352062724931587/op-07.png" alt="Pause Rollouts"></p>
+<p>在Volumes处选择Remove，移除掉默认分配的存储卷，再点击Add Storage，默认选中了刚才创建的存储卷，Mount Path设置为<code>/var/lib/ghost/content</code>。Add完成后回到原本界面解除<code>Pause Rollouts</code>，会自动重新Deploy</p>
+<p>Deploy完成之后基本设置就完成了，即使删除Pod或Deployment博客内容也不会丢失。接下来就可以愉快的注册写博客了！</p>
+<h3 id="注意"><a class="markdownIt-Anchor" href="#注意"></a> 注意</h3>
+<ul>
+<li>
+<p>Ghost博客这个项目比较大，初次编译会有点久，有时候管理界面显示pod准备好了但项目可能还没准备好，耐心等一会再重启，或者看看日志显示，一两次超时很正常</p>
+</li>
+<li>
+<p><strong>替换了存储卷后绝对不能直接修改配置</strong>， 默认设置下只要config有所变化就会自动重新Deploy，所以若要修改配置，在修改配置前一定要选择<code>Pause Rollouts</code></p>
+</li>
+<li>
+<p><strong>替换了存储卷后也绝对不能直接Deploy</strong>如果单纯想重启可以直接删除pod，默认设置下会自动生成新的pod。也可以删除Deployment重新部署，最后再接回存储卷，<strong>总之不能在有一个Deployment存在的情况下执行Deploy</strong></p>
+</li>
+<li>
+<p>如果觉得存储卷设置麻烦，也可以使用Ghost后台自带的导出导入文章机制，重启前将使用主题下载备份好等等，没有试过不细说了</p>
+</li>
+</ul>
+<h3 id="部分原理说明"><a class="markdownIt-Anchor" href="#部分原理说明"></a> 部分原理说明</h3>
+<ul>
+<li>
+<p>关于直接Deploy一个新版本会失败这一点，个人认为是存储卷读写模式的原因。</p>
+</li>
+<li>
+<p>通过上面的配置可以确认存储卷只允许一个读写（Access Modes：RWO （Read-Write-Once）），而重新Deploy的过程应该是先创建一个新的Deployment再删除原本的Deployment，在这个过程中由于单一读写的原因，存储卷会挂载失败，因此直接重新Deploy一定会失败</p>
+</li>
+</ul>
+<hr>
+<h2 id="why-not"><a class="markdownIt-Anchor" href="#why-not"></a> why not</h2>
+<h3 id="heroku"><a class="markdownIt-Anchor" href="#heroku"></a> heroku</h3>
+<p>原本计划了一个完美的操作，用heroku自带的免费数据库Postgre，结合七牛云10G存储，博客挂起来稳稳的</p>
+<p>然而第一次部署的Ghost是0.x版的，现在的<a href="https://dev.ghost.org/dropping-support-for-postgresql/amp/" target="_blank" rel="external">1.x版已经去掉了Postgre支持</a>（天打雷劈五雷轰顶我的内心几乎是崩溃的），只能MySQL，而heroku的MySQL免费但容量极小，据说只有5M，而且一定要填写信用卡信息……</p>
+<p>遂放弃。【难过</p>
+<h3 id="hasura"><a class="markdownIt-Anchor" href="#hasura"></a> hasura</h3>
+<p>hasura部署起来也很方便，而且自带的存储为2G，最重要的是实现了全自动的HTTPS，但遗憾的是目前免费版暂时不支持持久化存储……（PS对方开发表示文档还没写完，写完了发你一份诶嘿。我：……）</p>
+<p>虽然免费版也不提供custom domain，但对方开发表示可以给个优惠，emmmmmmm再深入考虑下……</p>
+<p>还没放弃.jpg</p>
+<h1 id="cloudflare"><a class="markdownIt-Anchor" href="#cloudflare"></a> CloudFlare</h1>
+<h2 id="自定义域名复杂"><a class="markdownIt-Anchor" href="#自定义域名复杂"></a> 自定义域名（复杂）</h2>
+<h3 id="为何如此复杂"><a class="markdownIt-Anchor" href="#为何如此复杂"></a> 为何如此复杂</h3>
+<p>首先我们按照常规的两种思路：</p>
+<ul>
+<li>解析出地址指向的IP，直接添加一条A记录指向同样IP</li>
+<li>一条CNAME记录解析</li>
+</ul>
+<p>两种方案差不多，然而都不行，因为<strong>OpenShift的start tier禁止自定义域名解析设置</strong></p>
+<p>换个思路，举例，在腾讯云域名解析台可以看到<strong>隐式URL</strong>这一选项<br>
+<img src="https://media.discordapp.net/attachments/420095259125743637/427359818030907402/8769EBHPNGA_GQ_ZVP.png" alt="隐式URL"></p>
+<p>然而隐式转发需要备案，太麻烦，目前买的域名都没有备案emmmm……</p>
+<h3 id="nameserver替换"><a class="markdownIt-Anchor" href="#nameserver替换"></a> NameServer替换</h3>
+<p>首先按惯例注册CloudFlare账号，信息随便填填，我们还是使用免费计划</p>
+<p>Add Site添加你想要使用的域名，按照要求到你购买域名的服务商处修改NameServer为CloudFlare提供的</p>
+<p>举例如我在腾讯云购买的，参考<a href="https://cloud.tencent.com/document/product/302/5518" target="_blank" rel="external">相关文档</a>自行修改</p>
+<p>在Overview中显示如下说明设置已经生效</p>
+<p><img src="https://media.discordapp.net/attachments/420095259125743637/427352068919918593/op-10.png" alt="Active"></p>
+<h3 id="较搓的操作"><a class="markdownIt-Anchor" href="#较搓的操作"></a> 较搓的操作</h3>
+<p>只能说是无奈之举，因为CloudFlare也不支持隐式URL一类的操作，所以目前选择是先redirect过去，到域名控制台打开Page Rules设置</p>
+<p><img src="https://media.discordapp.net/attachments/420095259125743637/427355029683568660/op-09.png" alt="Page Rules"></p>
+<p>添加一条新规则，分别填入你的自定义域名和刚才建好的博客的地址</p>
+<p><img src="https://media.discordapp.net/attachments/420095259125743637/427360435382255618/84KTR4LA13OC06KZK7Z6.png" alt="Rule"></p>
+<p>保存后要稍等一会才能看到结果（据说有人等了几小时，我只等了几分钟就看到了……）</p>
+<h3 id="看起来比较酷炫的操作复杂"><a class="markdownIt-Anchor" href="#看起来比较酷炫的操作复杂"></a> 看起来比较酷炫的操作（复杂）</h3>
+<p>只是个个人的思路，没有实践过，仅供参考，架构大致如图</p>
+<div class="mermaid">
+<svg id="mermaid-svg-7d81831349f65c0f" xmlns="http://www.w3.org/2000/svg" height="100%" viewbox="0 0 326 418" style="max-width:326px;"><style>
+  .mermaid .label{font-family:trebuchet ms,verdana,arial;color:#333}.node circle,.node ellipse,.node polygon,.node rect{fill:#cde498;stroke:#13540c;stroke-width:1px}.node.clickable{cursor:pointer}.arrowheadPath{fill:green}.edgePath .path{stroke:green;stroke-width:1.5px}.edgeLabel{background-color:#e8e8e8}.cluster rect{fill:#cdffb2!important;rx:4!important;stroke:#6eaa49!important;stroke-width:1px!important}.cluster text{fill:#333}.actor{stroke:#13540c;fill:#cde498}text.actor{fill:#000;stroke:none}.actor-line{stroke:grey}.messageLine0{marker-end:"url(#arrowhead)"}.messageLine0,.messageLine1{stroke-width:1.5;stroke-dasharray:"2 2";stroke:#333}#arrowhead{fill:#333}#crosshead path{fill:#333!important;stroke:#333!important}.messageText{fill:#333;stroke:none}.labelBox{stroke:#326932;fill:#cde498}.labelText,.loopText{fill:#000;stroke:none}.loopLine{stroke-width:2;stroke-dasharray:"2 2";marker-end:"url(#arrowhead)";stroke:#326932}.note{stroke:#6eaa49;fill:#fff5ad}.noteText{fill:#000;stroke:none;font-family:trebuchet ms,verdana,arial;font-size:14px}.section{stroke:none;opacity:.2}.section0,.section2{fill:#6eaa49}.section1,.section3{fill:#fff;opacity:.2}.sectionTitle0,.sectionTitle1,.sectionTitle2,.sectionTitle3{fill:#333}.sectionTitle{text-anchor:start;font-size:11px;text-height:14px}.grid .tick{stroke:#d3d3d3;opacity:.3;shape-rendering:crispEdges}.grid path{stroke-width:0}.today{fill:none;stroke:red;stroke-width:2px}.task{stroke-width:2}.taskText{text-anchor:middle;font-size:11px}.taskTextOutsideRight{fill:#000;text-anchor:start;font-size:11px}.taskTextOutsideLeft{fill:#000;text-anchor:end;font-size:11px}.taskText0,.taskText1,.taskText2,.taskText3{fill:#fff}.task0,.task1,.task2,.task3{fill:#487e3a;stroke:#13540c}.taskTextOutside0,.taskTextOutside1,.taskTextOutside2,.taskTextOutside3{fill:#000}.active0,.active1,.active2,.active3{fill:#cde498;stroke:#13540c}.activeText0,.activeText1,.activeText2,.activeText3{fill:#000!important}.done0,.done1,.done2,.done3{stroke:grey;fill:#d3d3d3;stroke-width:2}.doneText0,.doneText1,.doneText2,.doneText3{fill:#000!important}.crit0,.crit1,.crit2,.crit3{stroke:#f88;fill:red;stroke-width:2}.activeCrit0,.activeCrit1,.activeCrit2,.activeCrit3{stroke:#f88;fill:#cde498;stroke-width:2}.doneCrit0,.doneCrit1,.doneCrit2,.doneCrit3{stroke:#f88;fill:#d3d3d3;stroke-width:2;cursor:pointer;shape-rendering:crispEdges}.activeCritText0,.activeCritText1,.activeCritText2,.activeCritText3,.doneCritText0,.doneCritText1,.doneCritText2,.doneCritText3{fill:#000!important}.titleText{text-anchor:middle;font-size:18px;fill:#000}g.classGroup text{fill:#13540c;stroke:none;font-family:trebuchet ms,verdana,arial;font-size:10px}g.classGroup rect{fill:#cde498;stroke:#13540c}g.classGroup line{stroke:#13540c;stroke-width:1}svg .classLabel .box{stroke:none;stroke-width:0;fill:#cde498;opacity:.5}svg .classLabel .label{fill:#13540c;font-size:10px}.relation{stroke:#13540c;stroke-width:1;fill:none}#compositionEnd,#compositionStart,.composition{fill:#13540c;stroke:#13540c;stroke-width:1}#aggregationEnd,#aggregationStart,.aggregation{fill:#cde498;stroke:#13540c;stroke-width:1}#dependencyEnd,#dependencyStart,#extensionEnd,#extensionStart{fill:#13540c;stroke:#13540c;stroke-width:1}.node text{font-size:14px}.node text,div.mermaidTooltip{font-family:trebuchet ms,verdana,arial}div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-size:12px;background:#cdffb2;border:1px solid #6eaa49;border-radius:2px;pointer-events:none;z-index:100}
+svg {
+  color: rgb(0, 0, 0);
+  font: normal normal 400 normal 16px / normal "Times New Roman";
+}
+  </style><g><g class="output"><g class="clusters"/><g class="edgePaths"><g class="edgePath" style="opacity: 1;"><path class="path" d="M145,56L145,89L145,122" marker-end="url(#arrowhead21)" style="fill:none"/><defs><marker id="arrowhead21" viewbox="0 0 10 10" refx="9" refy="5" markerunits="strokeWidth" markerwidth="8" markerheight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M145,158L145,191L145,224" marker-end="url(#arrowhead22)" style="fill:none"/><defs><marker id="arrowhead22" viewbox="0 0 10 10" refx="9" refy="5" markerunits="strokeWidth" markerwidth="8" markerheight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M117.11764705882354,260L66,293L66,326" marker-end="url(#arrowhead23)" style="fill:none"/><defs><marker id="arrowhead23" viewbox="0 0 10 10" refx="9" refy="5" markerunits="strokeWidth" markerwidth="8" markerheight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M172.88235294117646,260L224,293L224,334" marker-end="url(#arrowhead24)" style="fill:none"/><defs><marker id="arrowhead24" viewbox="0 0 10 10" refx="9" refy="5" markerunits="strokeWidth" markerwidth="8" markerheight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker></defs></g></g><g class="edgeLabels"><g class="edgeLabel" transform="translate(145,89)" style="opacity: 1;"><g transform="translate(-20,-8)" class="label"><foreignobject width="40" height="16"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel">HTTPS</span></div></foreignobject></g></g><g class="edgeLabel" transform="translate(145,191)" style="opacity: 1;"><g transform="translate(-52,-8)" class="label"><foreignobject width="104" height="16"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel">HTTP or HTTPS</span></div></foreignobject></g></g><g class="edgeLabel" transform="translate(66,293)" style="opacity: 1;"><g transform="translate(-16,-8)" class="label"><foreignobject width="32" height="16"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel">HTTP</span></div></foreignobject></g></g><g class="edgeLabel" transform="" style="opacity: 1;"><g transform="translate(0,0)" class="label"><foreignobject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel"/></div></foreignobject></g></g></g><g class="nodes"><g class="node" id="A" transform="translate(145,38)" style="opacity: 1;"><rect rx="5" ry="5" x="-26" y="-18" width="52" height="36"/><g class="label" transform="translate(0,0)"><g transform="translate(-16,-8)"><foreignobject width="32" height="16"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">访问</div></foreignobject></g></g></g><g class="node" id="B" transform="translate(145,140)" style="opacity: 1;"><rect rx="5" ry="5" x="-50" y="-18" width="100" height="36"/><g class="label" transform="translate(0,0)"><g transform="translate(-40,-8)"><foreignobject width="80" height="16"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">CloudFlare</div></foreignobject></g></g></g><g class="node" id="C" transform="translate(145,242)" style="opacity: 1;"><rect rx="5" ry="5" x="-30" y="-18" width="60" height="36"/><g class="label" transform="translate(0,0)"><g transform="translate(-20,-8)"><foreignobject width="40" height="16"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">Proxy</div></foreignobject></g></g></g><g class="node" id="D" transform="translate(66,352)" style="opacity: 1;"><rect rx="5" ry="5" x="-46" y="-26" width="92" height="52"/><g class="label" transform="translate(0,0)"><g transform="translate(-36,-16)"><foreignobject width="72" height="32"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">OpenShift<br/>GhostBlog</div></foreignobject></g></g></g><g class="node" id="E" transform="translate(224,352)" style="opacity: 1;"><rect rx="5" ry="5" x="-62" y="-18" width="124" height="36"/><g class="label" transform="translate(0,0)"><g transform="translate(-52,-8)"><foreignobject width="104" height="16"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">Other Site...</div></foreignobject></g></g></g></g></g></g></svg>
+</div>
+<p>这里的关键是需要一个代理服务器，满足以下要求</p>
+<ul>
+<li>支持自定义域名</li>
+<li>对外暴露出代理访问接口</li>
+<li>如果是基于Docker部署，要支持各种自定义启动参数等（自定义转发规则文件替换）</li>
+</ul>
+<p>支持自定义域名是为了HTTPS加密，CloudFlare上的HTTPS设置只能针对自己的域名，别的如OpenShift的地址智能301跳转过去，不能加密也不能在隐式跳转</p>
+<p>如果不在自己服务器上建，还是考虑云的话，最好能一键部署，如Docker Nginx、打包好的Heroku Template工程等。</p>
+<p>不过Heroku自定义域名也需要绑定信用卡，目前暂时找不到满足所有条件的免费平台，只好先搁置了╮(╯▽╰)╭</p>
+<hr>
+<h2 id="https加密hexo博客"><a class="markdownIt-Anchor" href="#https加密hexo博客"></a> HTTPS加密Hexo博客</h2>
+<p>CloudFlare提供了免费HTTPS，<s>不加白不加</s>，顺手给加上</p>
+<p>理论上在将域名服务器设置为CloudFlare提供的之后，你就可以对你这个域名下的所有站点、子域名等为所欲为了！</p>
+<p>理论上Let‘s Encrypt也可以免费提供HTTPS证书，但需要在域名指向的主机上自己操作验证，而且90天证书过期后得自己更新，CloudFlare能提供一劳永逸操作当然是极好的</p>
+<h3 id="原理注意"><a class="markdownIt-Anchor" href="#原理注意"></a> 原理（注意）</h3>
+<p>这里强调下，CloudFlare默认的这波操作严格来说其实并不算真正的加密。如下图，在我们默认没有自签名证书的情况下，<strong>加密的只是从访问开始到CloudFlare的部分</strong>，CloudFlare访问你的站点还是明文的</p>
+<p><img src="https://nickjanetakis.com/assets/blog/cloudflare-flexible-ssl-8c7689ef93f143ea0581056af892e1e54473eb0aea79ad80f4dce15a474a6a77.png" alt="路径"></p>
+<p>某种意义上说相当于我们信赖CloudFlare的访问，<strong>将数据访问安全部分的托管给他们</strong>，所以理论上如果他们遭到了攻击那我们的数据就……</p>
+<p><s>那还能怎么办，当然是选择原谅他啊</s></p>
+<h3 id="操作"><a class="markdownIt-Anchor" href="#操作"></a> 操作</h3>
+<p>我的hexo博客布置在blog.domain，因此简单的到Page Rules处添加两条规则</p>
+<p><img src="https://media.discordapp.net/attachments/420095259125743637/427352178387189770/op-13.png" alt="rule1"></p>
+<p><img src="https://media.discordapp.net/attachments/420095259125743637/427352171529502741/op-12.png" alt="rule2"></p>
+<p>再打开Hexo博客全站都是强制HTTPS打开的啦</p>
+<hr>
+<h1 id="后记"><a class="markdownIt-Anchor" href="#后记"></a> 后记</h1>
+<h2 id="碎碎念"><a class="markdownIt-Anchor" href="#碎碎念"></a> 碎碎念</h2>
+<ul>
+<li>
+<p>OpenShift集群部署是基于Kubernetes的，很早以前就说过想学k8s，结果一直没动手，拖到现在连Deployment和Pod都分不清，一通乱搞，反复了很多无用操作</p>
+</li>
+<li>
+<p>Docker也没学扎实，反复操作把脑子搞爆炸后，一时竟然连Docker持久卷挂上去时内覆盖外还是外覆盖内都不记得了。。。（Host机的目录会覆盖挂载的容器内的目录）</p>
+</li>
+<li>
+<p>需求还是要明确，过程还是要想清楚。比如我的博客现在没有内容，<strong>不需要备份</strong>（如果需要备份的话就得在自己主机上安装oc命令行工具，NFS挂载，再同步回去，具体见<a href="https://hk.saowen.com/a/7fd18fc641e0f0abc5c228c4322ab1372e8ee7ad7ac6b13a33611ada034c72fa" target="_blank" rel="external">这里</a>或官方文档。而这一系列操作需要<strong>管理员权限</strong>，管理员权限操作起来就麻烦了。。。），但部署好了后要确保数据不会随着Docker重启而消失</p>
+</li>
+<li>
+<p>英文水平还是不行，很多操作用英文Google还是不太抓得住关键，比如Docker持久卷这波就该直接搜<code>persistence volume</code>，想了半天居然想到个Durability。。。</p>
+</li>
+<li>
+<p>本来在骂OpenShift不提供custom domain，后来发现heroku也不提供，再后来发现hasura也不提供，嗯……果然custom domain是标准的付费服务吗</p>
+</li>
+</ul>
+<hr>
+<h2 id="参考"><a class="markdownIt-Anchor" href="#参考"></a> 参考</h2>
+<ul>
+<li><a href="https://blog.patricktriest.com/host-webapps-free/" target="_blank" rel="external">10 TIPS TO HOST YOUR WEB APPS FOR FREE</a></li>
+<li><a href="https://zczc.cz/2017/10/11/Hexo-Github-Pages-Cloudflare%E6%90%AD%E5%BB%BA%E8%87%AA%E5%AE%9A%E4%B9%89%E5%9F%9F%E5%90%8DHTTPS%E5%8D%9A%E5%AE%A2/" target="_blank" rel="external">Hexo-Github-Pages-Cloudflare搭建自定义域名HTTPS博客</a></li>
+<li><a href="https://steffan.cn/2017/03/22/use-cloudflare-to-implement-HTTPS-for-GithubPages-with-custom-domain-names/" target="_blank" rel="external">使用Cloudflare为自定义域名的GithubPages实现HTTPS化</a></li>
+<li><a href="https://docs.clickfunnels.com/other/how-to-add-your-cname-record-to-cloudflare" target="_blank" rel="external">how-to-add-your-cname-record-to-cloudflare</a></li>
+<li><a href="https://segmentfault.com/a/1190000011668131" target="_blank" rel="external">容器化应用: Openshift 部署 MySQL数据库服务: 上篇</a></li>
+<li><a href="http://docs.kubernetes.org.cn" target="_blank" rel="external">Kubernetes中文文档</a></li>
+<li>Docker In Action中文版：Docker实战</li>
+</ul>
+<hr>
+<blockquote>
+<p>Written with <a href="https://stackedit.io/" target="_blank" rel="external">StackEdit</a>.</p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://blog.garenfeather.cn/2018/03/16/hexo-next-macpanel-improved/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1940,183 +2356,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://blog.garenfeather.cn/2018/02/01/backend-schedule-01/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="GarenFeather">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://media.discordapp.net/attachments/420095259125743637/423186378608738314/logo.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="変わらないで">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/02/01/backend-schedule-01/" itemprop="url">开放后端答题（1）——流、自动化、事务、单例</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">投稿日</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-01T11:12:36+08:00">
-                2018-02-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">カテゴリは</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/coding/" itemprop="url" rel="index">
-                    <span itemprop="name">coding</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/02/01/backend-schedule-01/" class="leancloud_visitors" data-flag-title="开放后端答题（1）——流、自动化、事务、单例">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">訪問者&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">ワードカウント&#58;</span>
-                
-                <span title="ワードカウント">
-                  1,181
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h3 id="二-开放式问题"><a class="markdownIt-Anchor" href="#二-开放式问题"></a> 二、开放式问题</h3>
-<h4 id="解释什么是流streaming和如何实现一个流"><a class="markdownIt-Anchor" href="#解释什么是流streaming和如何实现一个流"></a> 解释什么是流(streaming)和如何实现一个流？</h4>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/02/01/backend-schedule-01/#more" rel="contents">
-              続きを読む &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2171,7 +2410,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">ポスト</span>
                 </a>
               </div>
@@ -2193,7 +2432,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">66</span>
+                  <span class="site-state-item-count">71</span>
                   <span class="site-state-item-name">タグ</span>
                 </a>
               </div>
