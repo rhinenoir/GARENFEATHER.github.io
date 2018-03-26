@@ -468,6 +468,234 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.garenfeather.cn/2016/09/25/pwa-checklist/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="GarenFeather">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://media.discordapp.net/attachments/420095259125743637/423186378608738314/logo.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="変わらないで">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/09/25/pwa-checklist/" itemprop="url">Progressive Web App谷歌官方checklist翻译</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">投稿日</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-09-25T15:14:48+08:00">
+                2016-09-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">カテゴリは</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/coding/" itemprop="url" rel="index">
+                    <span itemprop="name">coding</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2016/09/25/pwa-checklist/" class="leancloud_visitors" data-flag-title="Progressive Web App谷歌官方checklist翻译">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">訪問者&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">ワードカウント&#58;</span>
+                
+                <span title="ワードカウント">
+                  517
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ul>
+<li>原文：<a href="https://developers.google.com/web/progressive-web-apps/checklist" target="_blank" rel="external">progressive-web-apps</a></li>
+</ul>
+<hr>
+<h2 id="基础渐进式web应用规范清单"><a class="markdownIt-Anchor" href="#基础渐进式web应用规范清单"></a> 基础渐进式web应用规范清单</h2>
+<ul>
+<li>站点提供建立在HTTPS上</li>
+<li>在移动设备、平板电脑上的页面是响应式的</li>
+<li>不在线时</li>
+<li>提供添加到主屏幕的元数据</li>
+<li>即便在3G环境下初次加载速度也足够快</li>
+<li>站点可跨浏览器工作</li>
+<li>网络拥塞时页面切换也足够流畅</li>
+<li>每个页面都有一个地址</li>
+</ul>
+<h2 id="严格渐进式web应用规范清单"><a class="markdownIt-Anchor" href="#严格渐进式web应用规范清单"></a> 严格渐进式web应用规范清单</h2>
+<h3 id="可检索-社交"><a class="markdownIt-Anchor" href="#可检索-社交"></a> 可检索 &amp; 社交</h3>
+<ul>
+<li>页面内容被谷歌收录索引</li>
+<li>在恰当的地方提供org的概要元数据（<a href="http://Schema.org" target="_blank" rel="external">Schema.org</a>）</li>
+<li>在适当的地方提供社交应用所需元数据</li>
+<li>如有必要，提供标准链接</li>
+<li>页面使用History API</li>
+<li>页面加载时，上下文不会出现“跳跃”现象</li>
+<li>从详情页面点击退回时，回到原本页面滑动条滑到的位置</li>
+<li>输入时，输入框不会被屏幕弹出来的软键盘覆盖</li>
+<li>内容在应用的满屏模式和独立模式间共享</li>
+<li>站点响应式适应手机、平板及桌面屏幕大小</li>
+<li>不过分使用任何App安装提示</li>
+<li>添加到主屏幕的提示会被阻拦</li>
+</ul>
+<h3 id="表现"><a class="markdownIt-Anchor" href="#表现"></a> 表现</h3>
+<ul>
+<li>即使在3G环境下初次加载速度也极快</li>
+</ul>
+<h3 id="缓存"><a class="markdownIt-Anchor" href="#缓存"></a> 缓存</h3>
+<ul>
+<li>站点使用缓存优先网络</li>
+<li>当用户离线时，站点适当的提示</li>
+</ul>
+<h3 id="推送通知"><a class="markdownIt-Anchor" href="#推送通知"></a> 推送通知</h3>
+<p>这部分确认清单仅适用于应用实现了推送通知的情况下。添加推送通知并非一个严格渐进式web应用的必要条件</p>
+<ul>
+<li>提供给用户关于通知将会被如何使用的上下文</li>
+<li>鼓励用户打开推送的UI不能过于激进</li>
+<li>请求许可显示时，站点页面屏幕调暗</li>
+<li>通知推送必须适时、精准且相关</li>
+<li>提供开关推送通知的选项</li>
+</ul>
+<h3 id="附加特性"><a class="markdownIt-Anchor" href="#附加特性"></a> 附加特性</h3>
+<ul>
+<li>用户通过凭据管理API跨设备登录</li>
+<li>用户可以简单的在原生UI中唤起支付请求API</li>
+</ul>
+<blockquote>
+<p>Written with <a href="https://stackedit.io/" target="_blank" rel="external">StackEdit</a>.</p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://blog.garenfeather.cn/2015/01/16/comparison-for-regex-among-several-languages/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -698,7 +926,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">ポスト</span>
                 </a>
               </div>
@@ -720,7 +948,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">71</span>
+                  <span class="site-state-item-count">73</span>
                   <span class="site-state-item-name">タグ</span>
                 </a>
               </div>
@@ -805,6 +1033,10 @@
                 
                   <li class="links-of-blogroll-item">
                     <a href="https://aneureka.github.io/" title="Hiki" target="_blank">Hiki</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://hitigerzzz.github.io" title="Hitigerzzz" target="_blank">Hitigerzzz</a>
                   </li>
                 
               </ul>
