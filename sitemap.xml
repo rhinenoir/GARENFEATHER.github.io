@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://blog.garenfeather.cn/about/index.html</loc>
+    
+    <lastmod>2018-03-30T08:53:40.417Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://blog.garenfeather.cn/about/index-1.html</loc>
+    
+    <lastmod>2018-03-30T08:49:50.799Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://blog.garenfeather.cn/2018/03/30/paas-diy-hasura-1/</loc>
     
     <lastmod>2018-03-30T08:44:40.707Z</lastmod>
@@ -187,13 +201,6 @@
     <loc>http://blog.garenfeather.cn/2015/01/16/comparison-for-regex-among-several-languages/</loc>
     
     <lastmod>2018-01-16T14:32:22.649Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://blog.garenfeather.cn/about/index.html</loc>
-    
-    <lastmod>2017-06-16T06:56:04.769Z</lastmod>
     
   </url>
   
