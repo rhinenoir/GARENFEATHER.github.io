@@ -81,13 +81,13 @@
 
 
 
-<meta name="description" content="原文：Designing a DIY PaaS 翻译：GarenRhine 未授权，转载请注明出处    设计一个你自己的PaaS（平台即服务） 本文面向想要创建一个自定义PaaS来简化部署工作流程的开发者，这是PaaS架构、实现与部署系列的第一篇  PaaS是什么 平台即服务（Platform as a Service），或者说PaaS，是指基于底层基础设施架构的平台和环境抽象（这里的公有云提">
+<meta name="description" content="原文：Designing a DIY PaaS 翻译：GarenRhine 未授权，转载请注明出处   本文面向想要创建一个自定义PaaS来简化部署工作流程的开发者，这是PaaS架构、实现与部署系列的第一篇  PaaS是什么 平台即服务（Platform as a Service），或者说PaaS，是指基于底层基础设施架构的平台和环境抽象（这里的公有云提供商被称为基础架构即服务，IaaS，提供商">
 <meta name="keywords" content="hasura,git,paas,docker,supervisor,kubernetes">
 <meta property="og:type" content="article">
 <meta property="og:title" content="设计一个你自己的PaaS（平台即服务）">
 <meta property="og:url" content="http://blog.garenfeather.cn/2018/03/30/paas-diy-hasura-1/index.html">
 <meta property="og:site_name" content="変わらないで">
-<meta property="og:description" content="原文：Designing a DIY PaaS 翻译：GarenRhine 未授权，转载请注明出处    设计一个你自己的PaaS（平台即服务） 本文面向想要创建一个自定义PaaS来简化部署工作流程的开发者，这是PaaS架构、实现与部署系列的第一篇  PaaS是什么 平台即服务（Platform as a Service），或者说PaaS，是指基于底层基础设施架构的平台和环境抽象（这里的公有云提">
+<meta property="og:description" content="原文：Designing a DIY PaaS 翻译：GarenRhine 未授权，转载请注明出处   本文面向想要创建一个自定义PaaS来简化部署工作流程的开发者，这是PaaS架构、实现与部署系列的第一篇  PaaS是什么 平台即服务（Platform as a Service），或者说PaaS，是指基于底层基础设施架构的平台和环境抽象（这里的公有云提供商被称为基础架构即服务，IaaS，提供商">
 <meta property="og:image" content="https://cdn-images-1.medium.com/max/600/1*8vuFxeKbDqNjtgXDDokfXQ.png">
 <meta property="og:image" content="https://cdn-images-1.medium.com/max/800/1*NHZCpZNdM1l_xcEVIWLMng.png">
 <meta property="og:image" content="https://cdn-images-1.medium.com/max/800/1*e6k8G58FhyzVc6KDM_LF4Q.png">
@@ -95,10 +95,10 @@
 <meta property="og:image" content="https://cdn-images-1.medium.com/max/800/1*DbBsQkoZeXs9H8HD4eCLVw.png">
 <meta property="og:image" content="https://cdn-images-1.medium.com/max/600/1*bfMlVBgq8QeayAONwpllNQ.png">
 <meta property="og:image" content="https://cdn-images-1.medium.com/max/1000/1*ZC1Wrt3k5DveHmxtsmkn_g.png">
-<meta property="og:updated_time" content="2018-03-30T08:41:09.673Z">
+<meta property="og:updated_time" content="2018-03-30T08:44:40.707Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="设计一个你自己的PaaS（平台即服务）">
-<meta name="twitter:description" content="原文：Designing a DIY PaaS 翻译：GarenRhine 未授权，转载请注明出处    设计一个你自己的PaaS（平台即服务） 本文面向想要创建一个自定义PaaS来简化部署工作流程的开发者，这是PaaS架构、实现与部署系列的第一篇  PaaS是什么 平台即服务（Platform as a Service），或者说PaaS，是指基于底层基础设施架构的平台和环境抽象（这里的公有云提">
+<meta name="twitter:description" content="原文：Designing a DIY PaaS 翻译：GarenRhine 未授权，转载请注明出处   本文面向想要创建一个自定义PaaS来简化部署工作流程的开发者，这是PaaS架构、实现与部署系列的第一篇  PaaS是什么 平台即服务（Platform as a Service），或者说PaaS，是指基于底层基础设施架构的平台和环境抽象（这里的公有云提供商被称为基础架构即服务，IaaS，提供商">
 <meta name="twitter:image" content="https://cdn-images-1.medium.com/max/600/1*8vuFxeKbDqNjtgXDDokfXQ.png">
 
 
@@ -394,7 +394,7 @@
                   <span class="post-meta-item-text">ワードカウント&#58;</span>
                 
                 <span title="ワードカウント">
-                  1,447
+                  1,433
                 </span>
               
 
@@ -425,7 +425,6 @@
 <li>未授权，转载请注明出处</li>
 </ul>
 <hr>
-<h1 id="设计一个你自己的paas平台即服务"><a class="markdownIt-Anchor" href="#设计一个你自己的paas平台即服务"></a> 设计一个你自己的PaaS（平台即服务）</h1>
 <p>本文面向想要创建一个自定义PaaS来简化部署工作流程的开发者，这是PaaS架构、实现与部署系列的第一篇</p>
 <h2 id="paas是什么"><a class="markdownIt-Anchor" href="#paas是什么"></a> PaaS是什么</h2>
 <p>平台即服务（Platform as a Service），或者说PaaS，是指基于底层基础设施架构的平台和环境抽象（这里的公有云提供商被称为基础架构即服务，IaaS，提供商），它能够让开发者更轻松的部署应用和服务。</p>
@@ -783,7 +782,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#设计一个你自己的paas平台即服务"><span class="nav-number">1.</span> <span class="nav-text"> 设计一个你自己的PaaS（平台即服务）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#paas是什么"><span class="nav-number">1.1.</span> <span class="nav-text"> PaaS是什么</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#paas需要解决什么问题"><span class="nav-number">1.2.</span> <span class="nav-text"> PaaS需要解决什么问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#预分配设施"><span class="nav-number">1.2.1.</span> <span class="nav-text"> 预分配设施</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在设施上安装依赖"><span class="nav-number">1.2.2.</span> <span class="nav-text"> 在设施上安装依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#机器上安装代码二进制"><span class="nav-number">1.2.3.</span> <span class="nav-text"> 机器上安装代码/二进制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编辑配置文件"><span class="nav-number">1.2.4.</span> <span class="nav-text"> 编辑配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在supervisor监控下运行代码"><span class="nav-number">1.2.5.</span> <span class="nav-text"> 在supervisor监控下运行代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#更新前端服务器api网关"><span class="nav-number">1.2.6.</span> <span class="nav-text"> 更新前端服务器/API网关</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#paas是什么"><span class="nav-number">1.</span> <span class="nav-text"> PaaS是什么</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#paas需要解决什么问题"><span class="nav-number">2.</span> <span class="nav-text"> PaaS需要解决什么问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#预分配设施"><span class="nav-number">2.1.</span> <span class="nav-text"> 预分配设施</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在设施上安装依赖"><span class="nav-number">2.2.</span> <span class="nav-text"> 在设施上安装依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#机器上安装代码二进制"><span class="nav-number">2.3.</span> <span class="nav-text"> 机器上安装代码/二进制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编辑配置文件"><span class="nav-number">2.4.</span> <span class="nav-text"> 编辑配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在supervisor监控下运行代码"><span class="nav-number">2.5.</span> <span class="nav-text"> 在supervisor监控下运行代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#更新前端服务器api网关"><span class="nav-number">2.6.</span> <span class="nav-text"> 更新前端服务器/API网关</span></a></li></ol></li></ol></div>
             
 
           </div>
