@@ -384,7 +384,7 @@
                   <span class="post-meta-item-text">ワードカウント&#58;</span>
                 
                 <span title="ワードカウント">
-                  1,453
+                  1,447
                 </span>
               
 
@@ -444,7 +444,7 @@
 <li>更新前端服务器/API网关</li>
 </ol>
 <p>让我们看看上面提到的问题和潜在解决方案更多的细节：</p>
-<h3 id="1预分配设施"><a class="markdownIt-Anchor" href="#1预分配设施"></a> 1）预分配设施</h3>
+<h3 id="预分配设施"><a class="markdownIt-Anchor" href="#预分配设施"></a> 预分配设施</h3>
 <p><strong>问题：</strong> 需要创建、安装或配置<strong>大量</strong>如下的实体：</p>
 <p><img src="https://cdn-images-1.medium.com/max/800/1*NHZCpZNdM1l_xcEVIWLMng.png" alt=""></p>
 <p><strong>解决方案：</strong> 以下选项组成了该问题的潜在解决方案：</p>
@@ -466,15 +466,15 @@
 </ul>
 </li>
 </ol>
-<h3 id="2在设施上安装依赖"><a class="markdownIt-Anchor" href="#2在设施上安装依赖"></a> 2）在设施上安装依赖</h3>
+<h3 id="在设施上安装依赖"><a class="markdownIt-Anchor" href="#在设施上安装依赖"></a> 在设施上安装依赖</h3>
 <p><strong>问题：</strong>  PaaS需要解决系统和应用两方面的依赖问题</p>
 <p><strong>解决方案：</strong> 简单——使用容器就行（<a href="https://www.docker.com/" target="_blank" rel="external"><em>Docker</em></a><em>,</em> <a href="https://containerd.io/" target="_blank" rel="external"><em>Containerd</em></a> <em>或者</em> <a href="https://coreos.com/rkt" target="_blank" rel="external"><em>rkt</em></a>）。容器帮你将所有的依赖跟代码一起打包在一个镜像里，而打包他们的任务被转交给开发者。</p>
 <p><img src="https://cdn-images-1.medium.com/max/800/1*e6k8G58FhyzVc6KDM_LF4Q.png" alt=""></p>
-<h3 id="3机器上安装代码二进制"><a class="markdownIt-Anchor" href="#3机器上安装代码二进制"></a> 3）机器上安装代码/二进制</h3>
+<h3 id="机器上安装代码二进制"><a class="markdownIt-Anchor" href="#机器上安装代码二进制"></a> 机器上安装代码/二进制</h3>
 <p><strong>问题：</strong>  代码频繁更新。每一次更新最新的代码都需要安装到虚拟机上。</p>
 <p><strong>解决方案：</strong> 容器又一次成为了救星！此问题一个优雅的解决方案是为每次代码更新都创建一个新的容器镜像。 由代码仓库每一次更新引发的一个基于git的管道复制代码到虚拟机上并在其上自动化镜像的构建流程，这大大改善了开发者的体验。</p>
 <p><img src="https://cdn-images-1.medium.com/max/800/1*C7MFyQW9bYic7NYVgqnnVg.png" alt="基于的持续部署管道"></p>
-<h3 id="4编辑配置文件"><a class="markdownIt-Anchor" href="#4编辑配置文件"></a> 4）编辑配置文件</h3>
+<h3 id="编辑配置文件"><a class="markdownIt-Anchor" href="#编辑配置文件"></a> 编辑配置文件</h3>
 <p><strong>问题：</strong>  每次部署或运行环境的改变都需要解决以下配置问题：</p>
 <ul>
 <li>配置参数和conf文件</li>
@@ -484,7 +484,7 @@
 <p>解决这些问题的复杂性在集群中变得更糟糕了</p>
 <p><strong>解决方案：</strong> 大部分配置应该是作为容器一部分的。一个能通过内部DNS处理服务发现并提供集群范围配置管理系统的容器编排工具可以将参数注入其中</p>
 <p><img src="https://cdn-images-1.medium.com/max/800/1*DbBsQkoZeXs9H8HD4eCLVw.png" alt="管理配置和服务发现的基于Kubernetes的解决方案"></p>
-<h3 id="5在supervisor监控下运行代码"><a class="markdownIt-Anchor" href="#5在supervisor监控下运行代码"></a> 5）在supervisor监控下运行代码</h3>
+<h3 id="在supervisor监控下运行代码"><a class="markdownIt-Anchor" href="#在supervisor监控下运行代码"></a> 在supervisor监控下运行代码</h3>
 <p><strong>问题：</strong>  解决以下问题需要supervisor</p>
 <ul>
 <li>日志，日志的循环使用</li>
@@ -492,7 +492,7 @@
 <li>崩溃情况下重启服务/容器</li>
 </ul>
 <p><strong>解决方案：</strong> 到目前为止，管理日志可能需要定制工具，但容器编排工具可以解决后面两个问题。大多数编排者提供管理底层资源状态的原语。</p>
-<h3 id="6更新前端服务器api网关"><a class="markdownIt-Anchor" href="#6更新前端服务器api网关"></a> 6）更新前端服务器/API网关</h3>
+<h3 id="更新前端服务器api网关"><a class="markdownIt-Anchor" href="#更新前端服务器api网关"></a> 更新前端服务器/API网关</h3>
 <p><strong>问题：</strong>  API网关在每次系统发生变化时都需要重新配置和部署。比如说每次更新都会导致上游IP/端口的变化的部署</p>
 <p><strong>解决方案：</strong> 一个响应式的API网关需要一个集群操作者代理来监控变化，然后重新配置和部署网关。操作者必须依赖支持监控变化的分布式数据库，并在容器新部署时进行更新</p>
 <p><img src="https://cdn-images-1.medium.com/max/600/1*bfMlVBgq8QeayAONwpllNQ.png" alt="基于分布式key-vaule存储、拥有操作者代理的响应式网关"></p>
