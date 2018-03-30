@@ -81,17 +81,25 @@
 
 
 
-<meta name="description" content="五、语言相关问题  告诉我你的首选语言的三个最坏的缺陷  Python语言  动态 弱类型 运行速度限制">
+<meta name="description" content="原文：Designing a DIY PaaS 翻译：GarenRhine 未授权，转载请注明出处    设计一个你自己的PaaS（平台即服务） 本文面向想要创建一个自定义PaaS来简化部署工作流程的开发者，这是PaaS架构、实现与部署系列的第一篇">
 <meta name="keywords" content="hasura,git,paas,docker,supervisor,kubernetes">
 <meta property="og:type" content="article">
 <meta property="og:title" content="设计一个你自己的PaaS（平台即服务）">
 <meta property="og:url" content="http://blog.garenfeather.cn/2018/03/30/paas-diy-hasura-1/index.html">
 <meta property="og:site_name" content="変わらないで">
-<meta property="og:description" content="五、语言相关问题  告诉我你的首选语言的三个最坏的缺陷  Python语言  动态 弱类型 运行速度限制">
-<meta property="og:updated_time" content="2018-03-30T08:31:43.348Z">
+<meta property="og:description" content="原文：Designing a DIY PaaS 翻译：GarenRhine 未授权，转载请注明出处    设计一个你自己的PaaS（平台即服务） 本文面向想要创建一个自定义PaaS来简化部署工作流程的开发者，这是PaaS架构、实现与部署系列的第一篇">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/600/1*8vuFxeKbDqNjtgXDDokfXQ.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/800/1*NHZCpZNdM1l_xcEVIWLMng.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/800/1*e6k8G58FhyzVc6KDM_LF4Q.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/800/1*C7MFyQW9bYic7NYVgqnnVg.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/800/1*DbBsQkoZeXs9H8HD4eCLVw.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/600/1*bfMlVBgq8QeayAONwpllNQ.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1000/1*ZC1Wrt3k5DveHmxtsmkn_g.png">
+<meta property="og:updated_time" content="2018-03-30T08:35:47.867Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="设计一个你自己的PaaS（平台即服务）">
-<meta name="twitter:description" content="五、语言相关问题  告诉我你的首选语言的三个最坏的缺陷  Python语言  动态 弱类型 运行速度限制">
+<meta name="twitter:description" content="原文：Designing a DIY PaaS 翻译：GarenRhine 未授权，转载请注明出处    设计一个你自己的PaaS（平台即服务） 本文面向想要创建一个自定义PaaS来简化部署工作流程的开发者，这是PaaS架构、实现与部署系列的第一篇">
+<meta name="twitter:image" content="https://cdn-images-1.medium.com/max/600/1*8vuFxeKbDqNjtgXDDokfXQ.png">
 
 
 
@@ -386,7 +394,7 @@
                   <span class="post-meta-item-text">ワードカウント&#58;</span>
                 
                 <span title="ワードカウント">
-                  1,332
+                  1,453
                 </span>
               
 
@@ -411,133 +419,102 @@
       
 
       
-        <h3 id="五-语言相关问题"><a class="markdownIt-Anchor" href="#五-语言相关问题"></a> 五、语言相关问题</h3>
-<h4 id="告诉我你的首选语言的三个最坏的缺陷"><a class="markdownIt-Anchor" href="#告诉我你的首选语言的三个最坏的缺陷"></a> 告诉我你的首选语言的三个最坏的缺陷</h4>
-<ul>
-<li>Python语言
-<ul>
-<li>动态</li>
-<li>弱类型</li>
-<li>运行速度限制</li>
+        <ul>
+<li>原文：<a href="https://blog.hasura.io/designing-a-paas-platform-as-a-service-add1e3519b5" target="_blank" rel="external">Designing a DIY PaaS</a></li>
+<li>翻译：<a href="http://ghost/garenfeather.cn/author/garenrhine/" target="_blank" rel="external">GarenRhine</a></li>
+<li>未授权，转载请注明出处</li>
 </ul>
-</li>
-</ul>
+<hr>
+<h1 id="设计一个你自己的paas平台即服务"><a class="markdownIt-Anchor" href="#设计一个你自己的paas平台即服务"></a> 设计一个你自己的PaaS（平台即服务）</h1>
+<p>本文面向想要创建一个自定义PaaS来简化部署工作流程的开发者，这是PaaS架构、实现与部署系列的第一篇</p>
 <a id="more"></a>
-<h4 id="什么是栈什么是堆"><a class="markdownIt-Anchor" href="#什么是栈什么是堆"></a> 什么是栈？什么是堆？</h4>
-<ul>
-<li>栈（Stack）在中文中又被称为堆栈，但其实堆和栈是两个数据结构，中文语境下要注意区分，同时也要注意在讨论***数据结构***和***计算机内存***时的堆与栈有一定的区别，堆的区别比较明显</li>
-<li>栈为标准的LIFO后进先出，经典操作即push和pop</li>
-<li>堆（Heap）通常是一个<strong>可以被看做一棵树</strong>的<strong>数组</strong>对象，堆总是一棵完全树（其节点序号能与相应的最大满二叉树完全对应）。通常说的堆是指二叉堆，属于二叉树的一种。所有节点都比后续节点大/小的堆叫最大/小堆
-<ul>
-<li>结构（完全树二叉树示例，节点序号为数组下标）</li>
-</ul>
-</li>
-</ul>
-<div class="mermaid">
-<svg id="mermaid-svg-298b1ad54bf550fb" xmlns="http://www.w3.org/2000/svg" height="100%" viewbox="0 0 322 354" style="max-width:322px;"><style>
-  .mermaid .label{font-family:trebuchet ms,verdana,arial;color:#333}.node circle,.node ellipse,.node polygon,.node rect{fill:#cde498;stroke:#13540c;stroke-width:1px}.node.clickable{cursor:pointer}.arrowheadPath{fill:green}.edgePath .path{stroke:green;stroke-width:1.5px}.edgeLabel{background-color:#e8e8e8}.cluster rect{fill:#cdffb2!important;rx:4!important;stroke:#6eaa49!important;stroke-width:1px!important}.cluster text{fill:#333}.actor{stroke:#13540c;fill:#cde498}text.actor{fill:#000;stroke:none}.actor-line{stroke:grey}.messageLine0{marker-end:"url(#arrowhead)"}.messageLine0,.messageLine1{stroke-width:1.5;stroke-dasharray:"2 2";stroke:#333}#arrowhead{fill:#333}#crosshead path{fill:#333!important;stroke:#333!important}.messageText{fill:#333;stroke:none}.labelBox{stroke:#326932;fill:#cde498}.labelText,.loopText{fill:#000;stroke:none}.loopLine{stroke-width:2;stroke-dasharray:"2 2";marker-end:"url(#arrowhead)";stroke:#326932}.note{stroke:#6eaa49;fill:#fff5ad}.noteText{fill:#000;stroke:none;font-family:trebuchet ms,verdana,arial;font-size:14px}.section{stroke:none;opacity:.2}.section0,.section2{fill:#6eaa49}.section1,.section3{fill:#fff;opacity:.2}.sectionTitle0,.sectionTitle1,.sectionTitle2,.sectionTitle3{fill:#333}.sectionTitle{text-anchor:start;font-size:11px;text-height:14px}.grid .tick{stroke:#d3d3d3;opacity:.3;shape-rendering:crispEdges}.grid path{stroke-width:0}.today{fill:none;stroke:red;stroke-width:2px}.task{stroke-width:2}.taskText{text-anchor:middle;font-size:11px}.taskTextOutsideRight{fill:#000;text-anchor:start;font-size:11px}.taskTextOutsideLeft{fill:#000;text-anchor:end;font-size:11px}.taskText0,.taskText1,.taskText2,.taskText3{fill:#fff}.task0,.task1,.task2,.task3{fill:#487e3a;stroke:#13540c}.taskTextOutside0,.taskTextOutside1,.taskTextOutside2,.taskTextOutside3{fill:#000}.active0,.active1,.active2,.active3{fill:#cde498;stroke:#13540c}.activeText0,.activeText1,.activeText2,.activeText3{fill:#000!important}.done0,.done1,.done2,.done3{stroke:grey;fill:#d3d3d3;stroke-width:2}.doneText0,.doneText1,.doneText2,.doneText3{fill:#000!important}.crit0,.crit1,.crit2,.crit3{stroke:#f88;fill:red;stroke-width:2}.activeCrit0,.activeCrit1,.activeCrit2,.activeCrit3{stroke:#f88;fill:#cde498;stroke-width:2}.doneCrit0,.doneCrit1,.doneCrit2,.doneCrit3{stroke:#f88;fill:#d3d3d3;stroke-width:2;cursor:pointer;shape-rendering:crispEdges}.activeCritText0,.activeCritText1,.activeCritText2,.activeCritText3,.doneCritText0,.doneCritText1,.doneCritText2,.doneCritText3{fill:#000!important}.titleText{text-anchor:middle;font-size:18px;fill:#000}g.classGroup text{fill:#13540c;stroke:none;font-family:trebuchet ms,verdana,arial;font-size:10px}g.classGroup rect{fill:#cde498;stroke:#13540c}g.classGroup line{stroke:#13540c;stroke-width:1}svg .classLabel .box{stroke:none;stroke-width:0;fill:#cde498;opacity:.5}svg .classLabel .label{fill:#13540c;font-size:10px}.relation{stroke:#13540c;stroke-width:1;fill:none}#compositionEnd,#compositionStart,.composition{fill:#13540c;stroke:#13540c;stroke-width:1}#aggregationEnd,#aggregationStart,.aggregation{fill:#cde498;stroke:#13540c;stroke-width:1}#dependencyEnd,#dependencyStart,#extensionEnd,#extensionStart{fill:#13540c;stroke:#13540c;stroke-width:1}.node text{font-size:14px}.node text,div.mermaidTooltip{font-family:trebuchet ms,verdana,arial}div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-size:12px;background:#cdffb2;border:1px solid #6eaa49;border-radius:2px;pointer-events:none;z-index:100}
-svg {
-  color: rgb(0, 0, 0);
-  font: normal normal 400 normal 16px / normal "Times New Roman";
-}
-  </style><g><g class="output"><g class="clusters"/><g class="edgePaths"><g class="edgePath" style="opacity: 1;"><path class="path" d="M137,45.717948717948715L73,81L73,106" marker-end="url(#arrowhead21)" style="fill:none"/><defs><marker id="arrowhead21" viewbox="0 0 10 10" refx="9" refy="5" markerunits="strokeWidth" markerwidth="8" markerheight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M165,45.717948717948715L229,81L229,106" marker-end="url(#arrowhead22)" style="fill:none"/><defs><marker id="arrowhead22" viewbox="0 0 10 10" refx="9" refy="5" markerunits="strokeWidth" markerwidth="8" markerheight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M59,139.43589743589743L34,167L34,192" marker-end="url(#arrowhead23)" style="fill:none"/><defs><marker id="arrowhead23" viewbox="0 0 10 10" refx="9" refy="5" markerunits="strokeWidth" markerwidth="8" markerheight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M87,139.43589743589743L112,167L112,192" marker-end="url(#arrowhead24)" style="fill:none"/><defs><marker id="arrowhead24" viewbox="0 0 10 10" refx="9" refy="5" markerunits="strokeWidth" markerwidth="8" markerheight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M215,139.43589743589743L190,167L190,192" marker-end="url(#arrowhead25)" style="fill:none"/><defs><marker id="arrowhead25" viewbox="0 0 10 10" refx="9" refy="5" markerunits="strokeWidth" markerwidth="8" markerheight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M243,139.43589743589743L268,167L268,192" marker-end="url(#arrowhead26)" style="fill:none"/><defs><marker id="arrowhead26" viewbox="0 0 10 10" refx="9" refy="5" markerunits="strokeWidth" markerwidth="8" markerheight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M34,228L34,253L34,278" marker-end="url(#arrowhead27)" style="fill:none"/><defs><marker id="arrowhead27" viewbox="0 0 10 10" refx="9" refy="5" markerunits="strokeWidth" markerwidth="8" markerheight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker></defs></g></g><g class="edgeLabels"><g class="edgeLabel" transform="" style="opacity: 1;"><g transform="translate(0,0)" class="label"><foreignobject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel"/></div></foreignobject></g></g><g class="edgeLabel" transform="" style="opacity: 1;"><g transform="translate(0,0)" class="label"><foreignobject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel"/></div></foreignobject></g></g><g class="edgeLabel" transform="" style="opacity: 1;"><g transform="translate(0,0)" class="label"><foreignobject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel"/></div></foreignobject></g></g><g class="edgeLabel" transform="" style="opacity: 1;"><g transform="translate(0,0)" class="label"><foreignobject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel"/></div></foreignobject></g></g><g class="edgeLabel" transform="" style="opacity: 1;"><g transform="translate(0,0)" class="label"><foreignobject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel"/></div></foreignobject></g></g><g class="edgeLabel" transform="" style="opacity: 1;"><g transform="translate(0,0)" class="label"><foreignobject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel"/></div></foreignobject></g></g><g class="edgeLabel" transform="" style="opacity: 1;"><g transform="translate(0,0)" class="label"><foreignobject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel"/></div></foreignobject></g></g></g><g class="nodes"><g class="node" id="0" transform="translate(151,38)" style="opacity: 1;"><rect rx="0" ry="0" x="-14" y="-18" width="28" height="36"/><g class="label" transform="translate(0,0)"><g transform="translate(-4,-8)"><foreignobject width="8" height="16"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">0</div></foreignobject></g></g></g><g class="node" id="1" transform="translate(73,124)" style="opacity: 1;"><rect rx="0" ry="0" x="-14" y="-18" width="28" height="36"/><g class="label" transform="translate(0,0)"><g transform="translate(-4,-8)"><foreignobject width="8" height="16"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">1</div></foreignobject></g></g></g><g class="node" id="2" transform="translate(229,124)" style="opacity: 1;"><rect rx="0" ry="0" x="-14" y="-18" width="28" height="36"/><g class="label" transform="translate(0,0)"><g transform="translate(-4,-8)"><foreignobject width="8" height="16"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">2</div></foreignobject></g></g></g><g class="node" id="3" transform="translate(34,210)" style="opacity: 1;"><rect rx="0" ry="0" x="-14" y="-18" width="28" height="36"/><g class="label" transform="translate(0,0)"><g transform="translate(-4,-8)"><foreignobject width="8" height="16"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">3</div></foreignobject></g></g></g><g class="node" id="4" transform="translate(112,210)" style="opacity: 1;"><rect rx="0" ry="0" x="-14" y="-18" width="28" height="36"/><g class="label" transform="translate(0,0)"><g transform="translate(-4,-8)"><foreignobject width="8" height="16"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">4</div></foreignobject></g></g></g><g class="node" id="5" transform="translate(190,210)" style="opacity: 1;"><rect rx="0" ry="0" x="-14" y="-18" width="28" height="36"/><g class="label" transform="translate(0,0)"><g transform="translate(-4,-8)"><foreignobject width="8" height="16"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">5</div></foreignobject></g></g></g><g class="node" id="6" transform="translate(268,210)" style="opacity: 1;"><rect rx="0" ry="0" x="-14" y="-18" width="28" height="36"/><g class="label" transform="translate(0,0)"><g transform="translate(-4,-8)"><foreignobject width="8" height="16"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">6</div></foreignobject></g></g></g><g class="node" id="7" transform="translate(34,296)" style="opacity: 1;"><rect rx="0" ry="0" x="-14" y="-18" width="28" height="36"/><g class="label" transform="translate(0,0)"><g transform="translate(-4,-8)"><foreignobject width="8" height="16"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">7</div></foreignobject></g></g></g></g></g></g></svg>
-</div>
-<pre><code>* 堆操作
-</code></pre>
-<table>
-<thead>
-<tr>
-<th style="text-align:center">操作</th>
-<th style="text-align:center">说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">build</td>
-<td style="text-align:center">创建一个空堆</td>
-</tr>
-<tr>
-<td style="text-align:center">insert</td>
-<td style="text-align:center">向堆中插入一个新的元素</td>
-</tr>
-<tr>
-<td style="text-align:center">update</td>
-<td style="text-align:center">将新元素提升使其匹配堆的性质</td>
-</tr>
-<tr>
-<td style="text-align:center">delete</td>
-<td style="text-align:center">删除堆顶元素</td>
-</tr>
-<tr>
-<td style="text-align:center">get</td>
-<td style="text-align:center">获取堆顶元素</td>
-</tr>
-<tr>
-<td style="text-align:center">heapify</td>
-<td style="text-align:center">删除堆顶元素后使之再次符合堆的数据结构关系</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>
-<p>堆与栈都是可以被认为是一种特殊结构的数组，即是说可以通过数组配合相应的限制可以实现这两数据结构（当然还有链表的部分性质）</p>
-</li>
-<li>
-<p>对一般的运行程序来说，<strong>堆</strong>通常都是用来<strong>存储对象</strong>的，而<strong>栈</strong>通常用于<strong>运行程序</strong></p>
-<ul>
-<li>栈本身后进先出的数据结构与函数调用，嵌套运行的结构相符，因此用于运行程序，而通常局部的、临时的变量分配也都在栈上</li>
-<li>注意堆在计算机内存中的结构与数据结构的堆有很大区别。以C++为例，<strong>堆空间</strong>通常是<strong>不连续</strong>的，结构更接近链表而不是数组，受物理内存限制，<strong>效率</strong>要比栈<strong>低</strong>得多</li>
-<li>基于两者特性，再综合一下程序运行所需内容：编译好的二进制代码、对象、（静态）变量、常量等，就不难理解Java（程序计数器，方法区，虚拟机栈，本地方法栈，Java堆）或C++（堆区，栈区，全局静态区，常量区，程序代码区）中的内存划分依据了</li>
-</ul>
-</li>
-<li>
-<p>协议栈（Protocol Stack）的“栈”的概念与上述的基本没有太大关系，不做详细介绍</p>
-</li>
-</ul>
+<h2 id="paas是什么"><a class="markdownIt-Anchor" href="#paas是什么"></a> PaaS是什么</h2>
+<p>平台即服务（Platform as a Service），或者说PaaS，是指基于底层基础设施架构的平台和环境抽象（这里的公有云提供商被称为基础架构即服务，IaaS，提供商），它能够让开发者更轻松的部署应用和服务。</p>
+<p>PaaS平台通常都托管在云上，作为由提供商负责维护的共享/专有基础设施池的一部分（例：Heroku，Bluemix）或者一系列归属用户、能够部署在基础设施上的平台工具（例：Pivotal Cloud Foundry）。</p>
+<blockquote>
+<p>在Hasura，你可以在托管和自托管版本之间选择，两者之间可以无缝迁移</p>
+</blockquote>
+<p>如今一个新的趋势是大规模组织会构建他们自己的PaaS（即自定义的PaaS）因此他们的工具都是量身定制的。而在这篇文章中，为了想要准备构建自己的PaaS工具的开发者们，我们回顾一下PaaS应致力于解决的问题，解决这些问题的潜在方法以及做出任何技术选择时应有的考虑</p>
 <hr>
-<h3 id="七-代码版本管理相关问题"><a class="markdownIt-Anchor" href="#七-代码版本管理相关问题"></a> 七、代码版本管理相关问题</h3>
-<h4 id="能描述下什么是githubflow和gitflow工作流吗"><a class="markdownIt-Anchor" href="#能描述下什么是githubflow和gitflow工作流吗"></a> 能描述下什么是GithubFlow和GitFlow工作流吗？</h4>
+<h2 id="paas需要解决什么问题"><a class="markdownIt-Anchor" href="#paas需要解决什么问题"></a> PaaS需要解决什么问题</h2>
+<p>作为基础设施的抽象层，一个PaaS首先要解决以下问题：</p>
+<ol>
+<li>使代码独立于其运行的机器</li>
+<li>在软件部署和扩容上提供协助开发者的工具</li>
+</ol>
+<p>支撑一个典型的代码-机器交互工作流程需要的一些抽象层：</p>
+<p><img src="https://cdn-images-1.medium.com/max/600/1*8vuFxeKbDqNjtgXDDokfXQ.png" alt="PaaS需要的抽象层"></p>
+<ol>
+<li>预分配设施</li>
+<li>在设施上安装依赖</li>
+<li>机器上安装代码/二进制文件</li>
+<li>编辑配置文件</li>
+<li>在supervisor监控下运行代码</li>
+<li>更新前端服务器/API网关</li>
+</ol>
+<p>让我们看看上面提到的问题和潜在解决方案更多的细节：</p>
+<h3 id="1预分配设施"><a class="markdownIt-Anchor" href="#1预分配设施"></a> 1）预分配设施</h3>
+<p><strong>问题：</strong> 需要创建、安装或配置<strong>大量</strong>如下的实体：</p>
+<p><img src="https://cdn-images-1.medium.com/max/800/1*NHZCpZNdM1l_xcEVIWLMng.png" alt=""></p>
+<p><strong>解决方案：</strong> 以下选项组成了该问题的潜在解决方案：</p>
+<ol>
+<li>使用虚拟化的基础设施</li>
+<li>将 CoreOS 用于：
 <ul>
-<li>
-<p>这两种都是基于分支，为协同开发而创造的工作流。除了主干分支，其他分支主要用于功能开发、修复bug等等，基本上新分支完成其任务后会合并到主干分支，主干分支的核心目的是发布与部署</p>
-</li>
-<li>
-<p>GitFlow的特性适用于<strong>版本发布</strong>，一般来说有master和develop两个主要分支，辅助分支包括hotfix、feature、release等等，develop分支是主要开发分支，开发完成后合并到此分支，发布成功后合并到master分支</p>
-</li>
-<li>
-<p>GithubFlow的特征则适用于“敏捷开发”等，即随时<strong>修改完代码随时发布</strong>的流程模式，<strong>没有develop分支</strong>，但是若考虑到代码合并进master分支与线上发布未必在同一时间（例如对master主干代码的大规模回归测试，到指定日期才发布等）</p>
-</li>
-<li>
-<p>各处常见的资料介绍经常将Pull Request放到GithubFlow中介绍，但实际上Pull Request可以跟包括这两者在内的其他各种诸如ForKing工作流一起协作</p>
-</li>
-<li>
-<p>PS:there is no difference in the GitHub flow between a hotfix and a very small feature.</p>
-</li>
-<li>
-<p>这两种工作流模式都是<strong>针对单一仓库</strong>的，而ForKing工作流在于其<strong>分布式</strong>工作的特性，即每个开发者在<strong>自己的仓库</strong>、自己的分支上完成相应开发，其明显的优势是项目维护者<strong>可以接受任何开发者的提交</strong>，但<strong>无需给他正式代码库的写权限</strong></p>
-</li>
+<li>完全回滚式更新</li>
+<li>将操作系统与应用程序级别的问题分开</li>
 </ul>
+</li>
+<li>使用基础设施提供商的API来自动化虚拟机的生命周期：
+<ul>
+<li>创建一个虚拟机</li>
+<li>更新一个虚拟机</li>
+<li>删除一个虚拟机</li>
+<li>将一个虚拟机添加到集群</li>
+<li>从集群中移除一个虚拟机</li>
+</ul>
+</li>
+</ol>
+<h3 id="2在设施上安装依赖"><a class="markdownIt-Anchor" href="#2在设施上安装依赖"></a> 2）在设施上安装依赖</h3>
+<p><strong>问题：</strong>  PaaS需要解决系统和应用两方面的依赖问题</p>
+<p><strong>解决方案：</strong> 简单——使用容器就行（<a href="https://www.docker.com/" target="_blank" rel="external"><em>Docker</em></a><em>,</em> <a href="https://containerd.io/" target="_blank" rel="external"><em>Containerd</em></a> <em>或者</em> <a href="https://coreos.com/rkt" target="_blank" rel="external"><em>rkt</em></a>）。容器帮你将所有的依赖跟代码一起打包在一个镜像里，而打包他们的任务被转交给开发者。</p>
+<p><img src="https://cdn-images-1.medium.com/max/800/1*e6k8G58FhyzVc6KDM_LF4Q.png" alt=""></p>
+<h3 id="3机器上安装代码二进制"><a class="markdownIt-Anchor" href="#3机器上安装代码二进制"></a> 3）机器上安装代码/二进制</h3>
+<p><strong>问题：</strong>  代码频繁更新。每一次更新最新的代码都需要安装到虚拟机上。</p>
+<p><strong>解决方案：</strong> 容器又一次成为了救星！此问题一个优雅的解决方案是为每次代码更新都创建一个新的容器镜像。 由代码仓库每一次更新引发的一个基于git的管道复制代码到虚拟机上并在其上自动化镜像的构建流程，这大大改善了开发者的体验。</p>
+<p><img src="https://cdn-images-1.medium.com/max/800/1*C7MFyQW9bYic7NYVgqnnVg.png" alt="基于的持续部署管道"></p>
+<h3 id="4编辑配置文件"><a class="markdownIt-Anchor" href="#4编辑配置文件"></a> 4）编辑配置文件</h3>
+<p><strong>问题：</strong>  每次部署或运行环境的改变都需要解决以下配置问题：</p>
+<ul>
+<li>配置参数和conf文件</li>
+<li>标识已部署服务地址的IP/端口</li>
+<li>密码和密钥</li>
+</ul>
+<p>解决这些问题的复杂性在集群中变得更糟糕了</p>
+<p><strong>解决方案：</strong> 大部分配置应该是作为容器一部分的。一个能通过内部DNS处理服务发现并提供集群范围配置管理系统的容器编排工具可以将参数注入其中</p>
+<p><img src="https://cdn-images-1.medium.com/max/800/1*DbBsQkoZeXs9H8HD4eCLVw.png" alt="管理配置和服务发现的基于Kubernetes的解决方案"></p>
+<h3 id="5在supervisor监控下运行代码"><a class="markdownIt-Anchor" href="#5在supervisor监控下运行代码"></a> 5）在supervisor监控下运行代码</h3>
+<p><strong>问题：</strong>  解决以下问题需要supervisor</p>
+<ul>
+<li>日志，日志的循环使用</li>
+<li>初始化时重启服务/容器</li>
+<li>崩溃情况下重启服务/容器</li>
+</ul>
+<p><strong>解决方案：</strong> 到目前为止，管理日志可能需要定制工具，但容器编排工具可以解决后面两个问题。大多数编排者提供管理底层资源状态的原语。</p>
+<h3 id="6更新前端服务器api网关"><a class="markdownIt-Anchor" href="#6更新前端服务器api网关"></a> 6）更新前端服务器/API网关</h3>
+<p><strong>问题：</strong>  API网关在每次系统发生变化时都需要重新配置和部署。比如说每次更新都会导致上游IP/端口的变化的部署</p>
+<p><strong>解决方案：</strong> 一个响应式的API网关需要一个集群操作者代理来监控变化，然后重新配置和部署网关。操作者必须依赖支持监控变化的分布式数据库，并在容器新部署时进行更新</p>
+<p><img src="https://cdn-images-1.medium.com/max/600/1*bfMlVBgq8QeayAONwpllNQ.png" alt="基于分布式key-vaule存储、拥有操作者代理的响应式网关"></p>
 <hr>
-<h3 id="九-逻辑和算法相关问题"><a class="markdownIt-Anchor" href="#九-逻辑和算法相关问题"></a> 九、逻辑和算法相关问题？</h3>
-<h4 id="写一段有栈溢出的代码"><a class="markdownIt-Anchor" href="#写一段有栈溢出的代码"></a> 写一段有栈溢出的代码</h4>
-<ul>
-<li>
-<p>内存溢出（参考java）：栈溢出（StackOverFlow）、堆溢出（OutOfMemoryError）。结合堆与栈通常在程序中的用法，堆用于分配对象，那么只要永不停息的分配新对象不回收自然会堆溢出；而栈如果作为函数调用栈则深度有限，那么只要不断深入调用（最经典操作：无限递归），自然会栈溢出</p>
-</li>
-<li>
-<p>栈溢出：</p>
-</li>
-</ul>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="JAVA"><figure class="iseeu highlight /java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sofMethod</span><span class="params">()</span></span>&#123;</div><div class="line">    depth ++ ;</div><div class="line">    sofMethod();</div><div class="line">&#125;</div></pre></td></tr></table></figure></div>
-<ul>
-<li>堆溢出：</li>
-</ul>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="JAVA"><figure class="iseeu highlight /java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sofMethod</span><span class="params">()</span></span>&#123;</div><div class="line">    List&lt;<span class="keyword">byte</span>[]&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</div><div class="line">    <span class="keyword">int</span> i=<span class="number">0</span>;</div><div class="line">    <span class="keyword">while</span>(<span class="keyword">true</span>)&#123;</div><div class="line">        list.add(<span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">5</span>*<span class="number">1024</span>*<span class="number">1024</span>]);</div><div class="line">        System.out.println(<span class="string">"分配次数："</span>+(++i));</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></div>
-<h4 id="写一段有内存泄漏memory-leak的示例代码"><a class="markdownIt-Anchor" href="#写一段有内存泄漏memory-leak的示例代码"></a> 写一段有内存泄漏（Memory Leak）的示例代码</h4>
-<ul>
-<li>注意区分内存溢出和内存泄漏，关键在于<strong>溢出（Overflow）</strong> 和 <strong>泄漏（Leak）</strong> 两个概念要区别开来，同样概念适用于栈/堆溢出等</li>
-</ul>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="C"><figure class="iseeu highlight /c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">char</span> *c;</div><div class="line">    c=(<span class="keyword">char</span>*)<span class="built_in">malloc</span>(<span class="number">256</span>*<span class="keyword">sizeof</span>(<span class="keyword">char</span>));</div><div class="line">    <span class="comment">//这里分配的内存没有回收，且后续无法控制，虽然程序不会崩溃，但符合定义</span></div><div class="line">    c=(<span class="keyword">char</span>*)<span class="built_in">malloc</span>(<span class="number">256</span>*<span class="keyword">sizeof</span>(<span class="keyword">char</span>));</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></div>
+<p>集成上述解决方案，一个完整的PaaS看起来可能是这样的：</p>
+<p><img src="https://cdn-images-1.medium.com/max/1000/1*ZC1Wrt3k5DveHmxtsmkn_g.png" alt="enter image description here"></p>
+<p>话虽如此，PaaS还需要解决一些其他问题，比如拥有标准化的部署方法，确定底层组件的透明度级别（<em>如果走对开发者友好的路线，还要提供一个安全的方法访问他们</em>），管理有状态的服务等等。</p>
+<p>下一篇文章我们来看一看一个使用Docker和Kubernetes 作为容器和容器编排技术选择实现的示例，并解决上面所列出的问题。</p>
+<p>Hasura是一个基于Kubernetes的PaaS和PostgreSQL驱动的BaaS，从这里开始吧：</p>
+<blockquote>
+<p><a href="https://hasura.io" target="_blank" rel="external">https://hasura.io</a></p>
+</blockquote>
+<hr>
 <blockquote>
 <p>Written with <a href="https://stackedit.io/" target="_blank" rel="external">StackEdit</a>.</p>
 </blockquote>
@@ -807,7 +784,7 @@ svg {
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#五-语言相关问题"><span class="nav-number">1.</span> <span class="nav-text"> 五、语言相关问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#告诉我你的首选语言的三个最坏的缺陷"><span class="nav-number">1.1.</span> <span class="nav-text"> 告诉我你的首选语言的三个最坏的缺陷</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#什么是栈什么是堆"><span class="nav-number">1.2.</span> <span class="nav-text"> 什么是栈？什么是堆？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#七-代码版本管理相关问题"><span class="nav-number">2.</span> <span class="nav-text"> 七、代码版本管理相关问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#能描述下什么是githubflow和gitflow工作流吗"><span class="nav-number">2.1.</span> <span class="nav-text"> 能描述下什么是GithubFlow和GitFlow工作流吗？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#九-逻辑和算法相关问题"><span class="nav-number">3.</span> <span class="nav-text"> 九、逻辑和算法相关问题？</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#写一段有栈溢出的代码"><span class="nav-number">3.1.</span> <span class="nav-text"> 写一段有栈溢出的代码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#写一段有内存泄漏memory-leak的示例代码"><span class="nav-number">3.2.</span> <span class="nav-text"> 写一段有内存泄漏（Memory Leak）的示例代码</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#设计一个你自己的paas平台即服务"><span class="nav-number">1.</span> <span class="nav-text"> 设计一个你自己的PaaS（平台即服务）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#paas是什么"><span class="nav-number">1.1.</span> <span class="nav-text"> PaaS是什么</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#paas需要解决什么问题"><span class="nav-number">1.2.</span> <span class="nav-text"> PaaS需要解决什么问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1预分配设施"><span class="nav-number">1.2.1.</span> <span class="nav-text"> 1）预分配设施</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2在设施上安装依赖"><span class="nav-number">1.2.2.</span> <span class="nav-text"> 2）在设施上安装依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3机器上安装代码二进制"><span class="nav-number">1.2.3.</span> <span class="nav-text"> 3）机器上安装代码/二进制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4编辑配置文件"><span class="nav-number">1.2.4.</span> <span class="nav-text"> 4）编辑配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5在supervisor监控下运行代码"><span class="nav-number">1.2.5.</span> <span class="nav-text"> 5）在supervisor监控下运行代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6更新前端服务器api网关"><span class="nav-number">1.2.6.</span> <span class="nav-text"> 6）更新前端服务器/API网关</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
