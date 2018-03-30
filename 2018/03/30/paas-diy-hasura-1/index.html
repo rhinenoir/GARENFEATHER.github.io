@@ -81,13 +81,13 @@
 
 
 
-<meta name="description" content="原文：Designing a DIY PaaS 翻译：GarenRhine 未授权，转载请注明出处   本文面向想要创建一个自定义PaaS来简化部署工作流程的开发者，这是PaaS架构、实现与部署系列的第一篇  PaaS是什么 平台即服务（Platform as a Service），或者说PaaS，是指基于底层基础设施架构的平台和环境抽象（这里的公有云提供商被称为基础架构即服务，IaaS，提供商">
+<meta name="description" content="原文：Designing a DIY PaaS 翻译：GarenRhine 未授权，转载请注明出处   本文面向想要创建一个自定义PaaS来简化部署工作流程的开发者，这是PaaS架构、实现与部署系列的第一篇">
 <meta name="keywords" content="hasura,git,paas,docker,kubernetes,supervisor">
 <meta property="og:type" content="article">
 <meta property="og:title" content="设计一个你自己的PaaS（平台即服务）">
 <meta property="og:url" content="http://blog.garenfeather.cn/2018/03/30/paas-diy-hasura-1/index.html">
 <meta property="og:site_name" content="変わらないで">
-<meta property="og:description" content="原文：Designing a DIY PaaS 翻译：GarenRhine 未授权，转载请注明出处   本文面向想要创建一个自定义PaaS来简化部署工作流程的开发者，这是PaaS架构、实现与部署系列的第一篇  PaaS是什么 平台即服务（Platform as a Service），或者说PaaS，是指基于底层基础设施架构的平台和环境抽象（这里的公有云提供商被称为基础架构即服务，IaaS，提供商">
+<meta property="og:description" content="原文：Designing a DIY PaaS 翻译：GarenRhine 未授权，转载请注明出处   本文面向想要创建一个自定义PaaS来简化部署工作流程的开发者，这是PaaS架构、实现与部署系列的第一篇">
 <meta property="og:image" content="https://cdn-images-1.medium.com/max/600/1*8vuFxeKbDqNjtgXDDokfXQ.png">
 <meta property="og:image" content="https://cdn-images-1.medium.com/max/800/1*NHZCpZNdM1l_xcEVIWLMng.png">
 <meta property="og:image" content="https://cdn-images-1.medium.com/max/800/1*e6k8G58FhyzVc6KDM_LF4Q.png">
@@ -95,10 +95,10 @@
 <meta property="og:image" content="https://cdn-images-1.medium.com/max/800/1*DbBsQkoZeXs9H8HD4eCLVw.png">
 <meta property="og:image" content="https://cdn-images-1.medium.com/max/600/1*bfMlVBgq8QeayAONwpllNQ.png">
 <meta property="og:image" content="https://cdn-images-1.medium.com/max/1000/1*ZC1Wrt3k5DveHmxtsmkn_g.png">
-<meta property="og:updated_time" content="2018-03-30T08:44:40.707Z">
+<meta property="og:updated_time" content="2018-03-30T09:11:05.728Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="设计一个你自己的PaaS（平台即服务）">
-<meta name="twitter:description" content="原文：Designing a DIY PaaS 翻译：GarenRhine 未授权，转载请注明出处   本文面向想要创建一个自定义PaaS来简化部署工作流程的开发者，这是PaaS架构、实现与部署系列的第一篇  PaaS是什么 平台即服务（Platform as a Service），或者说PaaS，是指基于底层基础设施架构的平台和环境抽象（这里的公有云提供商被称为基础架构即服务，IaaS，提供商">
+<meta name="twitter:description" content="原文：Designing a DIY PaaS 翻译：GarenRhine 未授权，转载请注明出处   本文面向想要创建一个自定义PaaS来简化部署工作流程的开发者，这是PaaS架构、实现与部署系列的第一篇">
 <meta name="twitter:image" content="https://cdn-images-1.medium.com/max/600/1*8vuFxeKbDqNjtgXDDokfXQ.png">
 
 
@@ -436,6 +436,7 @@
 </ul>
 <hr>
 <p>本文面向想要创建一个自定义PaaS来简化部署工作流程的开发者，这是PaaS架构、实现与部署系列的第一篇</p>
+<a id="more"></a>
 <h2 id="paas是什么"><a class="markdownIt-Anchor" href="#paas是什么"></a> PaaS是什么</h2>
 <p>平台即服务（Platform as a Service），或者说PaaS，是指基于底层基础设施架构的平台和环境抽象（这里的公有云提供商被称为基础架构即服务，IaaS，提供商），它能够让开发者更轻松的部署应用和服务。</p>
 <p>PaaS平台通常都托管在云上，作为由提供商负责维护的共享/专有基础设施池的一部分（例：Heroku，Bluemix）或者一系列归属用户、能够部署在基础设施上的平台工具（例：Pivotal Cloud Foundry）。</p>
