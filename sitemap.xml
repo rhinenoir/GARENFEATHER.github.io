@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://blog.garenfeather.cn/2018/01/20/cdn-p2p-decentralization/</loc>
+    
+    <lastmod>2018-04-01T15:45:18.176Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://blog.garenfeather.cn/2016/09/25/pwa-checklist/</loc>
     
     <lastmod>2018-03-31T03:08:14.718Z</lastmod>
@@ -33,13 +40,6 @@
     <loc>http://blog.garenfeather.cn/2018/03/25/openshift-ghost-blog-docker-https/</loc>
     
     <lastmod>2018-03-25T07:27:54.395Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://blog.garenfeather.cn/2018/01/20/cdn-p2p-decentralization/</loc>
-    
-    <lastmod>2018-03-23T21:43:41.711Z</lastmod>
     
   </url>
   
