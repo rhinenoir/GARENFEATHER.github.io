@@ -1953,7 +1953,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://blog.garenfeather.cn/2018/02/15/backend-schedule-02/">
+    <link itemprop="mainEntityOfPage" href="http://blog.garenfeather.cn/2018/02/16/distributed-storage-ha-clusters-3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="GarenRhine">
@@ -1972,7 +1972,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/02/15/backend-schedule-02/" itemprop="url">开放后端答题（2）——语言、堆栈、工作流、溢出与泄漏</a></h1>
+                <a class="post-title-link" href="/2018/02/16/distributed-storage-ha-clusters-3/" itemprop="url">分布式与高可用（3）——键值、表格、数据库</a></h1>
         
 
         <div class="post-meta">
@@ -1984,8 +1984,8 @@
               
                 <span class="post-meta-item-text">投稿日</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-15T18:12:44+08:00">
-                2018-02-15
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-16T12:21:39+08:00">
+                2018-02-16
               </time>
             
 
@@ -2024,7 +2024,7 @@
 
           
           
-             <span id="/2018/02/15/backend-schedule-02/" class="leancloud_visitors" data-flag-title="开放后端答题（2）——语言、堆栈、工作流、溢出与泄漏">
+             <span id="/2018/02/16/distributed-storage-ha-clusters-3/" class="leancloud_visitors" data-flag-title="分布式与高可用（3）——键值、表格、数据库">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -2049,7 +2049,7 @@
                   <span class="post-meta-item-text">ワードカウント&#58;</span>
                 
                 <span title="ワードカウント">
-                  1,332
+                  7,967
                 </span>
               
 
@@ -2075,20 +2075,21 @@
 
       
         
-          <h3 id="五-语言相关问题"><a class="markdownIt-Anchor" href="#五-语言相关问题"></a> 五、语言相关问题</h3>
-<h4 id="告诉我你的首选语言的三个最坏的缺陷"><a class="markdownIt-Anchor" href="#告诉我你的首选语言的三个最坏的缺陷"></a> 告诉我你的首选语言的三个最坏的缺陷</h4>
+          <hr>
+<h1 id="分布式键值系统"><a class="markdownIt-Anchor" href="#分布式键值系统"></a> 分布式键值系统</h1>
+<h2 id="amazon-dynamo"><a class="markdownIt-Anchor" href="#amazon-dynamo"></a> Amazon Dynamo</h2>
 <ul>
-<li>Python语言
+<li>整体还是采用了无中心节点的P2P设计，一致性较差，只保证最终一致性，影响测试用例的设计
 <ul>
-<li>动态</li>
-<li>弱类型</li>
-<li>运行速度限制</li>
+<li>P2P技术：向量时钟（Vector Lock）、数据回传、Merkle树、冲突处理等</li>
 </ul>
 </li>
+<li>开源实现：Cassandra</li>
+<li>问题及对应方案</li>
 </ul>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/02/15/backend-schedule-02/#more" rel="contents">
+            <a class="btn" href="/2018/02/16/distributed-storage-ha-clusters-3/#more" rel="contents">
               続きを読む &raquo;
             </a>
           </div>
@@ -2180,7 +2181,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">27</span>
                   <span class="site-state-item-name">ポスト</span>
                 </a>
               </div>
@@ -2202,7 +2203,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">83</span>
+                  <span class="site-state-item-count">92</span>
                   <span class="site-state-item-name">タグ</span>
                 </a>
               </div>
