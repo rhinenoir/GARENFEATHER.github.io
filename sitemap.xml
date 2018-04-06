@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://blog.garenfeather.cn/2017/11/29/distributed-storage-ha-clusters-1/</loc>
+    
+    <lastmod>2018-04-06T06:00:06.724Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://blog.garenfeather.cn/2018/01/20/cdn-p2p-decentralization/</loc>
     
     <lastmod>2018-04-01T15:49:13.880Z</lastmod>
