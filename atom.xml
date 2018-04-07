@@ -110,9 +110,9 @@
     
       <category term="docker" scheme="http://blog.garenfeather.cn/tags/docker/"/>
     
-      <category term="supervisor" scheme="http://blog.garenfeather.cn/tags/supervisor/"/>
-    
       <category term="kubernetes" scheme="http://blog.garenfeather.cn/tags/kubernetes/"/>
+    
+      <category term="supervisor" scheme="http://blog.garenfeather.cn/tags/supervisor/"/>
     
   </entry>
   
@@ -503,9 +503,9 @@
     
       <category term="backend" scheme="http://blog.garenfeather.cn/tags/backend/"/>
     
-      <category term="transaction" scheme="http://blog.garenfeather.cn/tags/transaction/"/>
-    
       <category term="streaming" scheme="http://blog.garenfeather.cn/tags/streaming/"/>
+    
+      <category term="transaction" scheme="http://blog.garenfeather.cn/tags/transaction/"/>
     
       <category term="singleton" scheme="http://blog.garenfeather.cn/tags/singleton/"/>
     
